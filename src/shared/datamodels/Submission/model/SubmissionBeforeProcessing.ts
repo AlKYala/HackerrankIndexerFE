@@ -1,7 +1,9 @@
 import {BaseEntity} from "../../Base/model/BaseEntity";
 
-export interface Submission extends BaseEntity {
-  //content processed in backend
+/**
+ * used BEFORE data is processed - when data is first loaded in upload
+ */
+export interface SubmissionBeforeProcessing extends BaseEntity {
   contest: string;
   challenge: string;
   code: string;
