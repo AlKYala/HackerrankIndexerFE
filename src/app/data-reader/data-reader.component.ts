@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {from, Observable} from "rxjs";
 import {HackerrankJSON} from "../../shared/datamodels/HackerrankJSON/model/HackerrankJSON";
-import {Submission} from "../../shared/datamodels/Submission/model/Submission";
-import {SubmissionBeforeProcessing} from "../../shared/datamodels/Submission/model/SubmissionJSON";
 
 @Component({
   selector: 'app-data-reader',
