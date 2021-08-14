@@ -14,7 +14,6 @@ export class DataReaderComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log("debug");
   }
 
   public onChange(event: any): void {
