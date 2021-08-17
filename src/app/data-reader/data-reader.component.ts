@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {from, Observable} from "rxjs";
 import {HackerrankJSON} from "../../shared/datamodels/HackerrankJSON/model/HackerrankJSON";
+import {HackerrrankJSONService} from "../../shared/datamodels/HackerrankJSON/service/HackerrrankJSONService";
 
 @Component({
   selector: 'app-data-reader',
@@ -9,20 +10,17 @@ import {HackerrankJSON} from "../../shared/datamodels/HackerrankJSON/model/Hacke
 })
 export class DataReaderComponent implements OnInit {
 
-  constructor() { }
+  constructor(private hackerrankJsonService: HackerrrankJSONService) { }
 
   ngOnInit(): void {
   }
 
   public onChange(event: any): void {
     const file: File = event.target.files[0];
-    this.parseHackerrankJSON(file);
+    this.fireParseRequest(file);
   }
 
-  private parseHackerrankJSON(hackerrankJsonFile: File) {
-    from(hackerrankJsonFile.text()).subscribe((data: string) => {
-      const parsed = JSON.parse(data);
-      const hrJSON: HackerrankJSON = {email: parsed.email, username: parsed.username, submissions: parsed.submissions};
-    });
+  private fireParseRequest(hackerrankJsonFile: File) {
+    this.hackerrankJsonService.parseHackerrankJSON(hackerrankJsonFile);
   }
 }

@@ -12,11 +12,12 @@ export class HackerrrankJSONService {
   constructor(private httpClient: HttpClient) {
   }
 
-  private parseHackerrankJSON(hackerrankJsonFile: File)  {
+  public parseHackerrankJSON(hackerrankJsonFile: File)  {
     from(hackerrankJsonFile.text()).subscribe((data: string) => {
       const parsed = JSON.parse(data);
       const hrJSON: HackerrankJSON = {email: parsed.email, username: parsed.username, submissions: parsed.submissions};
-      //TODO send request here
+      //debug
+      console.log(hrJSON);
       this.httpClient.post(`${environment.api}/json`, hrJSON).pipe().subscribe((data) => {
         console.log(data);
       });
