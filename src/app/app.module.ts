@@ -13,12 +13,14 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatCommonModule} from "@angular/material/core";
 import {MatListModule} from "@angular/material/list";
+import { SubmissionListComponent } from './submission-list/submission-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DataReaderComponent,
-    NavbarComponent
+    NavbarComponent,
+    SubmissionListComponent
   ],
   imports: [
     BrowserModule,
