@@ -5,17 +5,16 @@ import {BaseEntity} from "../datamodels/Base/model/BaseEntity";
 import {environment} from "../../environments/environment";
 import {Observable} from "rxjs";
 
-@Inject({
-  providedIn: 'root'
-})
-export class ServiceService<T extends BaseEntity> {
+export class ServiceHandler<T extends BaseEntity> {
 
-  private subPath: string;
-  private completePath: string;
+  private subPath: string = "";
+  private completePath: string = "";
+  private httpClient: HttpClient;
 
-  constructor(private httpClient: HttpClient, subPath: string) {
+  public constructor(httpClient: HttpClient, subPath: string) {
     this.subPath = subPath;
     this.completePath = `${environment.api}/${subPath}`;
+    this.httpClient = httpClient;
   }
 
   public findById(id: number): Observable<T> {
