@@ -7,7 +7,7 @@ import {environment} from "../../environments/environment";
 @Component({
   selector: 'app-submission-list',
   templateUrl: './submission-list.component.html',
-  styleUrls: ['./submission-list.component.css']
+  styleUrls: ['./submission-list.component.scss']
 })
 export class SubmissionListComponent implements OnInit {
 

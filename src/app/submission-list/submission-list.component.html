@@ -1,5 +1,10 @@
-<ng-container>
-  <ng-container *ngFor="let submission of this.submissions">
-    <p>{{submission.language.language}}<p>
+<div class="example-container">
+  <ng-container>
+    <ng-container *ngFor="let submission of this.submissions">
+      <div class="submissionEntry">
+        <app-submission-listing [submission]="submission"></app-submission-listing>
+      </div>
+    </ng-container>
   </ng-container>
-</ng-container>
+</div>
+

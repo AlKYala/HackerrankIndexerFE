@@ -1,0 +1,13 @@
+$paddingX: 1%;
+$paddingY: 1%;
+
+.submissionEntry {
+  padding-right: $paddingX;
+  padding-left: $paddingX;
+  padding-bottom: $paddingY;
+}
+
+.example-container {
+  padding-top: $paddingY;
+}
+

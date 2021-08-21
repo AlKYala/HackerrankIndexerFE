@@ -14,13 +14,16 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatCommonModule} from "@angular/material/core";
 import {MatListModule} from "@angular/material/list";
 import { SubmissionListComponent } from './submission-list/submission-list.component';
+import { SubmissionListingComponent } from './submission-listing/submission-listing.component';
+import {MatCardModule} from "@angular/material/card";
 
 @NgModule({
   declarations: [
     AppComponent,
     DataReaderComponent,
     NavbarComponent,
-    SubmissionListComponent
+    SubmissionListComponent,
+    SubmissionListingComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +35,8 @@ import { SubmissionListComponent } from './submission-list/submission-list.compo
     MatIconModule,
     MatToolbarModule,
     MatCommonModule,
-    MatListModule
+    MatListModule,
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]
