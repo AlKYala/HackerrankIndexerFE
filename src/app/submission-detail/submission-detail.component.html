@@ -1,0 +1,11 @@
+<button (click)="generateAndDownloadSubmission()">download file</button>
+
+<div *ngIf="this.loaded.valueOf()">
+  <p>Score: {{this.submission?.score}}</p>
+  <p>Language: {{this.submission?.language?.language}}</p>
+  <mat-card>
+    <h6>Code</h6>
+    <p>{{this.submission.code}}</p>
+  </mat-card>
+</div>
+
