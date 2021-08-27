@@ -16,6 +16,7 @@ import {MatListModule} from "@angular/material/list";
 import { SubmissionListComponent } from './submission-list/submission-list.component';
 import { SubmissionListingComponent } from './submission-listing/submission-listing.component';
 import {MatCardModule} from "@angular/material/card";
+import { SubmissionDetailComponent } from './submission-detail/submission-detail.component';
 
 @NgModule({
   declarations: [
@@ -23,12 +24,13 @@ import {MatCardModule} from "@angular/material/card";
     DataReaderComponent,
     NavbarComponent,
     SubmissionListComponent,
-    SubmissionListingComponent
+    SubmissionListingComponent,
+    SubmissionDetailComponent,
   ],
   imports: [
+    RouterModule,
     BrowserModule,
     BrowserAnimationsModule,
-    RouterModule,
     HttpClientModule,
     AppRoutingModule,
     MatSidenavModule,

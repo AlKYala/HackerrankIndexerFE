@@ -1,0 +1,11 @@
+<button (click)="generateAndDownloadSubmission()">download file</button>
+
+<div>
+  <p>Score: {{this.submission?.score}}</p>
+  <span>Language: <a href="todo">{{this.submission?.language?.language}}</a></span>
+  <h4>Code</h4>
+  <mat-card>
+    <pre>{{this.submissionCode}}</pre>
+  </mat-card>
+</div>
+

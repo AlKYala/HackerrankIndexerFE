@@ -1,5 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Submission} from "../../shared/datamodels/Submission/model/Submission";
+import {ActivatedRoute, NavigationEnd, NavigationExtras, Router} from "@angular/router";
+import {SubmissionDataService} from "../../shared/services/SubmissionDataService";
 
 @Component({
   selector: 'app-submission-listing',
@@ -11,9 +13,14 @@ export class SubmissionListingComponent implements OnInit {
   //! removes strict propery initialization
   @Input() submission!: Submission;
 
-  constructor() { }
+  constructor(private router: Router,
+              private submissionDataService: SubmissionDataService) { }
 
   ngOnInit(): void {
   }
 
+  public navigateToListingDetail() {
+    this.submissionDataService.setSubmission(this.submission);
+    this.router.navigate([`/submission/${this.submission.id}`]);
+  }
 }
