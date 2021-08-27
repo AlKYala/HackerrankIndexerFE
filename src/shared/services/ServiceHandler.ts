@@ -18,7 +18,7 @@ export class ServiceHandler<T extends BaseEntity> {
   }
 
   public findById(id: number): Observable<T> {
-    return this.httpClient.get(`${this.completePath}/id`) as Observable<T>;
+    return this.httpClient.get(`${this.completePath}/${id}`) as Observable<T>;
   }
 
   public findAll(): Observable<T[]> {

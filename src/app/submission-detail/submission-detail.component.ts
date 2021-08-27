@@ -18,6 +18,7 @@ export class SubmissionDetailComponent implements OnInit, OnDestroy {
   private subscriptions!: Subscription[];
   public loaded: boolean = false;
   private submissionid!: number;
+  submissionCode!: string;
 
   constructor(private subscriptionService: SubscriptionService,
               private submissionService: SubmissionService,
@@ -27,8 +28,8 @@ export class SubmissionDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions = [];
-    this.fetchSubmission();
     this.resolveSubmissionId();
+    this.fetchSubmission();
   }
 
   ngOnDestroy() {
@@ -37,15 +38,18 @@ export class SubmissionDetailComponent implements OnInit, OnDestroy {
 
   private resolveSubmissionId(): void {
     const id = this.route.snapshot.paramMap.get('id');
+    console.log(id);
     if(typeof id === "string") {
       this.submissionid = parseInt(id);
     }
+    console.log(this.submissionid);
   }
 
   private fetchSubmission() {
     this.submissionService.findById(this.submissionid).pipe().subscribe((submission: Submission) => {
       this.submission = submission;
-      this.loaded;
+      this.submissionCode = submission.code.replace(/\n/g, "\r\n");
+      this.loaded = true;
     });
   }
 
