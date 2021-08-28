@@ -13,11 +13,11 @@
       <mat-nav-list>
         <mat-list>
           <mat-list-item>
-            <a routerLink="/submissions">View Submissions</a>
+            <a (click)="this.route('/submissions')">View Submissions</a>
           </mat-list-item>
           <mat-divider></mat-divider>
           <mat-list-item>
-            <a routerLink="/upload">Upload file</a>
+            <a (click)="this.route('/upload')">Upload file</a>
           </mat-list-item>
           <mat-divider></mat-divider>
           <mat-list-item>Item 3</mat-list-item>
