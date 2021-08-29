@@ -4,6 +4,8 @@ import {Challenge} from "../model/Challenge";
 import {HttpClient} from "@angular/common/http";
 import {BaseService} from "../../Base/BaseService";
 import {Observable} from "rxjs";
+import {Submission} from "../../Submission/model/Submission";
+import {environment} from "../../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -33,5 +35,9 @@ export class ChallengeService implements BaseService<Challenge>{
 
   update(id: number, instance: Challenge): Observable<Challenge> {
     return this.serviceHandler.update(id, instance);
+  }
+
+  getSubmissionsByChallengeId(challengeId: number): Observable<Submission[]> {
+    return this.httpClient.get(`${environment.api}/challenge/${challengeId}/submissions`) as Observable<Submission[]>;
   }
 }

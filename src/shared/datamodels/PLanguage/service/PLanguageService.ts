@@ -4,6 +4,8 @@ import {Planguage} from "../model/PLanguage";
 import {ServiceHandler} from "../../../services/ServiceHandler";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {Submission} from "../../Submission/model/Submission";
+import {environment} from "../../../../environments/environment";
 
 @Injectable({
   providedIn: "root"
@@ -34,5 +36,9 @@ export class PLanguageService implements BaseService<Planguage> {
 
   update(id: number, instance: Planguage): Observable<Planguage> {
     return this.serviceHandler.update(id, instance);
+  }
+
+  getSubmissionsByPLanguageId(planguageId: number): Observable<Submission[]> {
+    return this.httpClient.get(`${environment.api}/planguage/${planguageId}/submissions`) as Observable<Submission[]>;
   }
 }

@@ -1,30 +1,78 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {Submission} from "../../shared/datamodels/Submission/model/Submission";
 import {environment} from "../../environments/environment";
+import {SubmissionService} from "../../shared/datamodels/Submission/service/SubmissionService";
+import {ActivatedRoute} from "@angular/router";
+import {PLanguageService} from "../../shared/datamodels/PLanguage/service/PLanguageService";
+import {ChallengeService} from "../../shared/datamodels/Challenge/service/ChallengeService";
 
 @Component({
   selector: 'app-submission-list',
   templateUrl: './submission-list.component.html',
   styleUrls: ['./submission-list.component.scss']
 })
-export class SubmissionListComponent implements OnInit {
+export class SubmissionListComponent implements OnInit, OnDestroy {
 
   submissions: Submission[] = [];
+  private subscriptions: Subscription[] = [];
+  private challengeId: number = -1;
+  private pLanguageId: number = -1;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,
+              private submissionService: SubmissionService,
+              private route: ActivatedRoute,
+              private pLanguageService: PLanguageService,
+              private challengeService: ChallengeService) { }
 
   ngOnInit(): void {
-    this.getAllSubmissions();
+    this.scanForRoutingParameters();
   }
 
-  //TODO Services fuer models schreiben
+  ngOnDestroy(): void {
+  }
+
+  private scanForRoutingParameters() {
+    const challengeIdString = this.route.snapshot.paramMap.get('challengeId');
+    const pLanguageIdString = this.route.snapshot.paramMap.get('pLanguageId');
+
+    if(typeof challengeIdString == 'string') {
+      const challengeId: number = parseInt(challengeIdString);
+      this.getSubmissionsByChallengeId(challengeId);
+    }
+    else if(typeof pLanguageIdString == 'string') {
+      const pLanguageId: number = parseInt(pLanguageIdString);
+      this.getSubmissionsByPLanguageId(pLanguageId);
+    }
+    else {
+      console.log('All');
+      this.getAllSubmissions();
+    }
+  }
+
+  private getSubmissionsByChallengeId(challengeId: number) {
+    const subscription: Subscription = this.challengeService.getSubmissionsByChallengeId(challengeId)
+      .pipe().subscribe((submissions: Submission[]) => {
+        this.submissions = submissions;
+      })
+    this.subscriptions.push(subscription);
+  }
+
+  private getSubmissionsByPLanguageId(pLanguageId: number) {
+    const subscription: Subscription = this.pLanguageService.getSubmissionsByPLanguageId(pLanguageId)
+      .pipe().subscribe((submissions: Submission[]) => {
+        this.submissions = submissions;
+      })
+    this.subscriptions.push(subscription);
+  }
+
   private getAllSubmissions() {
-    this.getAllSubmissionsRequest().pipe().subscribe((submissions: Submission[]) => {
-      console.log(submissions);
+    const subscription : Subscription = this.submissionService.findAll().
+    pipe().subscribe((submissions: Submission[]) => {
       this.submissions = submissions;
     });
+    this.subscriptions.push(subscription);
   }
 
   private getAllSubmissionsRequest(): Observable<Submission[]> {
