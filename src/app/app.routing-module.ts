@@ -7,10 +7,10 @@ import {SubmissionDetailComponent} from "./submission-detail/submission-detail.c
 
 const routes: Routes = [
   {path: 'upload', component: DataReaderComponent},
-  {path: 'submissions', component: SubmissionListComponent},
   {path: 'submission/:id', component: SubmissionDetailComponent},
-  {path: 'submissions/challenge/:challengeId', component: SubmissionListComponent},
-  {path: 'submissions/pLanguage/:planguageId', component: SubmissionListComponent}
+  {path: 'challenge/:challengeId/submissions', component: SubmissionListComponent},
+  {path: 'language/:pLanguageId/submissions', component: SubmissionListComponent},
+  {path: 'submissions', component: SubmissionListComponent},
 ];
 
 @NgModule({

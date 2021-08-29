@@ -46,6 +46,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
       this.getSubmissionsByPLanguageId(pLanguageId);
     }
     else {
+      console.log('All');
       this.getAllSubmissions();
     }
   }

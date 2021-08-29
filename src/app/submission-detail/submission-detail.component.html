@@ -1,8 +1,9 @@
 <button (click)="generateAndDownloadSubmission()">download file</button>
 
 <div>
+  <h2><a href="#" (click)="this.routeToChallenge($event)"></a></h2>
   <p>Score: {{this.submission?.score}}</p>
-  <span>Language: <a href="todo">{{this.submission?.language?.language}}</a></span>
+  <span>Language: <a href="#" (click)="this.routeToLanguage($event)">{{this.submission?.language?.language}}</a></span>
   <h4>Code</h4>
   <mat-card>
     <pre>{{this.submissionCode}}</pre>

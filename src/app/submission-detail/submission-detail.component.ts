@@ -4,7 +4,7 @@ import {formatDate} from "@angular/common";
 import {Subscription} from "rxjs";
 import {SubscriptionService} from "../../shared/services/SubscriptionService";
 import {SubmissionService} from "../../shared/datamodels/Submission/service/SubmissionService";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {SubmissionDataService} from "../../shared/services/SubmissionDataService";
 
 @Component({
@@ -23,7 +23,8 @@ export class SubmissionDetailComponent implements OnInit, OnDestroy {
   constructor(private subscriptionService: SubscriptionService,
               private submissionService: SubmissionService,
               private submissionDataService: SubmissionDataService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -79,6 +80,16 @@ export class SubmissionDetailComponent implements OnInit, OnDestroy {
 
   private getCurrentDateAsString(): string {
     return formatDate(new Date(), "dd/MM/yyyy", 'en');
+  }
+
+  public routeToLanguage(event: Event): void {
+    event.preventDefault();
+    this.router.navigate([`/language/${this.submission.language.id}/submissions`]);
+  }
+
+  public routeToChallenge(event: Event): void {
+    event.preventDefault();
+    this.router.navigate([`/challenge/${this.submission.challenge.id}/submissions`]);
   }
 
   /*private getSubmission(id: number): void {
