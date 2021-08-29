@@ -17,6 +17,7 @@ import { SubmissionListComponent } from './submission-list/submission-list.compo
 import { SubmissionListingComponent } from './submission-listing/submission-listing.component';
 import {MatCardModule} from "@angular/material/card";
 import { SubmissionDetailComponent } from './submission-detail/submission-detail.component';
+import { AnalyticsComponent } from './analytics/analytics.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { SubmissionDetailComponent } from './submission-detail/submission-detail
     SubmissionListComponent,
     SubmissionListingComponent,
     SubmissionDetailComponent,
+    AnalyticsComponent,
   ],
   imports: [
     RouterModule,
