@@ -7,6 +7,7 @@ import {SubmissionService} from "../../shared/datamodels/Submission/service/Subm
 import {ActivatedRoute} from "@angular/router";
 import {PLanguageService} from "../../shared/datamodels/PLanguage/service/PLanguageService";
 import {ChallengeService} from "../../shared/datamodels/Challenge/service/ChallengeService";
+import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-submission-list',
@@ -19,6 +20,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   private challengeId: number = -1;
   private pLanguageId: number = -1;
+  faCoffee = faCoffee;
 
   constructor(private httpClient: HttpClient,
               private submissionService: SubmissionService,

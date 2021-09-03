@@ -1,38 +1,19 @@
-<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
-  <mat-toolbar color="primary" class="example-toolbar">
-    <button mat-icon-button (click)="snav.toggle()">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <h1 class="example-app-name">Responsive App</h1>
-  </mat-toolbar>
-
-  <mat-sidenav-container class="example-sidenav-container"
-                         [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
-                 [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
-      <mat-nav-list>
-        <mat-list>
-          <mat-list-item>
-            <a (click)="this.route('/submissions')">View Submissions</a>
-          </mat-list-item>
-          <mat-divider></mat-divider>
-          <mat-list-item>
-            <a (click)="this.route('/upload')">Upload file</a>
-          </mat-list-item>
-          <mat-divider></mat-divider>
-          <mat-list-item>Item 3</mat-list-item>
-        </mat-list>
-      </mat-nav-list>
-    </mat-sidenav>
-
-    <mat-sidenav-content class="p-3">
-      <router-outlet></router-outlet>
-    </mat-sidenav-content>
-
-  </mat-sidenav-container>
-</div>
-
-
-<!-- Copyright 2021 Google LLC. All Rights Reserved.
-    Use of this source code is governed by an MIT-style license that
-    can be found in the LICENSE file at http://angular.io/license -->
+<nav class="navbar navbar-light navbar-expand-md navigation-clean">
+  <div class="container"><a (click)="this.route($event, '/home')" class="navbar-brand" href="#">Hackerrank Indexer</a>
+    <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span
+      class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="navcol-1">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a (click)="this.route($event, '/upload')" class="nav-link" href="#">Upload</a></li>
+        <li class="nav-item"><a (click)="this.route($event, '/submissions')" class="nav-link" href="#">Submissions</a>
+        </li>
+        <li class="nav-item"><a (click)="this.route($event, '/analytics')" class="nav-link" href="#">Analytics</a></li>
+        <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false"
+                                         data-bs-toggle="dropdown" href="#">More&nbsp;</a>
+          <div class="dropdown-menu"><a class="dropdown-item" href="#">First Item</a><a class="dropdown-item" href="#">Second
+            Item</a><a class="dropdown-item" href="#">Third Item</a></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

@@ -7,17 +7,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {RouterModule} from "@angular/router";
 import {HttpClientModule} from "@angular/common/http";
 import {AppRoutingModule} from "./app.routing-module";
-import {MatSidenavModule} from "@angular/material/sidenav";
 import { NavbarComponent } from './navbar/navbar.component';
-import {MatIconModule} from "@angular/material/icon";
-import {MatToolbarModule} from "@angular/material/toolbar";
-import {MatCommonModule} from "@angular/material/core";
-import {MatListModule} from "@angular/material/list";
 import { SubmissionListComponent } from './submission-list/submission-list.component';
 import { SubmissionListingComponent } from './submission-listing/submission-listing.component';
-import {MatCardModule} from "@angular/material/card";
 import { SubmissionDetailComponent } from './submission-detail/submission-detail.component';
 import { AnalyticsComponent } from './analytics/analytics.component';
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 
 @NgModule({
   declarations: [
@@ -35,12 +30,7 @@ import { AnalyticsComponent } from './analytics/analytics.component';
     BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatToolbarModule,
-    MatCommonModule,
-    MatListModule,
-    MatCardModule
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

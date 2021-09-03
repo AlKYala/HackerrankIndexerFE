@@ -25,7 +25,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 
-  public route(path: string) {
+  public route(event: Event, path: string) {
+    event.preventDefault();
     this.router.navigate([path]);
   }
 }
