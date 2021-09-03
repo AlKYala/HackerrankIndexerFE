@@ -4,10 +4,11 @@ import {Observable, Subscription} from "rxjs";
 import {Submission} from "../../shared/datamodels/Submission/model/Submission";
 import {environment} from "../../environments/environment";
 import {SubmissionService} from "../../shared/datamodels/Submission/service/SubmissionService";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {PLanguageService} from "../../shared/datamodels/PLanguage/service/PLanguageService";
 import {ChallengeService} from "../../shared/datamodels/Challenge/service/ChallengeService";
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
+import {SubmissionDataService} from "../../shared/services/SubmissionDataService";
 
 @Component({
   selector: 'app-submission-list',
@@ -24,9 +25,11 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
 
   constructor(private httpClient: HttpClient,
               private submissionService: SubmissionService,
+              private submissionDataService: SubmissionDataService,
               private route: ActivatedRoute,
               private pLanguageService: PLanguageService,
-              private challengeService: ChallengeService) { }
+              private challengeService: ChallengeService,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.scanForRoutingParameters();
@@ -81,4 +84,9 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
     return this.httpClient.get(`${environment.api}/submission`) as Observable<Submission[]>;
   }
 
+
+  public navigateToListingDetail(submission: Submission) {
+    this.submissionDataService.setSubmission(submission);
+    this.router.navigate([`/submission/${submission.id}`]);
+  }
 }
