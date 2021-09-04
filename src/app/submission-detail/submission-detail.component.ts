@@ -10,7 +10,7 @@ import {SubmissionDataService} from "../../shared/services/SubmissionDataService
 @Component({
   selector: 'app-submission-detail',
   templateUrl: './submission-detail.component.html',
-  styleUrls: ['./submission-detail.component.css']
+  styleUrls: ['./submission-detail.component.scss']
 })
 export class SubmissionDetailComponent implements OnInit, OnDestroy {
 

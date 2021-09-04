@@ -19,6 +19,12 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
 
   submissions: Submission[] = [];
   private subscriptions: Subscription[] = [];
+
+  @Input()
+  inputChallengeId!: number;
+  @Input()
+  inputLanguageid!: number;
+
   private challengeId: number = -1;
   private pLanguageId: number = -1;
   faCoffee = faCoffee;
@@ -38,22 +44,53 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
   }
 
-  private scanForRoutingParameters() {
+  private scanForFilter() {
+    const foundRouting: boolean = this.scanForRoutingParameters();
+    if(foundRouting) {
+      return;
+    }
+    const foundInput: boolean = this.scanForInputParameters();
+    if(foundInput) {
+      return;
+    }
+    this.getAllSubmissions();
+  }
+
+  /**
+   * Returns true if filter fires
+   * @private
+   */
+  private scanForInputParameters(): boolean {
+    if(this.inputChallengeId != null) {
+      this.getSubmissionsByChallengeId(this.inputChallengeId);
+      return true;
+    }
+    if(this.inputLanguageid != null) {
+      this.getSubmissionsByPLanguageId(this.inputLanguageid);
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Returns true if filter fires
+   * @private
+   */
+  private scanForRoutingParameters(): boolean {
     const challengeIdString = this.route.snapshot.paramMap.get('challengeId');
     const pLanguageIdString = this.route.snapshot.paramMap.get('pLanguageId');
 
     if(typeof challengeIdString == 'string') {
       const challengeId: number = parseInt(challengeIdString);
       this.getSubmissionsByChallengeId(challengeId);
+      return true;
     }
     else if(typeof pLanguageIdString == 'string') {
       const pLanguageId: number = parseInt(pLanguageIdString);
       this.getSubmissionsByPLanguageId(pLanguageId);
+      return true;
     }
-    else {
-      console.log('All');
-      this.getAllSubmissions();
-    }
+    return false;
   }
 
   private getSubmissionsByChallengeId(challengeId: number) {

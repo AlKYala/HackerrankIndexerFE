@@ -20,7 +20,7 @@
           <div class="card-body" data-bss-disabled-mobile="true" data-bss-hover-animate="pulse">
             <p class="card-text">Language:&nbsp;<a href="#">{{submission.language.language}}</a></p>
             <p class="card-text">PASSED:
-              <ng-container *ngIf="submission.score < 1.0; else notpassed">
+              <ng-container *ngIf="submission.score == 1.0; else notpassed">
                 <span id="passed">YES</span>
               </ng-container>
               <ng-template #notpassed>
@@ -28,10 +28,9 @@
               </ng-template>
               <a href="#"></a></p>
             <i id="download"
-              class="fa fa-download d-xl-flex justify-content-xl-end"></i>
+               class="fa fa-download d-xl-flex justify-content-xl-end"></i>
           </div>
         </div>
-
       </div>
     </ng-container>
   </div>
