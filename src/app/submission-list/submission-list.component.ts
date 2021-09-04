@@ -21,9 +21,11 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   @Input()
-  inputChallengeId!: number;
+  inputChallengeId: number | undefined;
   @Input()
-  inputLanguageid!: number;
+  inputLanguageid: number | undefined;
+
+  filteredByInput: boolean = false;
 
   private challengeId: number = -1;
   private pLanguageId: number = -1;
@@ -38,7 +40,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
               private router: Router) { }
 
   ngOnInit(): void {
-    this.scanForRoutingParameters();
+    this.scanForFilter();
   }
 
   ngOnDestroy(): void {
@@ -61,11 +63,13 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
    * @private
    */
   private scanForInputParameters(): boolean {
-    if(this.inputChallengeId != null) {
+    if(this.inputChallengeId != null && this.inputChallengeId > -1) {
       this.getSubmissionsByChallengeId(this.inputChallengeId);
+      this.filteredByInput = true;
       return true;
     }
-    if(this.inputLanguageid != null) {
+    if(this.inputLanguageid != null && this.inputLanguageid > -1) {
+      this.filteredByInput = true;
       this.getSubmissionsByPLanguageId(this.inputLanguageid);
       return true;
     }

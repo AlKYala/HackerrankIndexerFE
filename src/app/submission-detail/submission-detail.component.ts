@@ -49,7 +49,8 @@ export class SubmissionDetailComponent implements OnInit, OnDestroy {
   private fetchSubmission() {
     this.submissionService.findById(this.submissionid).pipe().subscribe((submission: Submission) => {
       this.submission = submission;
-      this.submissionCode = submission.code.replace(/\n/g, "\r\n");
+      console.log(submission);
+      //this.submissionCode = submission.code.replace(/\n/g, "\r\n");
       this.loaded = true;
     });
   }
