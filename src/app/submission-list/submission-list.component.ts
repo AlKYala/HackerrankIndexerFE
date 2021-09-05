@@ -24,6 +24,8 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   inputChallengeId: number | undefined;
   @Input()
   inputLanguageid: number | undefined;
+  @Input()
+  limit: number | undefined;
 
   filteredByInput: boolean = false;
 
@@ -55,6 +57,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
     if(foundInput) {
       return;
     }
+
     this.getAllSubmissions();
   }
 
@@ -101,6 +104,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
     const subscription: Subscription = this.challengeService.getSubmissionsByChallengeId(challengeId)
       .pipe().subscribe((submissions: Submission[]) => {
         this.submissions = submissions;
+        this.sliceSubmissions();
       })
     this.subscriptions.push(subscription);
   }
@@ -109,6 +113,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
     const subscription: Subscription = this.pLanguageService.getSubmissionsByPLanguageId(pLanguageId)
       .pipe().subscribe((submissions: Submission[]) => {
         this.submissions = submissions;
+        this.sliceSubmissions();
       })
     this.subscriptions.push(subscription);
   }
@@ -117,6 +122,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
     const subscription : Subscription = this.submissionService.findAll().
     pipe().subscribe((submissions: Submission[]) => {
       this.submissions = submissions;
+      this.sliceSubmissions();
     });
     this.subscriptions.push(subscription);
   }
@@ -129,5 +135,11 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   public navigateToListingDetail(submission: Submission) {
     this.submissionDataService.setSubmission(submission);
     this.router.navigate([`/submission/${submission.id}`]);
+  }
+
+  private sliceSubmissions(): void {
+    if(this.limit != null && this.limit > -1) {
+      this.submissions = this.submissions.slice(this.submissions.length - this.limit, this.submissions.length);
+    }
   }
 }
