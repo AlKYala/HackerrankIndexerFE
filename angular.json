@@ -100,7 +100,10 @@
             ],
             "scripts": [
               "./node_modules/jquery/dist/jquery.min.js",
-              "./node_modules/bootstrap/dist/js/bootstrap.min.js"
+              "./node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "./node_modules/bootstrap/dist/js/bs-init.js",
+              "./node_modules/bootstrap/dist/js/chart.min.js",
+              "./node_modules/bootstrap/dist/js/theme.js"
             ]
           }
         }

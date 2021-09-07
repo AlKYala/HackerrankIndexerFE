@@ -3,6 +3,8 @@ import {AnalyticsService} from "../../shared/services/AnalyticsService";
 import {UsagePercentages} from "../../shared/datamodels/Analytics/models/UsagePercentages";
 import {SubscriptionService} from "../../shared/services/SubscriptionService";
 import {Subscription} from "rxjs";
+import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
+import {PLanguageService} from "../../shared/datamodels/PLanguage/service/PLanguageService";
 
 @Component({
   selector: 'app-analytics',
@@ -21,10 +23,16 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   private subscriptions!: Subscription[];
 
+  pLanguages!: Planguage[];
+
+  loaded: boolean = false;
+
   constructor(private analyticsService: AnalyticsService,
-              private subscriptionService: SubscriptionService) { }
+              private subscriptionService: SubscriptionService,
+              private pLanguageService: PLanguageService) { }
 
-
+  pLanguageUsagePercentageMap = new Map<number, number>();
+  pLanguagePassPercentageMap = new Map<number, number>();
 
   ngOnInit(): void {
     this.subscriptions = [];
@@ -38,7 +46,18 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   private initData(): void {
     this.initChallengesPercentage();
     this.initSubmissionsPercentage();
-    this.initPLanguageUsagePercentages();
+    this.initPLanguagesAndUsagePercentages();
+    this.initPLanguages();
+  }
+
+  private initPLanguages() {
+    this.pLanguageService.findAll().pipe().subscribe((data: Planguage[]) => {
+      this.pLanguages = data;
+      this.loaded = true;
+      for(let pLanguage of data) {
+        this.initPercentagePassedByLanguageId(pLanguage.id!);
+      }
+    });
   }
 
   private initSubmissionsPercentage(): void {
@@ -66,10 +85,12 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   private initPercentagePassedByLanguageId(pLanguageId: number) : void {
     const subscription: Subscription = this.analyticsService.getPercentageOfPassedByLanguageId(pLanguageId)
       .pipe().subscribe((data: number) => {
+        this.pLanguagePassPercentageMap.set(pLanguageId, data);
       });
+    this.subscriptions.push(subscription);
   }
 
-  private initPLanguageUsagePercentages(): void {
+  private initPLanguagesAndUsagePercentages(): void {
     const subscription: Subscription = this.analyticsService.getUsagePercentagesOfPLanguages()
       .pipe().subscribe((data: UsagePercentages) => {
         //debug
@@ -79,4 +100,15 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     this.subscriptions.push(subscription);
   }
 
+  /**
+   * TODO: Prozentsatz fuer maps (passed) per Sprache
+   */
+
+  private initUsagePercentages() {
+    for(let i = 0; i < this.usagePercentages.pLanguages.length; i++) {
+      const langaugeId = this.usagePercentages.pLanguages[i].id;
+      const percentageUsage = this.usagePercentages.percentages[i];
+      this.pLanguageUsagePercentageMap.set(langaugeId!, percentageUsage);
+    }
+  }
 }
