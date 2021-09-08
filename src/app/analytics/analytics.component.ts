@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterContentInit, AfterViewChecked, AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {AnalyticsService} from "../../shared/services/AnalyticsService";
 import {UsagePercentages} from "../../shared/datamodels/Analytics/models/UsagePercentages";
 import {SubscriptionService} from "../../shared/services/SubscriptionService";
@@ -11,13 +11,11 @@ import {PLanguageService} from "../../shared/datamodels/PLanguage/service/PLangu
   templateUrl: './analytics.component.html',
   styleUrls: ['./analytics.component.css']
 })
-export class AnalyticsComponent implements OnInit, OnDestroy {
+export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   percentageSubmissionsPassed!: number;
-  percentageSubmissionsFailed!: number;
 
   percentageChallengesPassed!: number;
-  percentageChallengesFailed!: number;
 
   usagePercentages!: UsagePercentages;
 
@@ -25,11 +23,15 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   pLanguages!: Planguage[];
 
+  favouriteLanguage!: Planguage;
+
   loaded: boolean = false;
 
   constructor(private analyticsService: AnalyticsService,
               private subscriptionService: SubscriptionService,
               private pLanguageService: PLanguageService) { }
+
+
 
   pLanguageUsagePercentageMap = new Map<number, number>();
   pLanguagePassPercentageMap = new Map<number, number>();
@@ -48,8 +50,16 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     this.initSubmissionsPercentage();
     this.initPLanguagesAndUsagePercentages();
     this.initPLanguages();
+    this.initFavouriteLanguage();
   }
 
+  ngAfterViewChecked(): void {
+    this.visualizeData();
+  }
+  /**initialize P Langauges
+   *
+   * @private
+   */
   private initPLanguages() {
     this.pLanguageService.findAll().pipe().subscribe((data: Planguage[]) => {
       this.pLanguages = data;
@@ -63,10 +73,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   private initSubmissionsPercentage(): void {
     const subscription: Subscription = this.analyticsService.getPercentagePassedSubmissions()
       .pipe().subscribe((data: number) => {
-        //debug
-        console.log(data);
-      this.percentageSubmissionsPassed = data;
-      this.percentageSubmissionsFailed = 1 - data;
+      this.percentageSubmissionsPassed = Math.round(data*100);
     })
     this.subscriptions.push(subscription);
   }
@@ -75,9 +82,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     const subscription: Subscription = this.analyticsService.getPercentagePassedChallenges()
       .pipe().subscribe((data: number) => {
         //debug
-        console.log(data);
-        this.percentageChallengesPassed = data;
-        this.percentageChallengesFailed = 1 - data;
+        this.percentageChallengesPassed = Math.round(data*100);
       });
     this.subscriptions.push(subscription);
   }
@@ -85,7 +90,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   private initPercentagePassedByLanguageId(pLanguageId: number) : void {
     const subscription: Subscription = this.analyticsService.getPercentageOfPassedByLanguageId(pLanguageId)
       .pipe().subscribe((data: number) => {
-        this.pLanguagePassPercentageMap.set(pLanguageId, data);
+        this.pLanguagePassPercentageMap.set(pLanguageId, Math.round(data*100));
       });
     this.subscriptions.push(subscription);
   }
@@ -93,22 +98,44 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   private initPLanguagesAndUsagePercentages(): void {
     const subscription: Subscription = this.analyticsService.getUsagePercentagesOfPLanguages()
       .pipe().subscribe((data: UsagePercentages) => {
-        //debug
-        console.log(data);
         this.usagePercentages = data;
       });
     this.subscriptions.push(subscription);
   }
-
-  /**
-   * TODO: Prozentsatz fuer maps (passed) per Sprache
-   */
 
   private initUsagePercentages() {
     for(let i = 0; i < this.usagePercentages.pLanguages.length; i++) {
       const langaugeId = this.usagePercentages.pLanguages[i].id;
       const percentageUsage = this.usagePercentages.percentages[i];
       this.pLanguageUsagePercentageMap.set(langaugeId!, percentageUsage);
+    }
+  }
+
+  private initFavouriteLanguage() {
+    const subscription = this.analyticsService.getFavouritePLanguage().pipe().subscribe((data: Planguage) => {
+      this.favouriteLanguage = data;
+    });
+    this.subscriptions.push(subscription);
+  }
+
+
+
+  private visualizeData() {
+    if( document.getElementById("challengesPassedProgress") != null) {
+      document.getElementById("challengesPassedProgress")!.style.width = `${this.percentageChallengesPassed}%`;
+    }
+    if(document.getElementById("passedSubmissionsPercent") != null) {
+      document.getElementById("passedSubmissionsPercent")!.style.width = `${this.percentageSubmissionsPassed}%`;
+    }
+    this.visualizeLanguagePercentage();
+  }
+
+  private visualizeLanguagePercentage() {
+    for(const langauge of this.pLanguages) {
+      if(document.getElementById(`${langauge.language.concat('percentageId')}`) != null) {
+        const percentage = this.pLanguagePassPercentageMap.get(langauge.id!);
+        document.getElementById(`${langauge.language.concat('percentageId')}`)!.style.width = `${percentage}%`;
+      }
     }
   }
 }
