@@ -1,4 +1,14 @@
-<ng-container *ngIf="loaded">
+<ng-container *ngIf="!this.loaded; else loadedData">
+  <div class="app-splash-screen">
+
+    <div class="app-splash-content">
+      <div data-text="Loading ..." class="loading-text">Loading ...
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #loadedData>
   <body id="page-top" style="color: rgb(33,33,34);">
   <div id="wrapper">
     <div class="d-flex flex-column" id="content-wrapper">
@@ -92,7 +102,8 @@
                     <div *ngFor="let language of this.pLanguages">
                       <h4 class="small fw-bold">{{language.language}}<span class="float-end">{{this.pLanguagePassPercentageMap.get(language.id!)}}%</span></h4>
                       <div class="progress mb-4">
-                        <div [attr.id]="language.language.concat('percentageId')" class="progress-bar bg-danger"><span class="visually-hidden">20%</span></div>
+                        <div [attr.id]="language.language.concat('percentageId')"
+                             class="progress-bar"><span class="visually-hidden"></span></div>
                       </div>
                     </div>
                   </ng-container>
@@ -105,4 +116,4 @@
     </div>
   </div>
   </body>
-</ng-container>
+</ng-template>

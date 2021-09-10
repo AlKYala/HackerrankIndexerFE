@@ -13,13 +13,13 @@ export class PLanguageColorPickerService {
 
   public getColorForLanguage(id: number): string {
     if(this.colorHash[id] == undefined) {
-      const color = Math.random() * 16777215;
-      this.colorHash[id] = color.toString(16);
+      this.generateRandomColor(id);
     }
     return this.colorHash[id];
   }
 
-  private generateRandomColor() {
-
+  private generateRandomColor(id: number) {
+    const color = Math.round(Math.random() * 16777215);
+    this.colorHash[id] = color.toString(16);
   }
 }

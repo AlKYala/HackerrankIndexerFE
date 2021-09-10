@@ -2,9 +2,11 @@ import {AfterContentInit, AfterViewChecked, AfterViewInit, Component, OnDestroy,
 import {AnalyticsService} from "../../shared/services/AnalyticsService";
 import {UsagePercentages} from "../../shared/datamodels/Analytics/models/UsagePercentages";
 import {SubscriptionService} from "../../shared/services/SubscriptionService";
-import {Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
 import {PLanguageService} from "../../shared/datamodels/PLanguage/service/PLanguageService";
+import {PLanguageColorPickerService} from "../../shared/services/PLanguageColorPicker";
+import {switchMap} from "rxjs/operators";
 
 @Component({
   selector: 'app-analytics',
@@ -27,9 +29,18 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   loaded: boolean = false;
 
+  langaugesLoaded: boolean = false;
+  colorsLoaded: boolean = false;
+  visualsLoaded: boolean = false;
+  favoriteLanguagedLoaded: boolean = false;
+  submissionsPercentageLoaded: boolean = false;
+  challengesPercentageLoaded: boolean = false;
+
+
   constructor(private analyticsService: AnalyticsService,
               private subscriptionService: SubscriptionService,
-              private pLanguageService: PLanguageService) { }
+              private pLanguageService: PLanguageService,
+              public pLanguageColorPickerService: PLanguageColorPickerService) { }
 
 
 
@@ -46,34 +57,28 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   private initData(): void {
-    this.initChallengesPercentage();
-    this.initSubmissionsPercentage();
-    this.initPLanguagesAndUsagePercentages();
     this.initPLanguages();
+    this.initSubmissionsPercentage();
+    this.initChallengesPercentage();
     this.initFavouriteLanguage();
   }
 
   ngAfterViewChecked(): void {
-    this.visualizeData();
   }
-  /**initialize P Langauges
+
+
+  /**
+   * ONE DIMENSIONAL SUBSCRIPTIONS START
    *
-   * @private
    */
-  private initPLanguages() {
-    this.pLanguageService.findAll().pipe().subscribe((data: Planguage[]) => {
-      this.pLanguages = data;
-      this.loaded = true;
-      for(let pLanguage of data) {
-        this.initPercentagePassedByLanguageId(pLanguage.id!);
-      }
-    });
-  }
+
 
   private initSubmissionsPercentage(): void {
     const subscription: Subscription = this.analyticsService.getPercentagePassedSubmissions()
       .pipe().subscribe((data: number) => {
       this.percentageSubmissionsPassed = Math.round(data*100);
+      this.submissionsPercentageLoaded = true;
+      this.fireCheckEverythingLoaded();
     })
     this.subscriptions.push(subscription);
   }
@@ -83,8 +88,55 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
       .pipe().subscribe((data: number) => {
         //debug
         this.percentageChallengesPassed = Math.round(data*100);
+        this.submissionsPercentageLoaded = true;
+        this.fireCheckEverythingLoaded();
       });
     this.subscriptions.push(subscription);
+  }
+
+  private initFavouriteLanguage() {
+    const subscription = this.analyticsService.getFavouritePLanguage().pipe().subscribe((data: Planguage) => {
+      this.favouriteLanguage = data;
+      this.favoriteLanguagedLoaded = true;
+      this.fireCheckEverythingLoaded();
+    });
+    this.subscriptions.push(subscription);
+  }
+
+  /**
+   * ONE DIMENSIONAL SUBSCRIPTIONS END
+   */
+
+  /**
+   * load languages first
+   * then iterate over languages -
+   * load percentage for each
+   *
+   * noodle
+   * @private
+   */
+  private initPLanguages() {
+    const subscription: Subscription =this.pLanguageService.findAll().pipe().subscribe((data: Planguage[]) => {
+      this.pLanguages = data;
+      this.langaugesLoaded = true;
+    });
+    this.pLanguageService.findAll()
+      .pipe(switchMap((data: Planguage[]) => {
+        this.pLanguages = data;
+        return this.analyticsService.getUsagePercentagesOfPLanguages();
+      })).pipe(switchMap((data: UsagePercentages) => {
+        this.initUsagePercentages(data);
+        return new Observable<any>();
+    })).subscribe(() => {
+      this.initPercentagesOfAllLanguages();
+    });
+    this.subscriptions.push(subscription);
+  }
+
+  private initPercentagesOfAllLanguages() {
+    for(const pLanguage of this.pLanguages) {
+      this.initPercentagePassedByLanguageId(pLanguage.id!);
+    }
   }
 
   private initPercentagePassedByLanguageId(pLanguageId: number) : void {
@@ -95,32 +147,23 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.subscriptions.push(subscription);
   }
 
-  private initPLanguagesAndUsagePercentages(): void {
-    const subscription: Subscription = this.analyticsService.getUsagePercentagesOfPLanguages()
-      .pipe().subscribe((data: UsagePercentages) => {
-        this.usagePercentages = data;
-      });
-    this.subscriptions.push(subscription);
-  }
+  /*
+  }*/
 
-  private initUsagePercentages() {
-    for(let i = 0; i < this.usagePercentages.pLanguages.length; i++) {
-      const langaugeId = this.usagePercentages.pLanguages[i].id;
-      const percentageUsage = this.usagePercentages.percentages[i];
+  /**
+   * NO SUBSCRIPTIONS DOWN HERE
+   */
+
+  private initUsagePercentages(percentages: UsagePercentages): void {
+    for(let i = 0; i < percentages.planguages.length; i++) {
+      console.log(i);
+      const langaugeId = percentages.planguages[i].id;
+      const percentageUsage = percentages.usagePercentages[i];
       this.pLanguageUsagePercentageMap.set(langaugeId!, percentageUsage);
     }
   }
 
-  private initFavouriteLanguage() {
-    const subscription = this.analyticsService.getFavouritePLanguage().pipe().subscribe((data: Planguage) => {
-      this.favouriteLanguage = data;
-    });
-    this.subscriptions.push(subscription);
-  }
-
-
-
-  private visualizeData() {
+  private visualizeHeader() {
     if( document.getElementById("challengesPassedProgress") != null) {
       document.getElementById("challengesPassedProgress")!.style.width = `${this.percentageChallengesPassed}%`;
     }
@@ -137,5 +180,12 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
         document.getElementById(`${langauge.language.concat('percentageId')}`)!.style.width = `${percentage}%`;
       }
     }
+  }
+
+  private fireCheckEverythingLoaded() {
+    this.loaded = this.favoriteLanguagedLoaded
+      && this.submissionsPercentageLoaded
+      && this.challengesPercentageLoaded
+      && this.langaugesLoaded;
   }
 }
