@@ -7,6 +7,7 @@ import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
 import {PLanguageService} from "../../shared/datamodels/PLanguage/service/PLanguageService";
 import {PLanguageColorPickerService} from "../../shared/services/PLanguageColorPicker";
 import {switchMap} from "rxjs/operators";
+import {PassPercentages} from "../../shared/datamodels/Analytics/models/PassPercentages";
 
 @Component({
   selector: 'app-analytics',
@@ -19,8 +20,6 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   percentageChallengesPassed!: number;
 
-  usagePercentages!: UsagePercentages;
-
   private subscriptions!: Subscription[];
 
   pLanguages!: Planguage[];
@@ -28,6 +27,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
   favouriteLanguage!: Planguage;
 
   loaded: boolean = false;
+
+
 
   langaugesLoaded: boolean = false;
   colorsLoaded: boolean = false;
@@ -133,25 +134,11 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
         return this.analyticsService.getUsagePercentagesOfPLanguages();
       })).pipe(switchMap((data: UsagePercentages) => {
         this.initUsagePercentages(data);
-        return new Observable<any>();
-    })).subscribe(() => {
-      this.initPercentagesOfAllLanguages();
-      this.langaugesLoaded = true;
-      this.fireCheckEverythingLoaded();
+        return this.analyticsService.getPassPercentagesOfPLanguages();
+    })).subscribe((data: PassPercentages) => {
+
     });
     this.subscriptions.push(subscription);
-  }
-
-  private initPercentagesOfAllLanguages() {
-    for(const pLanguage of this.pLanguages) {
-      this.initPercentagePassedByLanguageId(pLanguage.id!);
-    }
-  }
-
-  private initPercentagePassedByLanguageId(pLanguageId: number) : void {
-    /**
-     * TODO: PASSPERCENTAGES!
-     */
   }
 
   /*
@@ -163,10 +150,17 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   private initUsagePercentages(percentages: UsagePercentages): void {
     for(let i = 0; i < percentages.planguages.length; i++) {
-      console.log(i);
       const langaugeId = percentages.planguages[i].id;
       const percentageUsage = percentages.usagePercentages[i];
       this.pLanguageUsagePercentageMap.set(langaugeId!, percentageUsage);
+    }
+  }
+
+  private initPassPercentages(percentages: PassPercentages): void {
+    for(let i = 0; i < percentages.planguages.length; i++) {
+      const languageId = percentages.planguages[i].id;
+      const percentagePass = percentages.percentages[i];
+      this.pLanguagePassPercentageMap.set(languageId!, percentagePass);
     }
   }
 

@@ -5,6 +5,7 @@ import {Observable} from "rxjs";
 import {UsagePercentages} from "../datamodels/Analytics/models/UsagePercentages";
 import {Planguage} from "../datamodels/PLanguage/model/PLanguage";
 import {PLanguageService} from "../datamodels/PLanguage/service/PLanguageService";
+import {PassPercentages} from "../datamodels/Analytics/models/PassPercentages";
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +34,11 @@ export class AnalyticsService {
   }
 
   public getUsagePercentagesOfPLanguages(): Observable<UsagePercentages> {
-    return this.httpClient.get(`${this.path}/pLanguage/percentages`) as Observable<UsagePercentages>;
+    return this.httpClient.get(`${this.path}/pLanguage/percentages/usage`) as Observable<UsagePercentages>;
+  }
+
+  public getPassPercentagesOfPLanguages(): Observable<PassPercentages> {
+    return this.httpClient.get(`${this.path}/pLanguage/percentages/passed`) as Observable<PassPercentages>;
   }
 
   public getFavouritePLanguage(): Observable<Planguage> {
