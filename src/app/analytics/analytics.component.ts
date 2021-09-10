@@ -64,8 +64,15 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   ngAfterViewChecked(): void {
+    this.initVisualizations();
   }
 
+  private initVisualizations() {
+    if(this.pLanguages !== undefined) {
+      this.visualizeHeader();
+      this.visualizeLanguagePercentage();
+    }
+  }
 
   /**
    * ONE DIMENSIONAL SUBSCRIPTIONS START
@@ -88,7 +95,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
       .pipe().subscribe((data: number) => {
         //debug
         this.percentageChallengesPassed = Math.round(data*100);
-        this.submissionsPercentageLoaded = true;
+        this.challengesPercentageLoaded = true;
         this.fireCheckEverythingLoaded();
       });
     this.subscriptions.push(subscription);
@@ -129,6 +136,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
         return new Observable<any>();
     })).subscribe(() => {
       this.initPercentagesOfAllLanguages();
+      this.langaugesLoaded = true;
+      this.fireCheckEverythingLoaded();
     });
     this.subscriptions.push(subscription);
   }
@@ -140,11 +149,9 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   private initPercentagePassedByLanguageId(pLanguageId: number) : void {
-    const subscription: Subscription = this.analyticsService.getPercentageOfPassedByLanguageId(pLanguageId)
-      .pipe().subscribe((data: number) => {
-        this.pLanguagePassPercentageMap.set(pLanguageId, Math.round(data*100));
-      });
-    this.subscriptions.push(subscription);
+    /**
+     * TODO: PASSPERCENTAGES!
+     */
   }
 
   /*
@@ -176,7 +183,9 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
   private visualizeLanguagePercentage() {
     for(const langauge of this.pLanguages) {
       if(document.getElementById(`${langauge.language.concat('percentageId')}`) != null) {
+
         const percentage = this.pLanguagePassPercentageMap.get(langauge.id!);
+        console.log(`${langauge} ${percentage}`);
         document.getElementById(`${langauge.language.concat('percentageId')}`)!.style.width = `${percentage}%`;
       }
     }
@@ -187,5 +196,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
       && this.submissionsPercentageLoaded
       && this.challengesPercentageLoaded
       && this.langaugesLoaded;
+    console.log(`${this.favoriteLanguagedLoaded} ${this.submissionsPercentageLoaded}
+    ${this.challengesPercentageLoaded} ${this.langaugesLoaded}`);
   }
 }
