@@ -1,13 +1,25 @@
-<body class="bg-dark">
-<div class="container">
-  <div class="row p-1">
-    <input class="form-control" type="file"
-           (change)="onChange($event)">
+<ng-container *ngIf="this.wait; else insert">
+  <div class="app-splash-screen">
+
+    <div class="app-splash-content">
+      <div data-text="Loading ..." class="loading-text">Loading ...
+      </div>
+    </div>
   </div>
-</div>
+</ng-container>
+<ng-template #insert>
+  <body class="bg-dark">
+  <div class="container">
+    <div class="row p-1">
+      <input class="form-control" type="file"
+             (change)="onChange($event)">
+    </div>
+  </div>
 
 
-<button class="btn btn-primary">
-  Debug
-</button>
-</body>
+  <button class="btn btn-primary">
+    Debug
+  </button>
+  </body>
+</ng-template>
+

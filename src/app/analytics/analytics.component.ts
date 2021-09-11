@@ -5,7 +5,6 @@ import {SubscriptionService} from "../../shared/services/SubscriptionService";
 import {Observable, Subscription} from "rxjs";
 import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
 import {PLanguageService} from "../../shared/datamodels/PLanguage/service/PLanguageService";
-import {PLanguageColorPickerService} from "../../shared/services/PLanguageColorPicker";
 import {switchMap} from "rxjs/operators";
 import {PassPercentages} from "../../shared/datamodels/Analytics/models/PassPercentages";
 
@@ -28,7 +27,9 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   loaded: boolean = false;
 
+  datalabel = { visible: true, name: 'text', position: 'Outside' };
 
+  dataMapping: any = [];
 
   langaugesLoaded: boolean = false;
   colorsLoaded: boolean = false;
@@ -40,8 +41,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   constructor(private analyticsService: AnalyticsService,
               private subscriptionService: SubscriptionService,
-              private pLanguageService: PLanguageService,
-              public pLanguageColorPickerService: PLanguageColorPickerService) { }
+              private pLanguageService: PLanguageService) { }
 
 
 
@@ -134,9 +134,10 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
         return this.analyticsService.getUsagePercentagesOfPLanguages();
       })).pipe(switchMap((data: UsagePercentages) => {
         this.initUsagePercentages(data);
+
         return this.analyticsService.getPassPercentagesOfPLanguages();
     })).subscribe((data: PassPercentages) => {
-
+      this.initPassPercentages(data);
     });
     this.subscriptions.push(subscription);
   }
@@ -160,7 +161,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
     for(let i = 0; i < percentages.planguages.length; i++) {
       const languageId = percentages.planguages[i].id;
       const percentagePass = percentages.percentages[i];
-      this.pLanguagePassPercentageMap.set(languageId!, percentagePass);
+      this.pLanguagePassPercentageMap.set(languageId!, Math.round(percentagePass * 100));
     }
   }
 
@@ -175,14 +176,24 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   private visualizeLanguagePercentage() {
-    for(const langauge of this.pLanguages) {
-      if(document.getElementById(`${langauge.language.concat('percentageId')}`) != null) {
-
-        const percentage = this.pLanguagePassPercentageMap.get(langauge.id!);
-        console.log(`${langauge} ${percentage}`);
-        document.getElementById(`${langauge.language.concat('percentageId')}`)!.style.width = `${percentage}%`;
+    for(const language of this.pLanguages) {
+      if(document.getElementById(`${language.language.concat('percentageId')}`) != null) {
+        const percentage = this.pLanguagePassPercentageMap.get(language.id!);
+        console.log(`${language.language} ${language.color}`);
+        document.getElementById(`${language.language.concat('percentageId')}`)!.style.width = `${percentage!}%`;
+        document.getElementById(`${language.language.concat('percentageId')}`)!.style.backgroundColor = `${language.color}`;
       }
     }
+  }
+
+  private initChart() {
+    for(const language of this.pLanguages) {
+      const color: string = language.color;
+      const label: string = language.language;
+      const share: number | undefined = this.pLanguageUsagePercentageMap.get(language.id!);
+      this.dataMapping.push({title: label, value: share!, color: color});
+    }
+
   }
 
   private fireCheckEverythingLoaded() {

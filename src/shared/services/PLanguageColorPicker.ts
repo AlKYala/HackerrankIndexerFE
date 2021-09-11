@@ -1,6 +1,7 @@
 import {Inject, Injectable} from "@angular/core";
 import {HashMap} from "../other/HashMap";
 
+/* OBSOLETE
 @Injectable({
   providedIn: 'root',
 })
@@ -22,4 +23,4 @@ export class PLanguageColorPickerService {
     const color = Math.round(Math.random() * 16777215);
     this.colorHash[id] = color.toString(16);
   }
-}
+}*/

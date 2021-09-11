@@ -10,6 +10,8 @@ import {HackerrrankJSONService} from "../../shared/datamodels/HackerrankJSON/ser
 })
 export class DataReaderComponent implements OnInit {
 
+  wait: boolean = false;
+
   constructor(private hackerrankJsonService: HackerrrankJSONService) { }
 
   ngOnInit(): void {
@@ -21,6 +23,9 @@ export class DataReaderComponent implements OnInit {
   }
 
   private fireParseRequest(hackerrankJsonFile: File) {
-    this.hackerrankJsonService.parseHackerrankJSON(hackerrankJsonFile);
+    this.wait = true;
+    this.hackerrankJsonService.fireHackerrankParsing(hackerrankJsonFile).pipe().subscribe((response: string) => {
+      this.wait = false;
+    });
   }
 }
