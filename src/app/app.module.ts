@@ -13,6 +13,8 @@ import { SubmissionListingComponent } from './submission-listing/submission-list
 import { SubmissionDetailComponent } from './submission-detail/submission-detail.component';
 import { AnalyticsComponent } from './analytics/analytics.component';
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {NgxChartModule} from "ngx-chart";
+import {PieChartModule} from "@swimlane/ngx-charts";
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
     BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    NgxChartModule,
+    PieChartModule
   ],
   providers: [],
   bootstrap: [AppComponent]

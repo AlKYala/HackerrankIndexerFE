@@ -23,6 +23,7 @@
     "@fortawesome/angular-fontawesome": "^0.9.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@swimlane/ngx-charts": "^19.0.1",
     "@syncfusion/ej2-angular-charts": "^19.2.60",
     "bootstrap": "^5.1.0",
     "dynamic-pie-chart": "^1.3.1",

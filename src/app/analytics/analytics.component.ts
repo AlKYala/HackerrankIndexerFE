@@ -7,6 +7,8 @@ import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
 import {PLanguageService} from "../../shared/datamodels/PLanguage/service/PLanguageService";
 import {switchMap} from "rxjs/operators";
 import {PassPercentages} from "../../shared/datamodels/Analytics/models/PassPercentages";
+import {ChartData, ChartOption, PieChartView} from "ngx-chart";
+import {Color} from "@swimlane/ngx-charts";
 
 @Component({
   selector: 'app-analytics',
@@ -27,9 +29,20 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   loaded: boolean = false;
 
-  datalabel = { visible: true, name: 'text', position: 'Outside' };
+  chartData: any[] = [];
+  chartColors: any = {
+    domain : []
+  };
 
-  dataMapping: any = [];
+  pieView: PieChartView= {
+    height:400,
+    width:400,
+    radius:160
+  }
+  chartOptions: ChartOption = {
+    showLegend: true,
+    legendTitle: 'Total'
+  }
 
   langaugesLoaded: boolean = false;
   colorsLoaded: boolean = false;
@@ -138,6 +151,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
         return this.analyticsService.getPassPercentagesOfPLanguages();
     })).subscribe((data: PassPercentages) => {
       this.initPassPercentages(data);
+      this.initChart();
     });
     this.subscriptions.push(subscription);
   }
@@ -191,7 +205,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
       const color: string = language.color;
       const label: string = language.language;
       const share: number | undefined = this.pLanguageUsagePercentageMap.get(language.id!);
-      this.dataMapping.push({title: label, value: share!, color: color});
+      this.chartData.push({name: label, value: share!});
+      this.chartColors.domain.push(color);
     }
 
   }
@@ -204,4 +219,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
     console.log(`${this.favoriteLanguagedLoaded} ${this.submissionsPercentageLoaded}
     ${this.challengesPercentageLoaded} ${this.langaugesLoaded}`);
   }
+}
+
+export interface colorScheme {
+  domain: string[];
 }
