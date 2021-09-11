@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {from, Observable} from "rxjs";
 import {HackerrankJSON} from "../../shared/datamodels/HackerrankJSON/model/HackerrankJSON";
 import {HackerrrankJSONService} from "../../shared/datamodels/HackerrankJSON/service/HackerrrankJSONService";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-data-reader',
@@ -12,7 +13,8 @@ export class DataReaderComponent implements OnInit {
 
   wait: boolean = false;
 
-  constructor(private hackerrankJsonService: HackerrrankJSONService) { }
+  constructor(private hackerrankJsonService: HackerrrankJSONService,
+              private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -25,7 +27,7 @@ export class DataReaderComponent implements OnInit {
   private fireParseRequest(hackerrankJsonFile: File) {
     this.wait = true;
     this.hackerrankJsonService.fireHackerrankParsing(hackerrankJsonFile).pipe().subscribe((response: string) => {
-      this.wait = false;
+
     });
   }
 }

@@ -75,10 +75,10 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-lg-5 col-xl-4">
+            <div class="col-lg-7 col-xl-6">
               <div class="card shadow mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                  <h6 class="text-primary fw-bold m-0" style="color: rgb(78, 115, 223);">Revenue Sources</h6>
+                  <h6 class="text-primary fw-bold m-0" style="color: rgb(78, 115, 223);">Language usage distribution</h6>
                 </div>
                 <div class="card-body">
                   <ngx-charts-pie-chart
@@ -87,6 +87,7 @@
                     [legend]=true
                     [labels]=true
                     [doughnut]=false
+                    [legendPosition]="legendPosition"
                   >
                   </ngx-charts-pie-chart>
                 </div>
@@ -103,7 +104,6 @@
                       <h4 class="small fw-bold">{{language.language}}<span class="float-end">{{this.pLanguagePassPercentageMap.get(language.id!)}}%</span></h4>
                       <div class="progress mb-4">
                         <div [attr.id]="language.language.concat('percentageId')"
-
                              class="progress-bar"><span class="visually-hidden"></span></div>
                       </div>
                     </div>

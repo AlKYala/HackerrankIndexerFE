@@ -3,5 +3,5 @@ import {PLanguageService} from "../../PLanguage/service/PLanguageService";
 
 export interface UsagePercentages {
   planguages: Planguage[];
-  usagePercentages: number[];
+  numberSubmissions: number[];
 }

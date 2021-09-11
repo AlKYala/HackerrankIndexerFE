@@ -1,14 +1,13 @@
-import {AfterContentInit, AfterViewChecked, AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewChecked, Component, OnDestroy, OnInit} from '@angular/core';
 import {AnalyticsService} from "../../shared/services/AnalyticsService";
 import {UsagePercentages} from "../../shared/datamodels/Analytics/models/UsagePercentages";
 import {SubscriptionService} from "../../shared/services/SubscriptionService";
-import {Observable, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
 import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
 import {PLanguageService} from "../../shared/datamodels/PLanguage/service/PLanguageService";
 import {switchMap} from "rxjs/operators";
 import {PassPercentages} from "../../shared/datamodels/Analytics/models/PassPercentages";
-import {ChartData, ChartOption, PieChartView} from "ngx-chart";
-import {Color} from "@swimlane/ngx-charts";
+import {LegendPosition} from "@swimlane/ngx-charts";
 
 @Component({
   selector: 'app-analytics',
@@ -33,19 +32,10 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
   chartColors: any = {
     domain : []
   };
-
-  pieView: PieChartView= {
-    height:400,
-    width:400,
-    radius:160
-  }
-  chartOptions: ChartOption = {
-    showLegend: true,
-    legendTitle: 'Total'
-  }
+  legendPosition: LegendPosition = LegendPosition.Below;
 
   langaugesLoaded: boolean = false;
-  colorsLoaded: boolean = false;
+  chartLoaded: boolean = false;
   visualsLoaded: boolean = false;
   favoriteLanguagedLoaded: boolean = false;
   submissionsPercentageLoaded: boolean = false;
@@ -163,10 +153,10 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
    * NO SUBSCRIPTIONS DOWN HERE
    */
 
-  private initUsagePercentages(percentages: UsagePercentages): void {
-    for(let i = 0; i < percentages.planguages.length; i++) {
-      const langaugeId = percentages.planguages[i].id;
-      const percentageUsage = percentages.usagePercentages[i];
+  private initUsagePercentages(statistics: UsagePercentages): void {
+    for(let i = 0; i < statistics.planguages.length; i++) {
+      const langaugeId = statistics.planguages[i].id;
+      const percentageUsage = statistics.numberSubmissions[i];
       this.pLanguageUsagePercentageMap.set(langaugeId!, percentageUsage);
     }
   }
@@ -205,16 +195,19 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
       const color: string = language.color;
       const label: string = language.language;
       const share: number | undefined = this.pLanguageUsagePercentageMap.get(language.id!);
+      console.log(`${label}, ${share}`);
       this.chartData.push({name: label, value: share!});
       this.chartColors.domain.push(color);
     }
-
+    this.chartLoaded = true;
+    this.fireCheckEverythingLoaded();
   }
 
   private fireCheckEverythingLoaded() {
     this.loaded = this.favoriteLanguagedLoaded
       && this.submissionsPercentageLoaded
       && this.challengesPercentageLoaded
+      && this.chartLoaded
       && this.langaugesLoaded;
     console.log(`${this.favoriteLanguagedLoaded} ${this.submissionsPercentageLoaded}
     ${this.challengesPercentageLoaded} ${this.langaugesLoaded}`);
