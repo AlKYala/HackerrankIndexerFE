@@ -1,6 +1,6 @@
 import {AfterViewChecked, Component, OnDestroy, OnInit} from '@angular/core';
 import {AnalyticsService} from "../../shared/services/AnalyticsService";
-import {UsagePercentages} from "../../shared/datamodels/Analytics/models/UsagePercentages";
+import {UsageStatistics} from "../../shared/datamodels/Analytics/models/UsageStatistics";
 import {SubscriptionService} from "../../shared/services/SubscriptionService";
 import {Subscription} from "rxjs";
 import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
@@ -135,7 +135,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
       .pipe(switchMap((data: Planguage[]) => {
         this.pLanguages = data;
         return this.analyticsService.getUsagePercentagesOfPLanguages();
-      })).pipe(switchMap((data: UsagePercentages) => {
+      })).pipe(switchMap((data: UsageStatistics) => {
         this.initUsagePercentages(data);
 
         return this.analyticsService.getPassPercentagesOfPLanguages();
@@ -153,7 +153,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
    * NO SUBSCRIPTIONS DOWN HERE
    */
 
-  private initUsagePercentages(statistics: UsagePercentages): void {
+  private initUsagePercentages(statistics: UsageStatistics): void {
     for(let i = 0; i < statistics.planguages.length; i++) {
       const langaugeId = statistics.planguages[i].id;
       const percentageUsage = statistics.numberSubmissions[i];
