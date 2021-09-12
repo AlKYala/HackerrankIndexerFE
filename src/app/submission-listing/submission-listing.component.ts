@@ -18,9 +18,4 @@ export class SubmissionListingComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
-  public navigateToListingDetail() {
-    this.submissionDataService.setSubmission(this.submission);
-    this.router.navigate([`/submission/${this.submission.id}`]);
-  }
 }

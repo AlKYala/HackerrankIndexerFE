@@ -4,9 +4,11 @@ import {Observable, Subscription} from "rxjs";
 import {Submission} from "../../shared/datamodels/Submission/model/Submission";
 import {environment} from "../../environments/environment";
 import {SubmissionService} from "../../shared/datamodels/Submission/service/SubmissionService";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {PLanguageService} from "../../shared/datamodels/PLanguage/service/PLanguageService";
 import {ChallengeService} from "../../shared/datamodels/Challenge/service/ChallengeService";
+import { faCoffee } from '@fortawesome/free-solid-svg-icons';
+import {SubmissionDataService} from "../../shared/services/SubmissionDataService";
 
 @Component({
   selector: 'app-submission-list',
@@ -17,44 +19,92 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
 
   submissions: Submission[] = [];
   private subscriptions: Subscription[] = [];
+
+  @Input()
+  inputChallengeId: number | undefined;
+  @Input()
+  inputLanguageid: number | undefined;
+  @Input()
+  limit: number | undefined;
+
+  filteredByInput: boolean = false;
+
   private challengeId: number = -1;
   private pLanguageId: number = -1;
+  faCoffee = faCoffee;
 
   constructor(private httpClient: HttpClient,
               private submissionService: SubmissionService,
+              private submissionDataService: SubmissionDataService,
               private route: ActivatedRoute,
               private pLanguageService: PLanguageService,
-              private challengeService: ChallengeService) { }
+              private challengeService: ChallengeService,
+              private router: Router) { }
 
   ngOnInit(): void {
-    this.scanForRoutingParameters();
+    this.scanForFilter();
   }
 
   ngOnDestroy(): void {
   }
 
-  private scanForRoutingParameters() {
+  private scanForFilter() {
+    const foundRouting: boolean = this.scanForRoutingParameters();
+    if(foundRouting) {
+      return;
+    }
+    const foundInput: boolean = this.scanForInputParameters();
+    if(foundInput) {
+      return;
+    }
+
+    this.getAllSubmissions();
+  }
+
+  /**
+   * Returns true if filter fires
+   * @private
+   */
+  private scanForInputParameters(): boolean {
+    if(this.inputChallengeId != null && this.inputChallengeId > -1) {
+      this.getSubmissionsByChallengeId(this.inputChallengeId);
+      this.filteredByInput = true;
+      return true;
+    }
+    if(this.inputLanguageid != null && this.inputLanguageid > -1) {
+      this.filteredByInput = true;
+      this.getSubmissionsByPLanguageId(this.inputLanguageid);
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Returns true if filter fires
+   * @private
+   */
+  private scanForRoutingParameters(): boolean {
     const challengeIdString = this.route.snapshot.paramMap.get('challengeId');
     const pLanguageIdString = this.route.snapshot.paramMap.get('pLanguageId');
 
     if(typeof challengeIdString == 'string') {
       const challengeId: number = parseInt(challengeIdString);
       this.getSubmissionsByChallengeId(challengeId);
+      return true;
     }
     else if(typeof pLanguageIdString == 'string') {
       const pLanguageId: number = parseInt(pLanguageIdString);
       this.getSubmissionsByPLanguageId(pLanguageId);
+      return true;
     }
-    else {
-      console.log('All');
-      this.getAllSubmissions();
-    }
+    return false;
   }
 
   private getSubmissionsByChallengeId(challengeId: number) {
     const subscription: Subscription = this.challengeService.getSubmissionsByChallengeId(challengeId)
       .pipe().subscribe((submissions: Submission[]) => {
         this.submissions = submissions;
+        this.sliceSubmissions();
       })
     this.subscriptions.push(subscription);
   }
@@ -63,6 +113,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
     const subscription: Subscription = this.pLanguageService.getSubmissionsByPLanguageId(pLanguageId)
       .pipe().subscribe((submissions: Submission[]) => {
         this.submissions = submissions;
+        this.sliceSubmissions();
       })
     this.subscriptions.push(subscription);
   }
@@ -71,6 +122,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
     const subscription : Subscription = this.submissionService.findAll().
     pipe().subscribe((submissions: Submission[]) => {
       this.submissions = submissions;
+      this.sliceSubmissions();
     });
     this.subscriptions.push(subscription);
   }
@@ -79,4 +131,15 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
     return this.httpClient.get(`${environment.api}/submission`) as Observable<Submission[]>;
   }
 
+
+  public navigateToListingDetail(submission: Submission) {
+    this.submissionDataService.setSubmission(submission);
+    this.router.navigate([`/submission/${submission.id}`]);
+  }
+
+  private sliceSubmissions(): void {
+    if(this.limit != null && this.limit > -1) {
+      this.submissions = this.submissions.slice(this.submissions.length - this.limit, this.submissions.length);
+    }
+  }
 }

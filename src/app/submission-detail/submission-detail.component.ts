@@ -10,7 +10,7 @@ import {SubmissionDataService} from "../../shared/services/SubmissionDataService
 @Component({
   selector: 'app-submission-detail',
   templateUrl: './submission-detail.component.html',
-  styleUrls: ['./submission-detail.component.css']
+  styleUrls: ['./submission-detail.component.scss']
 })
 export class SubmissionDetailComponent implements OnInit, OnDestroy {
 
@@ -49,7 +49,8 @@ export class SubmissionDetailComponent implements OnInit, OnDestroy {
   private fetchSubmission() {
     this.submissionService.findById(this.submissionid).pipe().subscribe((submission: Submission) => {
       this.submission = submission;
-      this.submissionCode = submission.code.replace(/\n/g, "\r\n");
+      console.log(submission);
+      this.submissionCode = submission.code;
       this.loaded = true;
     });
   }

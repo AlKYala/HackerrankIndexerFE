@@ -1,13 +1,39 @@
-$paddingX: 1%;
-$paddingY: 1%;
-
-.submissionEntry {
-  padding-right: $paddingX;
-  padding-left: $paddingX;
-  padding-bottom: $paddingY;
+#wrapper\ page-top {
+  background: #ffffff;
 }
 
-.example-container {
-  padding-top: $paddingY;
+#titel {
+  color: var(--bs-gray-900);
 }
 
+#untertitel {
+  color: var(--bs-gray-900);
+}
+
+#eintrag {
+  padding: 0px;margin: 10px;width: 530px;
+}
+
+#eintrag:hover {
+  cursor: pointer;
+}
+
+#submissionTitel {
+  color: rgb(78, 115, 223);
+}
+
+#idname {
+  color: rgb(180,180,180);
+}
+
+#passed {
+  color: var(--bs-warning);
+}
+
+#failed {
+  color: var(--bs-danger);
+}
+
+#download {
+  font-size: 30px;
+}
