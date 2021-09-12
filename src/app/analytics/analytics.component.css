@@ -13,3 +13,26 @@
   z-index: 1;
   opacity: 1;
 }
+
+@media (min-width: 576px) {
+  #chartcard {
+    min-height: 400px;
+    max-height: 400px;
+  }
+}
+
+@media (min-width: 768px) {
+  #chartcard {
+    min-height: 500px;
+    max-height: 500px;
+  }
+}
+
+
+@media (min-width: 992px) {
+  #chartcard {
+    min-height: 600px;
+    max-height: 600px;
+  }
+}
+
