@@ -16,6 +16,8 @@ import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {NgxChartModule} from "ngx-chart";
 import {PieChartModule} from "@swimlane/ngx-charts";
 import { GeneralstatscomponentComponent } from './generalstatscomponent/generalstatscomponent.component';
+import { LanguageSubmissionPassRateComponentComponent } from './language-submission-pass-rate-component/language-submission-pass-rate-component.component';
+import { ChartcomponentComponent } from './chartcomponent/chartcomponent.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { GeneralstatscomponentComponent } from './generalstatscomponent/generals
     SubmissionDetailComponent,
     AnalyticsComponent,
     GeneralstatscomponentComponent,
+    LanguageSubmissionPassRateComponentComponent,
+    ChartcomponentComponent,
   ],
   imports: [
     RouterModule,

@@ -1,70 +1,4 @@
-<!--<ng-container *ngIf="!this.loaded; else loadedData">
-  <div class="app-splash-screen">
-
-    <div class="app-splash-content">
-      <div data-text="Loading ..." class="loading-text">Loading ...
-      </div>
-    </div>
-  </div>
-</ng-container>
-
-<ng-template #loadedData>
-  <body id="page-top" style="color: rgb(33,33,34);">
-  <div id="wrapper">
-    <div class="d-flex flex-column" id="content-wrapper">
-      <div id="content">
-        <h1 class="text-center" style="color: var(--bs-gray-900);">Analytics</h1>
-        <h4 class="text-center" style="color: var(--bs-gray-900);">Check out your stats here</h4>
-        <div class="container-fluid">
-          <header></header>
-          <app-generalstatscomponent></app-generalstatscomponent>
-          <div class="row">
-            <div class="col-lg-7 col-xl-6">
-              <div class="card shadow mb-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                  <h6 class="text-primary fw-bold m-0" style="color: rgb(78, 115, 223);">Language usage distribution</h6>
-                </div>
-                <div id="chartcard" class="card-body">
-                  <ngx-charts-pie-chart
-                    [scheme]="chartColors"
-                    [results]="chartData"
-                    [legend]=false
-                    [labels]=true
-                    [doughnut]=true
-                    [legendPosition]="legendPosition"
-                  >
-                  </ngx-charts-pie-chart>
-                </div>
-              </div>
-            </div>
-            <div class="col">
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="text-primary fw-bold m-0">PASSED SUBMISSIONS PER LANGUAGE</h6>
-                </div>
-                <div class="card-body">
-                  <ng-container>
-                    <div *ngFor="let language of this.pLanguages">
-                      <h4 class="small fw-bold">{{language.language}}<span class="float-end">{{this.pLanguagePassPercentageMap.get(language.id!)}}%</span></h4>
-                      <div class="progress mb-4">
-                        <div [attr.id]="language.language.concat('percentageId')"
-                             class="progress-bar"><span class="visually-hidden"></span></div>
-                      </div>
-                    </div>
-                  </ng-container>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  </body>
-</ng-template>
--->
-
-<body class="d-xl-flex justify-content-xl-center align-items-xl-center" style="font-family: sans-serif;">
+<body class="d-xl-flex justify-content-xl-center">
 <div class="container d-xl-flex">
   <div class="col-md-12">
     <section class="highlight-clean">
@@ -81,59 +15,11 @@
       <h4 style="margin-top: 8px;">Language specific stats</h4>
       <div class="row">
         <div class="col-lg-5 col-xl-4">
-          <div class="card shadow mb-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
-              <h4 style="margin-bottom: 4px;margin-top: 4px;">Language use distribution</h4>
-            </div>
-            <div class="card-body">
-              <div class="chart-area"><canvas data-bss-chart="{&quot;type&quot;:&quot;doughnut&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Direct&quot;,&quot;Social&quot;,&quot;Referral&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;&quot;,&quot;backgroundColor&quot;:[&quot;#4e73df&quot;,&quot;#1cc88a&quot;,&quot;#36b9cc&quot;],&quot;borderColor&quot;:[&quot;#ffffff&quot;,&quot;#ffffff&quot;,&quot;#ffffff&quot;],&quot;data&quot;:[&quot;50&quot;,&quot;30&quot;,&quot;15&quot;]}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false,&quot;labels&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}},&quot;title&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}}}"></canvas></div>
-              <div class="text-center small mt-4"><span class="me-2"><i class="fas fa-circle text-primary"></i>&nbsp;Direct</span><span class="me-2"><i class="fas fa-circle text-success"></i>&nbsp;Social</span><span class="me-2"><i class="fas fa-circle text-info"></i>&nbsp;Refferal</span></div>
-            </div>
-          </div>
-          <div class="card shadow mb-4" style="margin-top: 4px;margin-bottom: 4px;background: rgb(255,255,255);">
-            <div class="card-header d-flex justify-content-between align-items-center">
-              <h4 style="margin-bottom: 4px;margin-top: 4px;">Pass rate per language</h4>
-            </div>
-            <div class="card-body border rounded border-light shadow-sm" style="padding: 8px;background: #ffffff;margin-bottom: 4px;">
-              <h4 class="small fw-bold">%LANGAUGE%<span class="float-end">20%</span></h4>
-              <div class="progress mb-4">
-                <div class="progress-bar bg-danger" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"><span class="visually-hidden">20%</span></div>
-              </div>
-            </div>
-          </div>
+          <app-chartcomponent></app-chartcomponent>
+          <app-language-submission-pass-rate-component></app-language-submission-pass-rate-component>
         </div>
         <div class="col">
-          <div class="card shadow mb-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
-              <h4 style="margin-bottom: 4px;margin-top: 4px;">Submissions</h4>
-            </div>
-            <div class="card-body">
-              <div class="card" style="background: rgb(255, 255, 255);margin-bottom: 4px;">
-                <div class="card-body" style="padding: 3px;margin-top: 4px;margin-bottom: 4px;border-color: var(--bs-gray-500);">
-                  <div class="row g-0 align-items-center">
-                    <div class="col">
-                      <h4 style="margin-bottom: 0px;">#%ID% Challenge name</h4>
-                    </div>
-                    <div class="col-auto">
-                      <div class="text-dark fw-bold h5 mb-0 me-3"><span><i class="far fa-times-circle" style="color: var(--bs-red);"></i>/<i class="far fa-check-circle" style="color: var(--bs-green);"></i></span></div>
-                    </div>
-                  </div>
-                  <p class="card-text"></p>
-                </div>
-              </div>
-              <nav>
-                <ul class="pagination">
-                  <li class="page-item"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item"><a class="page-link" href="#">4</a></li>
-                  <li class="page-item"><a class="page-link" href="#">5</a></li>
-                  <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
-                </ul>
-              </nav>
-            </div>
-          </div>
+          <app-submission-list></app-submission-list>
         </div>
       </div>
     </section>
