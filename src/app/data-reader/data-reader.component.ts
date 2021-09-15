@@ -13,6 +13,7 @@ import {AnalyticsService} from "../../shared/services/AnalyticsService";
 export class DataReaderComponent implements OnInit {
 
   wait: boolean = false;
+  file!: File;
 
   constructor(private hackerrankJsonService: HackerrrankJSONService,
               private analyticsService: AnalyticsService,
@@ -23,7 +24,11 @@ export class DataReaderComponent implements OnInit {
 
   public onChange(event: any): void {
     const file: File = event.target.files[0];
-    this.fireParseRequest(file);
+    this.file = file;
+  }
+
+  public fireUpload(): void {
+    this.fireParseRequest(this.file);
   }
 
   public fireClear() {

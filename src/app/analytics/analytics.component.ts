@@ -16,15 +16,12 @@ import {LegendPosition} from "@swimlane/ngx-charts";
 })
 export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
 
-  percentageSubmissionsPassed!: number;
-
-  percentageChallengesPassed!: number;
 
   private subscriptions!: Subscription[];
 
   pLanguages!: Planguage[];
 
-  favouriteLanguage!: Planguage;
+
 
   loaded: boolean = false;
 
@@ -62,9 +59,6 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   private initData(): void {
     this.initPLanguages();
-    this.initSubmissionsPercentage();
-    this.initChallengesPercentage();
-    this.initFavouriteLanguage();
   }
 
   ngAfterViewChecked(): void {
@@ -73,7 +67,6 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   private initVisualizations() {
     if(this.pLanguages !== undefined) {
-      this.visualizeHeader();
       this.visualizeLanguagePercentage();
     }
   }
@@ -83,36 +76,6 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
    *
    */
 
-
-  private initSubmissionsPercentage(): void {
-    const subscription: Subscription = this.analyticsService.getPercentagePassedSubmissions()
-      .pipe().subscribe((data: number) => {
-      this.percentageSubmissionsPassed = Math.round(data*100);
-      this.submissionsPercentageLoaded = true;
-      this.fireCheckEverythingLoaded();
-    })
-    this.subscriptions.push(subscription);
-  }
-
-  private initChallengesPercentage(): void {
-    const subscription: Subscription = this.analyticsService.getPercentagePassedChallenges()
-      .pipe().subscribe((data: number) => {
-        //debug
-        this.percentageChallengesPassed = Math.round(data*100);
-        this.challengesPercentageLoaded = true;
-        this.fireCheckEverythingLoaded();
-      });
-    this.subscriptions.push(subscription);
-  }
-
-  private initFavouriteLanguage() {
-    const subscription = this.analyticsService.getFavouritePLanguage().pipe().subscribe((data: Planguage) => {
-      this.favouriteLanguage = data;
-      this.favoriteLanguagedLoaded = true;
-      this.fireCheckEverythingLoaded();
-    });
-    this.subscriptions.push(subscription);
-  }
 
   /**
    * ONE DIMENSIONAL SUBSCRIPTIONS END
@@ -169,16 +132,6 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
-  private visualizeHeader() {
-    if( document.getElementById("challengesPassedProgress") != null) {
-      document.getElementById("challengesPassedProgress")!.style.width = `${this.percentageChallengesPassed}%`;
-    }
-    if(document.getElementById("passedSubmissionsPercent") != null) {
-      document.getElementById("passedSubmissionsPercent")!.style.width = `${this.percentageSubmissionsPassed}%`;
-    }
-    this.visualizeLanguagePercentage();
-  }
-
   private visualizeLanguagePercentage() {
     for(const language of this.pLanguages) {
       if(document.getElementById(`${language.language.concat('percentageId')}`) != null) {
@@ -204,10 +157,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   private fireCheckEverythingLoaded() {
-    this.loaded = this.favoriteLanguagedLoaded
-      && this.submissionsPercentageLoaded
-      && this.challengesPercentageLoaded
-      && this.chartLoaded
+    this.loaded =
+      this.chartLoaded
       && this.langaugesLoaded;
     console.log(`${this.favoriteLanguagedLoaded} ${this.submissionsPercentageLoaded}
     ${this.challengesPercentageLoaded} ${this.langaugesLoaded}`);

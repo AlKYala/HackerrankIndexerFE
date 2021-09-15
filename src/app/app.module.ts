@@ -15,6 +15,7 @@ import { AnalyticsComponent } from './analytics/analytics.component';
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {NgxChartModule} from "ngx-chart";
 import {PieChartModule} from "@swimlane/ngx-charts";
+import { GeneralstatscomponentComponent } from './generalstatscomponent/generalstatscomponent.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import {PieChartModule} from "@swimlane/ngx-charts";
     SubmissionListingComponent,
     SubmissionDetailComponent,
     AnalyticsComponent,
+    GeneralstatscomponentComponent,
   ],
   imports: [
     RouterModule,
