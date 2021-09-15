@@ -16,14 +16,13 @@ export class GeneralstatscomponentComponent implements OnInit {
 
   percentageChallengesPassed!: number;
 
-  favouriteLanguage!: Planguage;
+  favouriteLanguage: string = "";
 
   constructor(private analyticsService: AnalyticsService) { }
 
   ngOnInit(): void {
     this.subscriptions = [];
     this.initData();
-    this.visualizeHeader();
   }
 
   private initData() {
@@ -36,6 +35,7 @@ export class GeneralstatscomponentComponent implements OnInit {
     const subscription: Subscription = this.analyticsService.getPercentagePassedSubmissions()
       .pipe().subscribe((data: number) => {
         this.percentageSubmissionsPassed = Math.round(data*100);
+        this.visualizePassedSubmissions();
       })
     this.subscriptions.push(subscription);
   }
@@ -45,6 +45,7 @@ export class GeneralstatscomponentComponent implements OnInit {
       .pipe().subscribe((data: number) => {
         //debug
         this.percentageChallengesPassed = Math.round(data*100);
+        this.visualizePassedChallenges();
       });
     this.subscriptions.push(subscription);
   }
@@ -52,19 +53,21 @@ export class GeneralstatscomponentComponent implements OnInit {
 
   private initFavouriteLanguage() {
     const subscription = this.analyticsService.getFavouritePLanguage().pipe().subscribe((data: Planguage) => {
-      this.favouriteLanguage = data;
+      this.favouriteLanguage = data.language;
     });
     this.subscriptions.push(subscription);
   }
 
-  private visualizeHeader() {
+  private visualizePassedChallenges() {
     if( document.getElementById("challengesPassedProgress") != null) {
       document.getElementById("challengesPassedProgress")!.style.width = `${this.percentageChallengesPassed}%`;
     }
+  }
+
+  private visualizePassedSubmissions() {
     if(document.getElementById("passedSubmissionsPercent") != null) {
       document.getElementById("passedSubmissionsPercent")!.style.width = `${this.percentageSubmissionsPassed}%`;
     }
-    //this.visualizeLanguagePercentage();
   }
 
 }
