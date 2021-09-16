@@ -40,19 +40,21 @@
     <h4 style="margin-bottom: 4px;margin-top: 4px;">Submissions</h4>
   </div>
   <div class="card-body">
-    <div class="card" style="background: rgb(255, 255, 255);margin-bottom: 4px;">
-      <div class="card-body" style="padding: 3px;margin-top: 4px;margin-bottom: 4px;border-color: var(--bs-gray-500);">
-        <div class="row g-0 align-items-center">
-          <div class="col">
-            <h4 style="margin-bottom: 0px;">#%ID% Challenge name</h4>
+    <ng-container *ngFor="let submission of this.submissions">
+      <div class="card" (click)="this.navigateToListingDetail(submission)" style="background: rgb(255, 255, 255);margin-bottom: 4px;">
+        <div class="card-body" style="padding: 3px;margin-top: 4px;margin-bottom: 4px;border-color: var(--bs-gray-500);">
+          <div class="row g-0 align-items-center">
+            <div class="col">
+              <h4 style="margin-bottom: 0px;">#{{submission.id}} {{submission.challenge.challengeName}}</h4>
+            </div>
+            <div class="col-auto">
+              <div class="text-dark fw-bold h5 mb-0 me-3"><span><i class="far fa-times-circle" style="color: var(--bs-red);"></i>/<i class="far fa-check-circle" style="color: var(--bs-green);"></i></span></div>
+            </div>
           </div>
-          <div class="col-auto">
-            <div class="text-dark fw-bold h5 mb-0 me-3"><span><i class="far fa-times-circle" style="color: var(--bs-red);"></i>/<i class="far fa-check-circle" style="color: var(--bs-green);"></i></span></div>
-          </div>
+          <p class="card-text"></p>
         </div>
-        <p class="card-text"></p>
       </div>
-    </div>
+    </ng-container>
     <nav>
       <ul class="pagination">
         <li class="page-item"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
