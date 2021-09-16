@@ -45,10 +45,26 @@
         <div class="card-body" style="padding: 3px;margin-top: 4px;margin-bottom: 4px;border-color: var(--bs-gray-500);">
           <div class="row g-0 align-items-center">
             <div class="col">
-              <h4 style="margin-bottom: 0px;">#{{submission.id}} {{submission.challenge.challengeName}}</h4>
+              <h4 class="d-inline-flex justify-content-between" style="margin-bottom: 0px;">#{{submission.id}} {{submission.challenge.challengeName}}</h4>
             </div>
             <div class="col-auto">
-              <div class="text-dark fw-bold h5 mb-0 me-3"><span><i class="far fa-times-circle" style="color: var(--bs-red);"></i>/<i class="far fa-check-circle" style="color: var(--bs-green);"></i></span></div>
+              <div class="fw-bold h5 mb-0 me-3"
+                   style="background: rgba(255,255,255,0);border-radius: 10px;color: rgb(91,91,91);">
+                <span class="font-monospace text-black-50 d-md-flex align-items-md-center"
+                      style="color: var(--bs-gray-dark);font-size: 16px;border-radius: 0px;">{{submission.language.language}}</span></div>
+              <div class="text-dark fw-bold h5 mb-0 me-3"></div>
+            </div>
+            <div class="col-auto">
+              <ng-container *ngIf="submission.score == 1.0; else failed">
+                <div class="text-dark fw-bold h5 mb-0 me-3" style="background: var(--bs-green);border-radius: 10px;"><span class="d-md-flex align-items-md-center" style="color: var(--bs-body-bg);font-size: 16px;border-radius: 10px;"> Passed </span></div>
+                <div class="text-dark fw-bold h5 mb-0 me-3"></div>
+              </ng-container>
+              <ng-template #failed>
+                <div class="col-auto">
+                  <div class="text-dark fw-bold h5 mb-0 me-3" style="background: var(--bs-red);border-radius: 10px;"><span class="d-md-flex align-items-md-center" style="color: var(--bs-body-bg);font-size: 16px;border-radius: 10px;"> Failed </span></div>
+                  <div class="text-dark fw-bold h5 mb-0 me-3"></div>
+                </div>
+              </ng-template>
             </div>
           </div>
           <p class="card-text"></p>
