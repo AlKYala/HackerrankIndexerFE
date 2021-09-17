@@ -32,6 +32,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   private challengeId: number = -1;
   private pLanguageId: number = -1;
   faCoffee = faCoffee;
+  page: number = 1;
 
   constructor(private httpClient: HttpClient,
               private submissionService: SubmissionService,

@@ -22,14 +22,6 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   pLanguages!: Planguage[];
 
 
-
-  loaded: boolean = false;
-
-  langaugesLoaded: boolean = false;
-  chartLoaded: boolean = false;
-  visualsLoaded: boolean = false;
-
-
   constructor(private analyticsService: AnalyticsService,
               private subscriptionService: SubscriptionService) { }
 
@@ -60,8 +52,4 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
    * NO SUBSCRIPTIONS DOWN HERE
    */
 
-}
-
-export interface colorScheme {
-  domain: string[];
 }

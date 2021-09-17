@@ -40,7 +40,7 @@
     <h4 style="margin-bottom: 4px;margin-top: 4px;">Submissions</h4>
   </div>
   <div class="card-body">
-    <ng-container *ngFor="let submission of this.submissions">
+    <ng-container *ngFor="let submission of this.submissions | paginate: { itemsPerPage: 16, currentPage: page }">
       <div class="card" (click)="this.navigateToListingDetail(submission)" style="background: rgb(255, 255, 255);margin-bottom: 4px;">
         <div class="card-body" style="padding: 3px;margin-top: 4px;margin-bottom: 4px;border-color: var(--bs-gray-500);">
           <div class="row g-0 align-items-center">
@@ -71,16 +71,6 @@
         </div>
       </div>
     </ng-container>
-    <nav>
-      <ul class="pagination">
-        <li class="page-item"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">4</a></li>
-        <li class="page-item"><a class="page-link" href="#">5</a></li>
-        <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
-      </ul>
-    </nav>
+    <pagination-controls (pageChange)="page = $event"></pagination-controls>
   </div>
 </div>

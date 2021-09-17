@@ -18,6 +18,7 @@ import {PieChartModule} from "@swimlane/ngx-charts";
 import { GeneralstatscomponentComponent } from './generalstatscomponent/generalstatscomponent.component';
 import { LanguageSubmissionPassRateComponentComponent } from './language-submission-pass-rate-component/language-submission-pass-rate-component.component';
 import { ChartcomponentComponent } from './chartcomponent/chartcomponent.component';
+import {NgxPaginationModule} from "ngx-pagination";
 
 @NgModule({
   declarations: [
@@ -32,16 +33,17 @@ import { ChartcomponentComponent } from './chartcomponent/chartcomponent.compone
     LanguageSubmissionPassRateComponentComponent,
     ChartcomponentComponent,
   ],
-  imports: [
-    RouterModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    AppRoutingModule,
-    FontAwesomeModule,
-    NgxChartModule,
-    PieChartModule
-  ],
+    imports: [
+        RouterModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        HttpClientModule,
+        AppRoutingModule,
+        FontAwesomeModule,
+        NgxChartModule,
+        PieChartModule,
+        NgxPaginationModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

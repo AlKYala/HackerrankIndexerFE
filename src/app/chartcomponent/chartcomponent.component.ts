@@ -67,5 +67,8 @@ export class ChartcomponentComponent implements OnInit, AfterViewInit {
       this.chartColors.domain.push(color);
     }
   }
+}
 
+export interface colorScheme {
+  domain: string[];
 }
