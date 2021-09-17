@@ -28,6 +28,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
+    this.subscriptions = [];
   }
 
   ngOnDestroy(): void {

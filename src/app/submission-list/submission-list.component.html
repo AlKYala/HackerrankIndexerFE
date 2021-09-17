@@ -1,47 +1,10 @@
-<!--<div *ngIf="!filteredByInput" id="wrapper page-top">
-  <div class="d-flex flex-column" id="content-wrapper">
-    <div id="content">
-      <div class="container-fluid">
-        <h1 id="titel" class="text-center">Submissions</h1>
-      </div>
-      <h3 id="untertitel" class="text-center">Here you can see all your submissions from .json</h3>
-    </div>
-  </div>
-</div>
-<div class="container">
-  <div class="row justify-content-center">
-    <ng-container *ngFor="let submission of submissions">
-      <div (click)="this.navigateToListingDetail(submission)" id="eintrag" class="col-md-12">
-        <div class="card">
-          <div class="card-header">
-            <h4 id="submissionTitel"><strong>{{submission.challenge.challengeName}}</strong><span
-              id="idname" class="float-end">{{submission.id}}</span></h4>
-          </div>
-          <div class="card-body" data-bss-disabled-mobile="true" data-bss-hover-animate="pulse">
-            <p class="card-text">Language:&nbsp;<a href="#">{{submission.language.language}}</a></p>
-            <p class="card-text">PASSED:
-              <ng-container *ngIf="submission.score == 1.0; else notpassed">
-                <span id="passed">YES</span>
-              </ng-container>
-              <ng-template #notpassed>
-                <span id="failed">NO</span>
-              </ng-template>
-              <a href="#"></a></p>
-            <i id="download"
-               class="fa fa-download d-xl-flex justify-content-xl-end"></i>
-          </div>
-        </div>
-      </div>
-    </ng-container>
-  </div>
-</div>-->
 <div class="card shadow mb-4">
   <div class="card-header d-flex justify-content-between align-items-center">
     <h4 style="margin-bottom: 4px;margin-top: 4px;">Submissions</h4>
   </div>
   <div class="card-body">
-    <ng-container *ngFor="let submission of this.submissions | paginate: { itemsPerPage: 16, currentPage: page }">
-      <div class="card" (click)="this.navigateToListingDetail(submission)" style="background: rgb(255, 255, 255);margin-bottom: 4px;">
+    <ng-container *ngFor="let submission of this.submissions | paginate: { itemsPerPage: pageLimit, currentPage: page }">
+      <div class="card entry" (click)="this.navigateToListingDetail(submission)" style="background: rgb(255, 255, 255);margin-bottom: 4px;">
         <div class="card-body" style="padding: 3px;margin-top: 4px;margin-bottom: 4px;border-color: var(--bs-gray-500);">
           <div class="row g-0 align-items-center">
             <div class="col">
