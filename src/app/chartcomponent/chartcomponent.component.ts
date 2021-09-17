@@ -19,7 +19,9 @@ export class ChartcomponentComponent implements OnInit, AfterViewInit {
   chartColors: any = {
     domain : []
   };
-  legendPosition: LegendPosition = LegendPosition.Below;
+  legendPosition: LegendPosition = LegendPosition.Right;
+
+  loaded: boolean = false;
 
   pLanguageUsagePercentageMap = new Map<number, number>();
   private subscriptions!: Subscription[];
@@ -65,7 +67,9 @@ export class ChartcomponentComponent implements OnInit, AfterViewInit {
       console.log(`${label}, ${share}`);
       this.chartData.push({name: label, value: share!});
       this.chartColors.domain.push(color);
+
     }
+    this.loaded = true;
   }
 }
 
