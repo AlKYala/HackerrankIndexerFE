@@ -44,4 +44,8 @@ export class AnalyticsService {
   public getFavouritePLanguage(): Observable<Planguage> {
     return this.httpClient.get(`${this.path}/pLanguage/favourite`) as Observable<Planguage>;
   }
+
+  public checkUploadsExist(): Observable<boolean> {
+    return this.httpClient.get(`${this.path}/exists`) as Observable<boolean>;
+  }
 }

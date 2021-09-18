@@ -8,21 +8,44 @@
           <p class="text-center">See all the stats here.</p>
         </div>
       </div>
-      <div class="col-md-12">
-        <h1>General Stats</h1>
-      </div>
-      <app-generalstatscomponent></app-generalstatscomponent>
-      <h1 style="margin-top: 8px;">Language specific stats</h1>
-      <div class="row">
-        <div class="col-lg-6 col-xl-6">
-          <app-chartcomponent></app-chartcomponent>
-          <app-language-submission-pass-rate-component></app-language-submission-pass-rate-component>
-        </div>
-        <div class="col">
-          <app-submission-list></app-submission-list>
-        </div>
-      </div>
+      <ng-container *ngIf="!wait; else waiting">
+        <ng-container *ngIf="!datafound;else showInfo">
+          <div class="col-md-12">
+            <h4 class="d-xxl-flex justify-content-xxl-center">Upload your .json from Hackerrank below.&nbsp;<a href="#">Need
+              help?
+              Here's how to</a></h4>
+          </div>
+          <div class="row">
+            <div class="col d-xxl-flex justify-content-xxl-center align-items-xxl-start">
+              <input (change)="onChange($event)" class="d-xxl-flex justify-content-xxl-center" type="file">
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #showInfo>
+          <div class="col-md-12">
+            <h1>General Stats</h1>
+          </div>
+          <app-generalstatscomponent></app-generalstatscomponent>
+          <h1 style="margin-top: 8px;">Language specific stats</h1>
+          <div class="row">
+            <div class="col-lg-6 col-xl-6">
+              <app-chartcomponent></app-chartcomponent>
+              <app-language-submission-pass-rate-component></app-language-submission-pass-rate-component>
+            </div>
+            <div class="col">
+              <app-submission-list></app-submission-list>
+            </div>
+          </div>
+        </ng-template>
+      </ng-container>
+      <ng-template #waiting>
+        <ng-container *ngIf="submitted">
+          
+        </ng-container>
+      </ng-template>
     </section>
   </div>
 </div>
 </body>
+
+

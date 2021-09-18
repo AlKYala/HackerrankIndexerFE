@@ -13,12 +13,12 @@ export class HackerrrankJSONService {
   constructor(private httpClient: HttpClient) {
   }
 
-  public fireHackerrankParsing(hackerrankJSONFile: File): Observable<string> {
-    return from(hackerrankJSONFile.text()).pipe(switchMap((data: string) => {
+  public fireHackerrankParsing(hackerrankJSONFile: File): Observable<any> {
+    return from(hackerrankJSONFile.text()).pipe(switchMap((data: any) => {
       const parsed = JSON.parse(data);
       const hrJSON: HackerrankJSON = {email: parsed.email, username: parsed.username, submissions: parsed.submissions};
       return this.httpClient.post(`${environment.api}/json`, hrJSON);
-    })) as Observable<string>;
+    })) as Observable<number>;
   }
 
 }

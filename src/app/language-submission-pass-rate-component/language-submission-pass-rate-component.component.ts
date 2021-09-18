@@ -20,9 +20,7 @@ export class LanguageSubmissionPassRateComponentComponent implements OnInit, Aft
   constructor(private pLanguageService: PLanguageService,
               private analyticsService: AnalyticsService) { }
 
-  ngAfterViewInit(): void {
-        throw new Error('Method not implemented.');
-    }
+  ngAfterViewInit(): void {}
 
   ngOnInit(): void {
     this.subscriptions = [];

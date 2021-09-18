@@ -1,4 +1,4 @@
-import {AfterViewChecked, Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {AnalyticsService} from "../../shared/services/AnalyticsService";
 import {UsageStatistics} from "../../shared/datamodels/Analytics/models/UsageStatistics";
 import {SubscriptionService} from "../../shared/services/SubscriptionService";
@@ -8,6 +8,7 @@ import {PLanguageService} from "../../shared/datamodels/PLanguage/service/PLangu
 import {switchMap} from "rxjs/operators";
 import {PassPercentages} from "../../shared/datamodels/Analytics/models/PassPercentages";
 import {LegendPosition} from "@swimlane/ngx-charts";
+import {HackerrrankJSONService} from "../../shared/datamodels/HackerrankJSON/service/HackerrrankJSONService";
 
 @Component({
   selector: 'app-analytics',
@@ -19,38 +20,52 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   private subscriptions!: Subscription[];
 
-  pLanguages!: Planguage[];
+  datafound: boolean = false; //
+  wait: boolean = true; //wait for the data to load
+  submitted: boolean = false;
+  file!: File;
 
-
-  constructor(private analyticsService: AnalyticsService,
-              private subscriptionService: SubscriptionService) { }
-
-
+  constructor(private subscriptionService: SubscriptionService,
+              private analyticsService: AnalyticsService,
+              private hackerrankJsonService: HackerrrankJSONService) { }
 
   ngOnInit(): void {
     this.subscriptions = [];
+    this.checkIsUploadedAlready();
   }
 
   ngOnDestroy(): void {
     this.subscriptionService.unsubscribeParam(this.subscriptions);
   }
 
-  /**
-   * ONE DIMENSIONAL SUBSCRIPTIONS START
-   *
-   */
+  public onChange(event: any): void {
+    const file: File = event.target.files[0];
+    this.file = file;
+    this.fireUpload();
+  }
 
+  public fireUpload(): void {
+    this.submitted = true;
+    this.fireParseRequest(this.file);
+  }
 
-  /**
-   * ONE DIMENSIONAL SUBSCRIPTIONS END
-   */
+  private fireParseRequest(hackerrankJsonFile: File) {
+    this.wait = true;
+    const subscription: Subscription = this.hackerrankJsonService.fireHackerrankParsing(hackerrankJsonFile).pipe().subscribe((response: string) => {
+      this.datafound = true;
+      this.wait = false;
+    });
+    this.subscriptions.push(subscription);
+  }
 
-
-  /*
-  }*/
-
-  /**
-   * NO SUBSCRIPTIONS DOWN HERE
-   */
-
+  private checkIsUploadedAlready(): void {
+    const subscription: Subscription = this.analyticsService.checkUploadsExist()
+      .pipe().subscribe((data: boolean) => {
+        this.datafound = data;
+        this.wait = false;
+        console.log(this.wait);
+        console.log(this.datafound);
+      })
+    this.subscriptions.push(subscription);
+  }
 }
