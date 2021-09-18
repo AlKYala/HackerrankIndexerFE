@@ -17,6 +17,9 @@ import { GeneralstatscomponentComponent } from './generalstatscomponent/generals
 import { LanguageSubmissionPassRateComponentComponent } from './language-submission-pass-rate-component/language-submission-pass-rate-component.component';
 import { ChartcomponentComponent } from './chartcomponent/chartcomponent.component';
 import {NgxPaginationModule} from "ngx-pagination";
+import { LandingComponent } from './landing/landing.component';
+import { HowtocomponentComponent } from './howtocomponent/howtocomponent.component';
+import { IntroFeaturesComponentComponent } from './intro-features-component/intro-features-component.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +32,9 @@ import {NgxPaginationModule} from "ngx-pagination";
     GeneralstatscomponentComponent,
     LanguageSubmissionPassRateComponentComponent,
     ChartcomponentComponent,
+    LandingComponent,
+    HowtocomponentComponent,
+    IntroFeaturesComponentComponent,
   ],
     imports: [
         RouterModule,
