@@ -40,7 +40,12 @@
       </ng-container>
       <ng-template #waiting>
         <ng-container *ngIf="submitted">
-          
+          <div class="col-md-12 d-flex d-xxl-flex justify-content-center"><span class="spinner-border" role="status"></span></div>
+          <div class="col d-inline-flex d-xxl-flex justify-content-center">
+            <header></header>
+            <p class="text-center d-inline-flex d-xxl-flex align-items-xxl-center" style="margin-bottom: 0px;margin-top: 16px;">Loading....</p>
+            <header></header>
+          </div>
         </ng-container>
       </ng-template>
     </section>
