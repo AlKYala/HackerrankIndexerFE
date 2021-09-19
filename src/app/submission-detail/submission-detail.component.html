@@ -43,7 +43,7 @@
         <h4 class="text-center">Submissions for <a (click)="routeToChallenge($event)" class="text-start pointer">{{submission.challenge.challengeName}}</a></h4>
         <div class="row">
           <div class="col">
-            <app-submission-list [limit]="20" [inputChallengeId]="submission.challenge.id"></app-submission-list>
+            <app-submission-list [inputChallengeId]="submission.challenge.id"></app-submission-list>
           </div>
         </div>
       </div>
@@ -51,7 +51,7 @@
         <h4 class="text-center">Submissions in <a (click)="routeToLanguage($event)" class="pointer" href="#">{{submission.language.language}}</a></h4>
         <div class="row">
           <div class="col">
-            <app-submission-list [limit]="20" [inputLanguageid]="submission.language.id"></app-submission-list>
+            <app-submission-list [inputLanguageid]="submission.language.id"></app-submission-list>
           </div>
         </div>
       </div>

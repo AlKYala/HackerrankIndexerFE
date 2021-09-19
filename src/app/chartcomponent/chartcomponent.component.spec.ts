@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SubmissionListingComponent } from './submission-listing.component';
+import { ChartcomponentComponent } from './chartcomponent.component';
 
-describe('SubmissionListingComponent', () => {
-  let component: SubmissionListingComponent;
-  let fixture: ComponentFixture<SubmissionListingComponent>;
+describe('ChartcomponentComponent', () => {
+  let component: ChartcomponentComponent;
+  let fixture: ComponentFixture<ChartcomponentComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SubmissionListingComponent ]
+      declarations: [ ChartcomponentComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SubmissionListingComponent);
+    fixture = TestBed.createComponent(ChartcomponentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

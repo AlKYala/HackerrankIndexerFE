@@ -1,120 +1,55 @@
-<ng-container *ngIf="!this.loaded; else loadedData">
-  <div class="app-splash-screen">
+<section class="highlight-clean">
+  <div class="container d-xl-flex justify-content-xl-center">
+    <div class="col-md-12">
 
-    <div class="app-splash-content">
-      <div data-text="Loading ..." class="loading-text">Loading ...
-      </div>
-    </div>
-  </div>
-</ng-container>
-
-<ng-template #loadedData>
-  <body id="page-top" style="color: rgb(33,33,34);">
-  <div id="wrapper">
-    <div class="d-flex flex-column" id="content-wrapper">
-      <div id="content">
-        <h1 class="text-center" style="color: var(--bs-gray-900);">Analytics</h1>
-        <h4 class="text-center" style="color: var(--bs-gray-900);">Check out your stats here</h4>
-        <div class="container-fluid">
-          <header></header>
-          <div class="row text-start justify-content-center">
-            <div class="col-md-6 col-xl-3 mb-4">
-              <div class="card shadow border-start-info py-2">
-                <div class="card-body">
-                  <div class="row align-items-center no-gutters">
-                    <div class="col me-2">
-                      <div class="text-uppercase text-info fw-bold text-xs mb-1"><span>PASSED SUBMISSIONS IN %</span></div>
-                      <div class="row g-0 align-items-center">
-                        <div class="col-auto">
-                          <div class="text-dark fw-bold h5 mb-0 me-3"><span>{{this.percentageSubmissionsPassed}}%</span></div>
-                        </div>
-                        <div class="col">
-                          <div class="progress progress-sm">
-                            <div id="passedSubmissionsPercent" class="progress-bar bg-info"><span class="visually-hidden"></span></div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 col-xl-3 mb-4">
-              <div class="card shadow border-start-info py-2">
-                <div class="card-body">
-                  <div class="row align-items-center no-gutters">
-                    <div class="col me-2">
-                      <div class="text-uppercase text-info fw-bold text-xs mb-1"><span>PASSED CHALLENGES IN %</span></div>
-                      <div class="row g-0 align-items-center">
-                        <div class="col-auto">
-                          <div class="text-dark fw-bold h5 mb-0 me-3"><span>{{this.percentageChallengesPassed}}%</span></div>
-                        </div>
-                        <div class="col">
-                          <div class="progress progress-sm">
-                            <div id="challengesPassedProgress" class="progress-bar bg-info">
-                              <span class="visually-hidden"></span></div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 col-xl-3 mb-4">
-              <div class="card shadow border-start-primary py-2">
-                <div class="card-body">
-                  <div class="row align-items-center no-gutters">
-                    <div class="col me-2">
-                      <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>MOST USED LANGUAGE</span></div>
-                      <div class="text-dark fw-bold h5 mb-0"><span>{{this.favouriteLanguage.language}}</span></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-7 col-xl-6">
-              <div class="card shadow mb-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                  <h6 class="text-primary fw-bold m-0" style="color: rgb(78, 115, 223);">Language usage distribution</h6>
-                </div>
-                <div id="chartcard" class="card-body">
-                  <ngx-charts-pie-chart
-                    [scheme]="chartColors"
-                    [results]="chartData"
-                    [legend]=false
-                    [labels]=true
-                    [doughnut]=true
-                    [legendPosition]="legendPosition"
-                  >
-                  </ngx-charts-pie-chart>
-                </div>
-              </div>
-            </div>
-            <div class="col">
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="text-primary fw-bold m-0">PASSED SUBMISSIONS PER LANGUAGE</h6>
-                </div>
-                <div class="card-body">
-                  <ng-container>
-                    <div *ngFor="let language of this.pLanguages">
-                      <h4 class="small fw-bold">{{language.language}}<span class="float-end">{{this.pLanguagePassPercentageMap.get(language.id!)}}%</span></h4>
-                      <div class="progress mb-4">
-                        <div [attr.id]="language.language.concat('percentageId')"
-                             class="progress-bar"><span class="visually-hidden"></span></div>
-                      </div>
-                    </div>
-                  </ng-container>
-                </div>
-              </div>
-            </div>
+        <div class="container">
+          <div class="intro">
+            <h2 class="text-center" style="font-family: sans-serif;">Analytics</h2>
+            <p class="text-center">See all the stats here.</p>
           </div>
         </div>
-      </div>
+        <ng-container *ngIf="!wait; else waiting">
+          <ng-container *ngIf="!datafound;else showInfo">
+            <div class="col-md-12">
+              <h4 class="d-xxl-flex justify-content-xxl-center">Upload your .json from Hackerrank below.&nbsp;<a href="#">Need
+                help?
+                Here's how to</a></h4>
+            </div>
+            <div class="row">
+              <div class="col d-xxl-flex justify-content-xxl-center align-items-xxl-start">
+                <input (change)="onChange($event)" class="d-xxl-flex justify-content-xxl-center" type="file">
+              </div>
+            </div>
+          </ng-container>
+          <ng-template #showInfo>
+            <div class="col-md-12">
+              <h1>General Stats</h1>
+            </div>
+            <app-generalstatscomponent></app-generalstatscomponent>
+            <h1 style="margin-top: 8px;">Language specific stats</h1>
+            <div class="row">
+              <div class="col-lg-6 col-xl-6">
+                <app-chartcomponent></app-chartcomponent>
+                <app-language-submission-pass-rate-component></app-language-submission-pass-rate-component>
+              </div>
+              <div class="col">
+                <app-submission-list></app-submission-list>
+              </div>
+            </div>
+          </ng-template>
+        </ng-container>
+        <ng-template #waiting>
+          <ng-container *ngIf="submitted">
+            <div class="col-md-12 d-flex d-xxl-flex justify-content-center"><span class="spinner-border" role="status"></span></div>
+            <div class="col d-inline-flex d-xxl-flex justify-content-center">
+              <header></header>
+              <p class="text-center d-inline-flex d-xxl-flex align-items-xxl-center" style="margin-bottom: 0px;margin-top: 16px;">Loading....</p>
+              <header></header>
+            </div>
+          </ng-container>
+        </ng-template>
+
     </div>
   </div>
-  </body>
-</ng-template>
+</section>
+

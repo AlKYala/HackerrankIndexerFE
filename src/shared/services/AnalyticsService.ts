@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {UsagePercentages} from "../datamodels/Analytics/models/UsagePercentages";
+import {UsageStatistics} from "../datamodels/Analytics/models/UsageStatistics";
 import {Planguage} from "../datamodels/PLanguage/model/PLanguage";
 import {PLanguageService} from "../datamodels/PLanguage/service/PLanguageService";
 import {PassPercentages} from "../datamodels/Analytics/models/PassPercentages";
@@ -33,8 +33,8 @@ export class AnalyticsService {
     return this.httpClient.get(`${this.path}/pLanguage/${languageId}/passed`) as Observable<number>;
   }
 
-  public getUsagePercentagesOfPLanguages(): Observable<UsagePercentages> {
-    return this.httpClient.get(`${this.path}/pLanguage/percentages/usage`) as Observable<UsagePercentages>;
+  public getUsagePercentagesOfPLanguages(): Observable<UsageStatistics> {
+    return this.httpClient.get(`${this.path}/pLanguage/percentages/usage`) as Observable<UsageStatistics>;
   }
 
   public getPassPercentagesOfPLanguages(): Observable<PassPercentages> {
@@ -43,5 +43,9 @@ export class AnalyticsService {
 
   public getFavouritePLanguage(): Observable<Planguage> {
     return this.httpClient.get(`${this.path}/pLanguage/favourite`) as Observable<Planguage>;
+  }
+
+  public checkUploadsExist(): Observable<boolean> {
+    return this.httpClient.get(`${this.path}/exists`) as Observable<boolean>;
   }
 }

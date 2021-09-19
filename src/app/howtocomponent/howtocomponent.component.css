@@ -1,6 +1,7 @@
+
 .highlight-clean {
   color: #313437;
-  background-color: #eef4f7;
+  background-color: #fff;
   padding: 50px 0;
 }
 
@@ -55,8 +56,4 @@
 .highlight-clean .buttons .btn-primary {
   background-color: #055ada;
   color: #fff;
-}
-
-body {
-  font-family: sans-serif;
 }
