@@ -7,7 +7,6 @@ import {HttpClientModule} from "@angular/common/http";
 import {AppRoutingModule} from "./app.routing-module";
 import { NavbarComponent } from './navbar/navbar.component';
 import { SubmissionListComponent } from './submission-list/submission-list.component';
-import { SubmissionListingComponent } from './submission-listing/submission-listing.component';
 import { SubmissionDetailComponent } from './submission-detail/submission-detail.component';
 import { AnalyticsComponent } from './analytics/analytics.component';
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
@@ -26,7 +25,6 @@ import { IntroFeaturesComponentComponent } from './intro-features-component/intr
     AppComponent,
     NavbarComponent,
     SubmissionListComponent,
-    SubmissionListingComponent,
     SubmissionDetailComponent,
     AnalyticsComponent,
     GeneralstatscomponentComponent,
