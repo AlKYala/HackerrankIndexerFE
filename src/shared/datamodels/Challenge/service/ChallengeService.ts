@@ -1,11 +1,12 @@
 import {Injectable} from "@angular/core";
-import {ServiceHandler} from "../../../services/ServiceHandler";
+import {ServiceHandler} from "../../../services/ServiceHandler/ServiceHandler";
 import {Challenge} from "../model/Challenge";
 import {HttpClient} from "@angular/common/http";
 import {BaseService} from "../../Base/BaseService";
 import {Observable} from "rxjs";
 import {Submission} from "../../Submission/model/Submission";
 import {environment} from "../../../../environments/environment";
+import {ServiceHandlerEnum} from "../../../services/ServiceHandler/ServiceHandlerEnum";
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +39,8 @@ export class ChallengeService implements BaseService<Challenge>{
   }
 
   getSubmissionsByChallengeId(challengeId: number): Observable<Submission[]> {
-    return this.httpClient.get(`${environment.api}/challenge/${challengeId}/submissions`) as Observable<Submission[]>;
+    //return this.httpClient.get(`${environment.api}/challenge/${challengeId}/submissions`) as Observable<Submission[]>;
+    return this.serviceHandler
+      .anyRequest(ServiceHandlerEnum.GET,`${environment.api}/challenge/${challengeId}/submissions`) as Observable<Submission[]>;
   }
 }

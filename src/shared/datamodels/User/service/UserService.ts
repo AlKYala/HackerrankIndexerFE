@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {BaseService} from "../../Base/BaseService";
 import {User} from "../model/User";
 import {HttpClient} from "@angular/common/http";
-import {ServiceHandler} from "../../../services/ServiceHandler";
+import {ServiceHandler} from "../../../services/ServiceHandler/ServiceHandler";
 import {Observable} from "rxjs";
 
 @Injectable({

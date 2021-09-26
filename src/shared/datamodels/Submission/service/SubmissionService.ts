@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {BaseService} from "../../Base/BaseService";
 import {Submission} from "../model/Submission";
-import {ServiceHandler} from "../../../services/ServiceHandler";
+import {ServiceHandler} from "../../../services/ServiceHandler/ServiceHandler";
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {BaseEntity} from "../../Base/model/BaseEntity";
@@ -36,5 +36,4 @@ export class SubmissionService implements BaseService<Submission> {
   update(id: number, instance: Submission): Observable<Submission> {
     return this.serviceHandler.update(id, instance);
   }
-
 }

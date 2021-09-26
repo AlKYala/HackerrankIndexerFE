@@ -1,11 +1,12 @@
 import {Injectable} from "@angular/core";
 import {BaseService} from "../../Base/BaseService";
 import {Planguage} from "../model/PLanguage";
-import {ServiceHandler} from "../../../services/ServiceHandler";
+import {ServiceHandler} from "../../../services/ServiceHandler/ServiceHandler";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Submission} from "../../Submission/model/Submission";
 import {environment} from "../../../../environments/environment";
+import {ServiceHandlerEnum} from "../../../services/ServiceHandler/ServiceHandlerEnum";
 
 @Injectable({
   providedIn: "root"
@@ -39,6 +40,8 @@ export class PLanguageService implements BaseService<Planguage> {
   }
 
   getSubmissionsByPLanguageId(planguageId: number): Observable<Submission[]> {
-    return this.httpClient.get(`${environment.api}/planguage/${planguageId}/submissions`) as Observable<Submission[]>;
+    //return this.httpClient.get(`${environment.api}/planguage/${planguageId}/submissions`) as Observable<Submission[]>;
+    return this.serviceHandler
+      .anyRequest(ServiceHandlerEnum.GET, `${environment.api}/planguage/${planguageId}/submissions`) as Observable<Submission[]>;
   }
 }

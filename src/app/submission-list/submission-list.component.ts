@@ -2,13 +2,15 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable, Subscription} from "rxjs";
 import {Submission} from "../../shared/datamodels/Submission/model/Submission";
-import {environment} from "../../environments/environment";
 import {SubmissionService} from "../../shared/datamodels/Submission/service/SubmissionService";
 import {ActivatedRoute, Router} from "@angular/router";
 import {PLanguageService} from "../../shared/datamodels/PLanguage/service/PLanguageService";
 import {ChallengeService} from "../../shared/datamodels/Challenge/service/ChallengeService";
-import { faCoffee } from '@fortawesome/free-solid-svg-icons';
+import {faCoffee} from '@fortawesome/free-solid-svg-icons';
 import {SubmissionDataService} from "../../shared/services/SubmissionDataService";
+import {ServiceHandler} from "../../shared/services/ServiceHandler/ServiceHandler";
+import {ServiceHandlerEnum} from "../../shared/services/ServiceHandler/ServiceHandlerEnum";
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'app-submission-list',
@@ -39,7 +41,8 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private pLanguageService: PLanguageService,
               private challengeService: ChallengeService,
-              private router: Router) { }
+              private router: Router,
+              private serviceHandler: ServiceHandler<Submission>) { }
 
   ngOnInit(): void {
     this.scanForFilter();
@@ -124,7 +127,9 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   }
 
   private getAllSubmissionsRequest(): Observable<Submission[]> {
-    return this.httpClient.get(`${environment.api}/submission`) as Observable<Submission[]>;
+    //return this.httpClient.get(`${environment.api}/submission`) as Observable<Submission[]>;
+    //TODO try this and check if works
+    return this.serviceHandler.anyRequest(ServiceHandlerEnum.GET, `${environment.api}/submission`) as Observable<Submission[]>;
   }
 
   public navigateToListingDetail(submission: Submission): void {
