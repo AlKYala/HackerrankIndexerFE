@@ -9,8 +9,9 @@ import {ChallengeService} from "../../shared/datamodels/Challenge/service/Challe
 import {faCoffee} from '@fortawesome/free-solid-svg-icons';
 import {SubmissionDataService} from "../../shared/services/SubmissionDataService";
 import {ServiceHandler} from "../../shared/services/ServiceHandler/ServiceHandler";
-import {ServiceHandlerEnum} from "../../shared/services/ServiceHandler/ServiceHandlerEnum";
+import {RequestServiceEnum} from "../../shared/services/ServiceHandler/RequestServiceEnum";
 import {environment} from "../../environments/environment";
+import {RequestService} from "../../shared/services/ServiceHandler/RequestService";
 
 @Component({
   selector: 'app-submission-list',
@@ -42,7 +43,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
               private pLanguageService: PLanguageService,
               private challengeService: ChallengeService,
               private router: Router,
-              private serviceHandler: ServiceHandler<Submission>) { }
+              private requestService: RequestService) { }
 
   ngOnInit(): void {
     this.scanForFilter();
@@ -129,7 +130,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   private getAllSubmissionsRequest(): Observable<Submission[]> {
     //return this.httpClient.get(`${environment.api}/submission`) as Observable<Submission[]>;
     //TODO try this and check if works
-    return this.serviceHandler.anyRequest(ServiceHandlerEnum.GET, `${environment.api}/submission`) as Observable<Submission[]>;
+    return this.requestService.anyRequest(RequestServiceEnum.GET, `${environment.api}/submission`) as Observable<Submission[]>;
   }
 
   public navigateToListingDetail(submission: Submission): void {
