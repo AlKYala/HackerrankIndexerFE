@@ -1,0 +1,14 @@
+Mit dem branch featureHttpSessions wirst du fuer so gut wie alle endpunkte noch ein handling fuer die
+httpSession brauchen
+Da es aber nicht praktikabel ist, das httpSession handling vor den aufrufen des serive handlers auszufuehren,
+folgendes:
+
+erweitere die ServiceHandler methode, sodass
+
+1. Enum fuer GET, DELETE, PUT, POST
+2. ueber den service handler soll auch das httpsession management laufen
+3. du schreibst eine methode die einen beliebigen http-aufruf erlaubt, kombiniere mit den vorigen punkten
+
+vorgehensweise
+1. alle httpClient calls erstmal auf das serviceHandler umstellen
+2. dann den serivceHandler auf httpSessions anpassen

@@ -32,6 +32,7 @@ export class LanguageSubmissionPassRateComponentComponent implements OnInit, Aft
       this.pLanguages = planguages;
       return this.analyticsService.getPassPercentagesOfPLanguages();
     })).subscribe((data: PassPercentages) => {
+      console.log(data);
       this.initPassPercentages(data);
       this.visualizeLanguagePercentage();
     })
@@ -42,6 +43,7 @@ export class LanguageSubmissionPassRateComponentComponent implements OnInit, Aft
       if(document.getElementById(`${language.language.concat('percentageId')}`) != null) {
         const percentage = this.pLanguagePassPercentageMap.get(language.id!);
         console.log(`${language.language} ${language.color}`);
+        console.log(percentage);
         document.getElementById(`${language.language.concat('percentageId')}`)!.style.width = `${percentage!}%`;
         document.getElementById(`${language.language.concat('percentageId')}`)!.style.backgroundColor = `${language.color}`;
       }
@@ -49,11 +51,11 @@ export class LanguageSubmissionPassRateComponentComponent implements OnInit, Aft
   }
 
   private initPassPercentages(percentages: PassPercentages): void {
+    //TODO gucken ob man auch den richtigen endpunkt aufruft
     for(let i = 0; i < percentages.planguages.length; i++) {
       const languageId = percentages.planguages[i].id;
       const percentagePass = percentages.percentages[i];
       this.pLanguagePassPercentageMap.set(languageId!, Math.round(percentagePass * 100));
     }
   }
-
 }

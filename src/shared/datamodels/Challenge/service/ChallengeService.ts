@@ -1,11 +1,13 @@
 import {Injectable} from "@angular/core";
-import {ServiceHandler} from "../../../services/ServiceHandler";
+import {ServiceHandler} from "../../../services/ServiceHandler/ServiceHandler";
 import {Challenge} from "../model/Challenge";
 import {HttpClient} from "@angular/common/http";
 import {BaseService} from "../../Base/BaseService";
 import {Observable} from "rxjs";
 import {Submission} from "../../Submission/model/Submission";
 import {environment} from "../../../../environments/environment";
+import {RequestServiceEnum} from "../../../services/ServiceHandler/RequestServiceEnum";
+import {RequestService} from "../../../services/ServiceHandler/RequestService";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,8 @@ import {environment} from "../../../../environments/environment";
 export class ChallengeService implements BaseService<Challenge>{
   private serviceHandler: ServiceHandler<Challenge>;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient,
+              private requestService: RequestService) {
     this.serviceHandler = new ServiceHandler(this.httpClient, "challenge");
   }
 
@@ -38,6 +41,8 @@ export class ChallengeService implements BaseService<Challenge>{
   }
 
   getSubmissionsByChallengeId(challengeId: number): Observable<Submission[]> {
-    return this.httpClient.get(`${environment.api}/challenge/${challengeId}/submissions`) as Observable<Submission[]>;
+    //return this.httpClient.get(`${environment.api}/challenge/${challengeId}/submissions`) as Observable<Submission[]>;
+    return this.requestService
+      .anyRequest(RequestServiceEnum.GET,`${environment.api}/challenge/${challengeId}/submissions`) as Observable<Submission[]>;
   }
 }

@@ -1,8 +1,6 @@
-import {Inject} from "@angular/core";
-import {root} from "rxjs/internal-compatibility";
 import {HttpClient} from "@angular/common/http";
-import {BaseEntity} from "../datamodels/Base/model/BaseEntity";
-import {environment} from "../../environments/environment";
+import {BaseEntity} from "../../datamodels/Base/model/BaseEntity";
+import {environment} from "../../../environments/environment";
 import {Observable} from "rxjs";
 
 export class ServiceHandler<T extends BaseEntity> {
