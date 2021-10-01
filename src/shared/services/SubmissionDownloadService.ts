@@ -26,14 +26,14 @@ export class SubmissionDownloadService {
     return `/**\nPowered by HackerrankIndexer by Ali Yalama 2021\n
     https://github.com/AlKYala/HackerRankIndexer\n
     File created: ${this.getCurrentDateAsString()}\n
-    Challenge name: ${submission.challenge.challengeName}\n
-    Author: ${submission.writer.username}\n*/\n`;
+    Challenge name: ${submission.challenge.challengeName}\n*/\n`;
   }
 
   private getCurrentDateAsString(): string {
     return formatDate(new Date(), "dd/MM/yyyy", 'en');
   }
 
+  //TODO delegate to backend
   private findExtensionForFile(submission: Submission): string {
     const language: string = submission.language.language;
     let extension: string = "txt";
