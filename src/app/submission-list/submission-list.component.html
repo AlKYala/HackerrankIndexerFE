@@ -3,7 +3,7 @@
     <h4 style="margin-bottom: 4px;margin-top: 4px;">Submissions</h4>
   </div>
   <div class="card-body">
-    <ng-container *ngFor="let submission of this.submissions | paginate: { itemsPerPage: pageLimit, currentPage: page }">
+    <ng-container *ngFor="let submission of pageOfItems">
       <div class="card entry" (click)="this.navigateToListingDetail(submission)" style="background: rgb(255, 255, 255);margin-bottom: 4px;">
         <div class="card-body" style="padding: 3px;margin-top: 4px;margin-bottom: 4px;border-color: var(--bs-gray-500);">
           <div class="row g-0 align-items-center">
@@ -34,6 +34,7 @@
         </div>
       </div>
     </ng-container>
-    <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    <!--<pagination-controls (pageChange)="page = $event"></pagination-controls>-->
+    <jw-pagination [items]="this.submissions" (changePage)="onChangePage($event)"></jw-pagination>
   </div>
 </div>
