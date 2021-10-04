@@ -35,6 +35,7 @@
       </div>
     </ng-container>
     <!--<pagination-controls (pageChange)="page = $event"></pagination-controls>-->
-    <jw-pagination [items]="this.submissions" (changePage)="onChangePage($event)"></jw-pagination>
+    <!-- TODO jw-pagination macht es breit!-->
+    <jw-pagination class="paginator" [items]="this.submissions" (changePage)="onChangePage($event)"></jw-pagination>
   </div>
 </div>

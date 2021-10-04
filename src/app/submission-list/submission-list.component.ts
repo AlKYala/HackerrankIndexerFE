@@ -47,9 +47,10 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   //pageLimit: number = 16;
 
   pageOfItems!: Array<any>;
-  pageSize = 16;
+  pageSize = 5;
   pager: any = {};
   changePage = new EventEmitter<any>(true);
+  maxPages = 5;
 
   constructor(private httpClient: HttpClient,
               private submissionService: SubmissionService,
@@ -159,7 +160,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   }
 
   private setPage(page: number) {
-    this.pager = paginate(this.submissions.length, page, this.pageSize, 10);
+    this.pager = paginate(this.submissions.length, page, this.pageSize, this.maxPages);
     var pageOfItems = this.submissions.slice(this.pager.startIndex, this.pager.endIndex +1);
     this.changePage.emit(pageOfItems);
   }
