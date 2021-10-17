@@ -20,6 +20,7 @@ import {LandingComponent} from './landing/landing.component';
 import {HowtocomponentComponent} from './howtocomponent/howtocomponent.component';
 import {IntroFeaturesComponentComponent} from './intro-features-component/intro-features-component.component';
 import {JwPaginationModule} from "jw-angular-pagination";
+import {ChartsModule} from "ng2-charts";
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import {JwPaginationModule} from "jw-angular-pagination";
     NgxChartModule,
     PieChartModule,
     NgxPaginationModule,
-    JwPaginationModule
+    JwPaginationModule,
+    ChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

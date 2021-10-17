@@ -7,6 +7,8 @@ import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
 import {switchMap} from "rxjs/operators";
 import {PassPercentages} from "../../shared/datamodels/Analytics/models/PassPercentages";
 import {UsageStatistics} from "../../shared/datamodels/Analytics/models/UsageStatistics";
+import {Label, MultiDataSet} from "ng2-charts";
+import {ChartPoint, ChartType} from "chart.js";
 
 @Component({
   selector: 'app-chartcomponent',
@@ -15,11 +17,11 @@ import {UsageStatistics} from "../../shared/datamodels/Analytics/models/UsageSta
 })
 export class ChartcomponentComponent implements OnInit, AfterViewInit {
 
-  chartData: any[] = [];
-  chartColors: any = {
-    domain : []
-  };
-  legendPosition: LegendPosition = LegendPosition.Right;
+  public doughnutChartLabels: Label[] = [];
+  public doughnutChartData: MultiDataSet = [
+    []
+  ];
+  public doughnutChartType: ChartType = 'doughnut';
 
   loaded: boolean = false;
 
@@ -61,13 +63,11 @@ export class ChartcomponentComponent implements OnInit, AfterViewInit {
 
   private initChart() {
     for(const language of this.pLanguages) {
-      const color: string = language.color;
       const label: string = language.language;
       const share: number | undefined = this.pLanguageUsagePercentageMap.get(language.id!);
-      console.log(`${label}, ${share}`);
-      this.chartData.push({name: label, value: share!});
-      this.chartColors.domain.push(color);
-
+      this.doughnutChartLabels.push(label);
+      // @ts-ignore
+      this.doughnutChartData[0].push(share);
     }
     this.loaded = true;
   }
