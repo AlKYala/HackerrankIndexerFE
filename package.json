@@ -34,6 +34,7 @@
     "ng2-charts": "^2.2.3",
     "ngx-chart": "^1.0.5",
     "ngx-pagination": "^5.1.1",
+    "ngx-webstorage": "^9.0.0",
     "react-minimal-pie-chart": "^8.2.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",

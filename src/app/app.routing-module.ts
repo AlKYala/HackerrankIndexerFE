@@ -5,6 +5,7 @@ import {SubmissionListComponent} from "./submission-list/submission-list.compone
 import {SubmissionDetailComponent} from "./submission-detail/submission-detail.component";
 import {AnalyticsComponent} from "./analytics/analytics.component";
 import {LandingComponent} from "./landing/landing.component";
+import {LoginComponent} from "./login/login.component";
 
 const routes: Routes = [
   {path: 'submission/:id', component: SubmissionDetailComponent},
@@ -12,6 +13,7 @@ const routes: Routes = [
   {path: 'language/:pLanguageId/submissions', component: SubmissionListComponent},
   {path: 'submissions', component: SubmissionListComponent},
   {path: 'analytics', component: AnalyticsComponent},
+  {path: 'login', component: LoginComponent}, //temporaer
   {path: '', component: LandingComponent}
 ];
 

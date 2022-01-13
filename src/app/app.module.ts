@@ -21,6 +21,8 @@ import {HowtocomponentComponent} from './howtocomponent/howtocomponent.component
 import {IntroFeaturesComponentComponent} from './intro-features-component/intro-features-component.component';
 import {JwPaginationModule} from "jw-angular-pagination";
 import {ChartsModule} from "ng2-charts";
+import {NgxWebstorageModule} from "ngx-webstorage";
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,7 @@ import {ChartsModule} from "ng2-charts";
     LandingComponent,
     HowtocomponentComponent,
     IntroFeaturesComponentComponent,
+    LoginComponent,
   ],
   imports: [
     RouterModule,
@@ -47,7 +50,8 @@ import {ChartsModule} from "ng2-charts";
     PieChartModule,
     NgxPaginationModule,
     JwPaginationModule,
-    ChartsModule
+    ChartsModule,
+    NgxWebstorageModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]

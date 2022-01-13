@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {LocalStorageService} from "ngx-webstorage";
 
 @Component({
   selector: 'app-landing',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LandingComponent implements OnInit {
 
-  constructor() { }
+  loggedIn: boolean = false;
+
+  constructor(private localStorageService: LocalStorageService) { }
 
   ngOnInit(): void {
+    //TODO check for login
   }
 
 }
