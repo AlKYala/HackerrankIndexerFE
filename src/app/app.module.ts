@@ -23,6 +23,7 @@ import {JwPaginationModule} from "jw-angular-pagination";
 import {ChartsModule} from "ng2-charts";
 import {NgxWebstorageModule} from "ngx-webstorage";
 import { LoginComponent } from './login/login.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { LoginComponent } from './login/login.component';
     JwPaginationModule,
     ChartsModule,
     NgxWebstorageModule.forRoot(),
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
