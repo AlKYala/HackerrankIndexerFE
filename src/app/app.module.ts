@@ -26,6 +26,7 @@ import { LoginComponent } from './login/login.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import { SignupComponent } from './signup/signup.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { NavbarWithoutLoginComponent } from './navbar-without-login/navbar-without-login.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     LoginComponent,
     SignupComponent,
     ResetPasswordComponent,
+    NavbarWithoutLoginComponent,
   ],
   imports: [
     RouterModule,

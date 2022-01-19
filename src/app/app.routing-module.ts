@@ -16,7 +16,7 @@ const routes: Routes = [
   {path: 'submissions', component: SubmissionListComponent},
   {path: 'analytics', component: AnalyticsComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'signUp', component: SignupComponent},
+  {path: 'signup', component: SignupComponent},
   {path: 'passwordReset', component: ResetPasswordComponent},
   {path: '', component: LandingComponent}
 ];
