@@ -6,6 +6,8 @@ import {SubmissionDetailComponent} from "./submission-detail/submission-detail.c
 import {AnalyticsComponent} from "./analytics/analytics.component";
 import {LandingComponent} from "./landing/landing.component";
 import {LoginComponent} from "./login/login.component";
+import {SignupComponent} from "./signup/signup.component";
+import {ResetPasswordComponent} from "./reset-password/reset-password.component";
 
 const routes: Routes = [
   {path: 'submission/:id', component: SubmissionDetailComponent},
@@ -13,7 +15,9 @@ const routes: Routes = [
   {path: 'language/:pLanguageId/submissions', component: SubmissionListComponent},
   {path: 'submissions', component: SubmissionListComponent},
   {path: 'analytics', component: AnalyticsComponent},
-  {path: 'login', component: LoginComponent}, //temporaer
+  {path: 'login', component: LoginComponent},
+  {path: 'signUp', component: SignupComponent},
+  {path: 'passwordReset', component: ResetPasswordComponent},
   {path: '', component: LandingComponent}
 ];
 

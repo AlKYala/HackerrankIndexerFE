@@ -24,6 +24,8 @@ import {ChartsModule} from "ng2-charts";
 import {NgxWebstorageModule} from "ngx-webstorage";
 import { LoginComponent } from './login/login.component';
 import {ReactiveFormsModule} from "@angular/forms";
+import { SignupComponent } from './signup/signup.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,8 @@ import {ReactiveFormsModule} from "@angular/forms";
     HowtocomponentComponent,
     IntroFeaturesComponentComponent,
     LoginComponent,
+    SignupComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     RouterModule,
