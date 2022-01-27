@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <title>Analytics new</title>
+  <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/assets/fonts/fontawesome-all.min.css">
+  <link rel="stylesheet" href="/assets/css/Highlight-Clean.css">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+
+<body class="d-xl-flex justify-content-xl-center align-items-xl-center" style="font-family: sans-serif;">
+<div class="container d-xl-flex">
+  <div class="col-md-12">
+    <section class="highlight-clean">
+      <div class="container">
+        <div class="intro">
+          <h2 class="text-center" style="font-family: sans-serif;">Analytics</h2>
+          <p class="text-center">See all the stats here.</p>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <h4>General Stats</h4>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card shadow-sm">
+            <div class="card-body" data-bs-toggle="tooltip" data-bss-tooltip=""
+                 title="Takes every submission you make into account.  Useless statistic but leetcode has it too.">
+              <h4 class="card-title">Submission Acceptance Rate</h4>
+              <h6 class="text-muted card-subtitle mb-2">Passed Submissions in %</h6>
+              <p class="card-text"></p>
+              <div class="row align-items-center no-gutters">
+                <div class="col me-2">
+                  <div class="text-uppercase text-info fw-bold text-xs mb-1"></div>
+                </div>
+              </div>
+              <div class="row g-0 align-items-center">
+                <div class="col-auto">
+                  <div class="text-dark fw-bold h5 mb-0 me-3"><span>50%</span></div>
+                </div>
+                <div class="col">
+                  <div class="progress progress-sm">
+                    <div class="progress-bar bg-info" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"
+                         style="width: 50%;"><span class="visually-hidden">50%</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card shadow-sm">
+            <div class="card-body" data-bs-toggle="tooltip" data-bss-tooltip=""
+                 title="The percentage of all challenges with at least one passed submission. Useful statistic."
+                 style="box-shadow: 0px 0px;">
+              <h4 class="card-title">Challenge Acceptance Rate</h4>
+              <h6 class="text-muted card-subtitle mb-2">Passed Challenges in %</h6>
+              <p class="card-text"></p>
+              <div class="row align-items-center no-gutters">
+                <div class="col me-2">
+                  <div class="text-uppercase text-info fw-bold text-xs mb-1"></div>
+                </div>
+              </div>
+              <div class="row g-0 align-items-center">
+                <div class="col-auto">
+                  <div class="text-dark fw-bold h5 mb-0 me-3"><span>50%</span></div>
+                </div>
+                <div class="col">
+                  <div class="progress progress-sm">
+                    <div class="progress-bar bg-info" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"
+                         style="width: 50%;"><span class="visually-hidden">50%</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card shadow-sm">
+            <div class="card-body" data-bs-toggle="tooltip" data-bss-tooltip=""
+                 title="The language you made the most submissions with">
+              <h4 class="card-title">Your favourite language</h4>
+              <h6 class="text-muted card-subtitle mb-2">Most used language</h6>
+              <p class="card-text"></p>
+              <div class="row align-items-center no-gutters">
+                <div class="col me-2">
+                  <div class="text-uppercase text-info fw-bold text-xs mb-1"></div>
+                </div>
+              </div>
+              <div class="row g-0 align-items-center">
+                <div class="col-auto">
+                  <div class="text-dark fw-bold h5 mb-0 me-3"><span>%TEXT%</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h4 style="margin-top: 8px;">Language specific stats</h4>
+      <div class="row">
+        <div class="col-lg-5 col-xl-4">
+          <div class="card shadow mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h4 style="margin-bottom: 4px;margin-top: 4px;">Language use distribution</h4>
+            </div>
+            <div class="card-body">
+
+              <div class="chart-area">
+                <div style="display: block;">
+                  <canvas baseChart
+                          [data]="doughnutChartData"
+                          [labels]="doughnutChartLabels"
+                          [chartType]="doughnutChartType">
+                  </canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card shadow mb-4" style="margin-top: 4px;margin-bottom: 4px;background: rgb(255,255,255);">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h4 style="margin-bottom: 4px;margin-top: 4px;">Pass rate per language</h4>
+            </div>
+            <div class="card-body border rounded border-light shadow-sm"
+                 style="padding: 8px;background: #ffffff;margin-bottom: 4px;">
+              <div class="row g-0 align-items-center">
+                <div class="col-auto">
+                  <div class="text-dark fw-bold h5 mb-0 me-3"><span style="font-size: 15px;">%LANGUAGE%</span></div>
+                </div>
+                <div class="col-auto">
+                  <div class="text-dark fw-bold h5 mb-0 me-3"></div>
+                </div>
+                <div class="col">
+                  <div class="progress progress-sm">
+                    <div class="progress-bar bg-info" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"
+                         style="width: 50%;">50%
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h4 style="margin-bottom: 4px;margin-top: 4px;">Submissions</h4>
+            </div>
+            <div class="card-body">
+              <div class="card" style="background: rgb(255, 255, 255);margin-bottom: 4px;">
+                <div class="card-body"
+                     style="padding: 3px;margin-top: 4px;margin-bottom: 4px;border-color: var(--bs-gray-500);">
+                  <div class="row g-0 align-items-center">
+                    <div class="col">
+                      <h4 class="d-inline-flex justify-content-between" style="margin-bottom: 0px;">#%ID% Challenge
+                        name</h4>
+                    </div>
+                    <div class="col-auto">
+                      <div class="fw-bold h5 mb-0 me-3"
+                           style="background: rgba(255,255,255,0);border-radius: 10px;color: rgb(91,91,91);"><span
+                        class="font-monospace text-black-50 d-md-flex align-items-md-center"
+                        style="color: var(--bs-gray-dark);font-size: 16px;border-radius: 0px;">Language&nbsp;</span>
+                      </div>
+                      <div class="text-dark fw-bold h5 mb-0 me-3"></div>
+                    </div>
+                    <div class="col-auto">
+                      <div class="text-dark fw-bold h5 mb-0 me-3"
+                           style="background: var(--bs-red);border-radius: 10px;"><span
+                        class="d-md-flex align-items-md-center"
+                        style="color: var(--bs-body-bg);font-size: 16px;border-radius: 10px;">&nbsp;Failed&nbsp;</span>
+                      </div>
+                      <div class="text-dark fw-bold h5 mb-0 me-3"></div>
+                    </div>
+                  </div>
+                  <p class="card-text"></p>
+                </div>
+                <div class="card-body"
+                     style="padding: 3px;margin-top: 4px;margin-bottom: 4px;border-color: var(--bs-gray-500);">
+                  <div class="row g-0 align-items-center">
+                    <div class="col">
+                      <h4 class="d-inline-flex justify-content-between" style="margin-bottom: 0px;">#%ID% Challenge
+                        name</h4>
+                    </div>
+                    <div class="col-auto">
+                      <div class="fw-bold h5 mb-0 me-3"
+                           style="background: rgba(255,255,255,0);border-radius: 10px;color: rgb(91,91,91);"><span
+                        class="font-monospace text-black-50 d-md-flex align-items-md-center"
+                        style="color: var(--bs-gray-dark);font-size: 16px;border-radius: 0px;">Language</span></div>
+                      <div class="text-dark fw-bold h5 mb-0 me-3"></div>
+                    </div>
+                    <div class="col-auto">
+                      <div class="text-dark fw-bold h5 mb-0 me-3"
+                           style="background: var(--bs-green);border-radius: 10px;"><span
+                        class="d-md-flex align-items-md-center"
+                        style="color: var(--bs-body-bg);font-size: 16px;border-radius: 10px;">&nbsp;Passed&nbsp;</span>
+                      </div>
+                      <div class="text-dark fw-bold h5 mb-0 me-3"></div>
+                    </div>
+                  </div>
+                  <p class="card-text"></p>
+                </div>
+              </div>
+              <nav>
+                <ul class="pagination">
+                  <li class="page-item"><a class="page-link" href="#" aria-label="Previous"><span
+                    aria-hidden="true">«</span></a></li>
+                  <li class="page-item"><a class="page-link" href="#">1</a></li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item"><a class="page-link" href="#">4</a></li>
+                  <li class="page-item"><a class="page-link" href="#">5</a></li>
+                  <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span
+                    aria-hidden="true">»</span></a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+</body>
+
+</html>
