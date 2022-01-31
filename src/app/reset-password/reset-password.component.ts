@@ -45,8 +45,7 @@ export class ResetPasswordComponent implements OnInit {
   public triggerPasswordReset() {
     console.log(this.emailForm.value);
     const subscription = this.httpClient.post(`${environment.api}/user/resetPassword`, this.emailForm.value)
-      .subscribe((data) =>
-      {
+      .subscribe((data) => {
         this.postFire(subscription);
       },
       error => {
