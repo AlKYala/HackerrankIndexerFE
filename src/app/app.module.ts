@@ -27,6 +27,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import { SignupComponent } from './signup/signup.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { NavbarWithoutLoginComponent } from './navbar-without-login/navbar-without-login.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { NavbarWithoutLoginComponent } from './navbar-without-login/navbar-witho
     SignupComponent,
     ResetPasswordComponent,
     NavbarWithoutLoginComponent,
+    FooterComponent,
   ],
   imports: [
     RouterModule,
