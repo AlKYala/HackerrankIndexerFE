@@ -1,0 +1,8 @@
+Idee:
+
+Die URL muss 2 Dinge enthalten
+1. Parameter - der jwt token
+2. Parameter - die Emailadresse
+
+Bei absenden werden beide wieder genutzt und im Backend geprüft, ob die im token hinterlegte email
+dieser email entspricht.

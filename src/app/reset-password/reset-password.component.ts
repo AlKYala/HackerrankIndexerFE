@@ -20,18 +20,16 @@ export class ResetPasswordComponent implements OnInit {
 
   private baseSubscription = new Subscription();
 
-  private token!: string;
-
   constructor(private route: ActivatedRoute,
               private httpClient: HttpClient,
               private toastrService: ToastrService) { }
 
   ngOnInit(): void {
-    this.initLoginForm();
+    this.initTriggerPasswordResetForm();
   }
 
   //TODO link to view
-  public initLoginForm(): void {
+  public initTriggerPasswordResetForm(): void {
 
     //this.grabQueryParam();
 
@@ -57,13 +55,5 @@ export class ResetPasswordComponent implements OnInit {
     this.toastrService.info("Email sent. Check your inbox.");
     this.baseSubscription.add(subscription);
     console.log("firing");
-  }
-
-  //TODO does not belong in this component
-  private grabQueryParam() {
-    const subscription: Subscription = this.route.queryParams.subscribe(params => {
-      this.token = params['token'];
-    });
-    this.baseSubscription.add(subscription)
   }
 }

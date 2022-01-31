@@ -29,6 +29,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { NavbarWithoutLoginComponent } from './navbar-without-login/navbar-without-login.component';
 import { FooterComponent } from './footer/footer.component';
 import {ToastrModule} from "ngx-toastr";
+import { SetNewPasswordComponent } from './set-new-password/set-new-password.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import {ToastrModule} from "ngx-toastr";
     ResetPasswordComponent,
     NavbarWithoutLoginComponent,
     FooterComponent,
+    SetNewPasswordComponent,
   ],
   imports: [
     RouterModule,
