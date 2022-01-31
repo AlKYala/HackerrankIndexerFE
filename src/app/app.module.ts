@@ -28,6 +28,7 @@ import { SignupComponent } from './signup/signup.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { NavbarWithoutLoginComponent } from './navbar-without-login/navbar-without-login.component';
 import { FooterComponent } from './footer/footer.component';
+import {ToastrModule} from "ngx-toastr";
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { FooterComponent } from './footer/footer.component';
     ChartsModule,
     NgxWebstorageModule.forRoot(),
     ReactiveFormsModule,
+    ToastrModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

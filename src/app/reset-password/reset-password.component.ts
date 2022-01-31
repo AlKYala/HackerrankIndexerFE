@@ -5,6 +5,7 @@ import {ActivatedRoute} from "@angular/router";
 import {Subscription} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-reset-password',
@@ -21,7 +22,9 @@ export class ResetPasswordComponent implements OnInit {
 
   private token!: string;
 
-  constructor(private route: ActivatedRoute, private httpClient: HttpClient) { }
+  constructor(private route: ActivatedRoute,
+              private httpClient: HttpClient,
+              private toastrService: ToastrService) { }
 
   ngOnInit(): void {
     this.initLoginForm();
@@ -40,9 +43,21 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   public triggerPasswordReset() {
-    const subscription = this.httpClient.post(`${environment.api}/resetPassword`, this.emailForm.value).subscribe();
     console.log(this.emailForm.value);
+    const subscription = this.httpClient.post(`${environment.api}/user/resetPassword`, this.emailForm.value)
+      .subscribe((data) =>
+      {
+        this.postFire(subscription);
+      },
+      error => {
+        this.postFire(subscription)
+      });
+  }
+
+  private postFire(subscription: Subscription) {
+    this.toastrService.info("Email sent. Check your inbox.");
     this.baseSubscription.add(subscription);
+    console.log("firing");
   }
 
   //TODO does not belong in this component
