@@ -9,7 +9,7 @@
       <form class="ms-auto">
         <div class="dropdown show d-xl-flex">
           <a  (click)="toggleDropdown()" style="cursor: pointer"
-            class="dropdown-toggle" aria-expanded="true" data-bs-toggle="dropdown" id="userDropdown">%username%</a>
+            class="dropdown-toggle" aria-expanded="true" data-bs-toggle="dropdown" id="userDropdown">{{this.username}}</a>
           <div class="dropdown-menu" [ngClass]="{'show': toggle}" style="background: #59606a;">
             <a class="dropdown-item" href="#" style="color: rgb(255,255,255);">
               <i class="la la-hand-peace-o"></i>&nbsp;Log Out

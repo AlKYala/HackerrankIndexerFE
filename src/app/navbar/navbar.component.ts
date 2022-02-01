@@ -26,12 +26,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.initUsername();
   }
+
   mobileQuery: MediaQueryList;
 
   private _mobileQueryListener: () => void;
 
   private initUsername() {
+    this.username = this.localStorageService.retrieve("email");
   }
 
   public toggleDropdown() {
