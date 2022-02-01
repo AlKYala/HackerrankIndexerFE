@@ -29,6 +29,8 @@ export class SubmissionDetailComponent implements OnInit, OnDestroy {
               private submissionDownloadService: SubmissionDownloadService) {
   }
 
+  //TODO wenn die SubmissionID 0 ist dann fehlerfeld - keine Submission hat ID 0!
+
   ngOnInit(): void {
     this.subscriptions = [];
     this.resolveSubmissionId();
@@ -50,6 +52,9 @@ export class SubmissionDetailComponent implements OnInit, OnDestroy {
 
   private fetchSubmission() {
     this.submissionService.findById(this.submissionid).pipe().subscribe((submission: Submission) => {
+      if(submission.id == 0) {
+        this.routeToHomepage();
+      }
       this.submission = submission;
       console.log(submission);
       this.submissionCode = submission.code;
@@ -69,5 +74,9 @@ export class SubmissionDetailComponent implements OnInit, OnDestroy {
   public routeToChallenge(event: Event): void {
     event.preventDefault();
     this.router.navigate([`/challenge/${this.submission.challenge.id}/submissions`]);
+  }
+
+  private routeToHomepage() {
+    this.router.navigate([`/home`]);
   }
 }

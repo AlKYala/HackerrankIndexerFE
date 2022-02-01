@@ -74,3 +74,11 @@
   background: #eee;
   color: inherit;
 }
+
+a {
+  color: #32c766;
+}
+
+#userDropdown {
+  text-decoration: none;
+}

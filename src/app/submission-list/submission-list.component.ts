@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, EventEmitter} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable, Subscription} from "rxjs";
 import {Submission} from "../../shared/datamodels/Submission/model/Submission";
@@ -12,6 +12,16 @@ import {ServiceHandler} from "../../shared/services/ServiceHandler/ServiceHandle
 import {RequestServiceEnum} from "../../shared/services/ServiceHandler/RequestServiceEnum";
 import {environment} from "../../environments/environment";
 import {RequestService} from "../../shared/services/ServiceHandler/RequestService";
+import {JwPaginationComponent} from "jw-angular-pagination";
+import paginate from "jw-paginate";
+/**
+ * TODO: du musst die pagination fixen
+ * Wenn du dieses Component 2x nebeneinander hast, sieht das kacke aus
+ * z.B. 2 Listen mit 2 verschiedenen Seitenanzahlen
+ * Dann beeinflussen diese sich gegenseitig - das ist zu verhindern!
+ *
+ * Erste idee: Sind components singletons?
+ */
 
 @Component({
   selector: 'app-submission-list',
@@ -33,8 +43,14 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   private challengeId: number = -1;
   private pLanguageId: number = -1;
   faCoffee = faCoffee;
-  page: number = 1;
-  pageLimit: number = 16;
+  //page: number = 1;
+  //pageLimit: number = 16;
+
+  pageOfItems!: Array<any>;
+  pageSize = 5;
+  pager: any = {};
+  changePage = new EventEmitter<any>(true);
+  maxPages = 5;
 
   constructor(private httpClient: HttpClient,
               private submissionService: SubmissionService,
@@ -107,6 +123,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
     const subscription: Subscription = this.challengeService.getSubmissionsByChallengeId(challengeId)
       .pipe().subscribe((submissions: Submission[]) => {
         this.submissions = submissions;
+        this.setPage(1);
       })
     this.subscriptions.push(subscription);
   }
@@ -136,5 +153,15 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   public navigateToListingDetail(submission: Submission): void {
     this.submissionDataService.setSubmission(submission);
     this.router.navigate([`/submission/${submission.id}`]);
+  }
+
+  onChangePage(pageOfitems: Array<any>) {
+    this.pageOfItems = pageOfitems;
+  }
+
+  private setPage(page: number) {
+    this.pager = paginate(this.submissions.length, page, this.pageSize, this.maxPages);
+    var pageOfItems = this.submissions.slice(this.pager.startIndex, this.pager.endIndex +1);
+    this.changePage.emit(pageOfItems);
   }
 }

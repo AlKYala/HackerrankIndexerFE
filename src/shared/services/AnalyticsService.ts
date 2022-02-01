@@ -68,4 +68,14 @@ export class AnalyticsService {
     return this.requestService
       .anyRequest(RequestServiceEnum.GET, `${this.path}/exists`) as Observable<boolean>;
   }
+
+  public getNumberOfUsers(): Observable<number> {
+    return this.requestService
+      .anyRequest(RequestServiceEnum.GET, `${this.path}/numberUsers`) as Observable<number>;
+  }
+
+  public getNumberOfSubmissions(): Observable<number> {
+    return this.requestService
+      .anyRequest(RequestServiceEnum.GET, `${this.path}/numberSubmissions`) as Observable<number>;
+  }
 }

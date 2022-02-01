@@ -9,6 +9,8 @@ import {Router} from "@angular/router";
 })
 export class NavbarComponent implements OnInit, OnDestroy {
 
+  public toggle: boolean;
+
   ngOnInit(): void {
   }
   mobileQuery: MediaQueryList;
@@ -19,6 +21,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+    this.toggle = false;
+  }
+
+  public toggleDropdown() {
+    console.log("Toggling");
+    this.toggle = !(this.toggle);
   }
 
   ngOnDestroy(): void {

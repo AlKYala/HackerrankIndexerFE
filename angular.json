@@ -27,10 +27,20 @@
               "src/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
-              "src/styles.scss"
+              "node_modules/aos/dist/aos.css",
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/styles.scss",
+              "./node_modules/ngx-toastr/toastr.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/aos/dist/aos.js",
+              "./node_modules/jquery/dist/jquery.min.js",
+              "./node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "./node_modules/bootstrap/dist/js/bs-init.js",
+              "./node_modules/bootstrap/dist/js/chart.min.js",
+              "./node_modules/bootstrap/dist/js/theme.js",
+              "./node_modules/popper.js/dist/umd/popper.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -96,14 +106,16 @@
             ],
             "styles": [
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "./node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [
               "./node_modules/jquery/dist/jquery.min.js",
               "./node_modules/bootstrap/dist/js/bootstrap.min.js",
               "./node_modules/bootstrap/dist/js/bs-init.js",
               "./node_modules/bootstrap/dist/js/chart.min.js",
-              "./node_modules/bootstrap/dist/js/theme.js"
+              "./node_modules/bootstrap/dist/js/theme.js",
+              "./node_modules/popper.js/dist/umd/popper.min.js"
             ]
           }
         }
