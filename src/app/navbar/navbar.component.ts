@@ -2,6 +2,8 @@ import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {MediaMatcher} from "@angular/cdk/layout";
 import {Router} from "@angular/router";
 import {RoutingService} from "../../shared/services/RoutingService";
+import {LocalStorageService} from "ngx-webstorage";
+import {AuthenticationService} from "../../shared/services/AuthenticationService";
 
 @Component({
   selector: 'app-navbar',
@@ -14,7 +16,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   public username!: string;
 
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private routerService: RoutingService) {
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,
+              private routerService: RoutingService,
+              private localStorageService: LocalStorageService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -28,7 +32,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private _mobileQueryListener: () => void;
 
   private initUsername() {
-
   }
 
   public toggleDropdown() {
