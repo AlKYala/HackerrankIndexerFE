@@ -62,7 +62,7 @@ export class SetNewPasswordComponent implements OnInit {
 
   public sendPasswordReset() {
     const password = this.passwordForm.value;
-    const resetInfo: PasswordResetModel = {token: this.token, email: this.email, password};
+    const resetInfo: PasswordResetModel = {token: this.token, email: this.email, password: password};
     console.log(resetInfo);
     this.httpClient.post(`${environment.api}/user/updatePassword`, resetInfo).subscribe();
   }
