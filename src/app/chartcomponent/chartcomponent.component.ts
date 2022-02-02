@@ -8,35 +8,29 @@ import {switchMap} from "rxjs/operators";
 import {PassPercentages} from "../../shared/datamodels/Analytics/models/PassPercentages";
 import {UsageStatistics} from "../../shared/datamodels/Analytics/models/UsageStatistics";
 import {Label, MultiDataSet} from "ng2-charts";
-import {ChartPoint, ChartType} from "chart.js";
+import Chart, {ChartPoint, ChartType} from "chart.js";
 
 @Component({
   selector: 'app-chartcomponent',
   templateUrl: './chartcomponent.component.html',
   styleUrls: ['./chartcomponent.component.css']
 })
-export class ChartcomponentComponent implements OnInit, AfterViewInit {
+export class ChartcomponentComponent implements OnInit{
 
-  public doughnutChartLabels: Label[] = [];
-  public doughnutChartData: MultiDataSet = [
-    []
-  ];
-  public doughnutChartType: ChartType = 'doughnut';
 
-  loaded: boolean = false;
 
   pLanguageUsagePercentageMap = new Map<number, number>();
   private subscriptions!: Subscription[];
   private pLanguages!: Planguage[];
 
-  constructor(private analyticsService: AnalyticsService,
-              private pLanguageService: PLanguageService) { }
+  private labels: string[] = [];
+  private percentages!: number [];
 
-  ngOnInit(): void {
-    this.subscriptions = [];
+  constructor(private analyticsService: AnalyticsService,
+              private pLanguageService: PLanguageService) {
   }
 
-  ngAfterViewInit() {
+  ngOnInit() {
     this.initData();
   }
 
@@ -44,13 +38,13 @@ export class ChartcomponentComponent implements OnInit, AfterViewInit {
     const subscription: Subscription = this.pLanguageService
       .findAll()
       .pipe(switchMap((planguages: Planguage[]) => {
-      this.pLanguages = planguages;
-      return this.analyticsService.getUsagePercentagesOfPLanguages();
-    }))
+        this.pLanguages = planguages;
+        return this.analyticsService.getUsagePercentagesOfPLanguages();
+      }))
       .subscribe((data: UsageStatistics) => {
-      this.initUsagePercentages(data);
-      this.initChart();
-    })
+        this.initUsagePercentages(data);
+        this.initChart();
+      })
   }
 
   private initUsagePercentages(statistics: UsageStatistics): void {
@@ -65,14 +59,44 @@ export class ChartcomponentComponent implements OnInit, AfterViewInit {
     for(const language of this.pLanguages) {
       const label: string = language.language;
       const share: number | undefined = this.pLanguageUsagePercentageMap.get(language.id!);
-      this.doughnutChartLabels.push(label);
-      // @ts-ignore
-      this.doughnutChartData[0].push(share);
-    }
-    this.loaded = true;
-  }
-}
+      this.labels.push(label);
+      this.percentages.push(share!);
 
-export interface colorScheme {
-  domain: string[];
+      console.log(this.labels);
+      console.log(this.percentages);
+    }
+  }
+
+  public initDummyChart() {
+    const canvas = document.getElementById('myChart') as HTMLCanvasElement;
+    const ctx = canvas.getContext('2d');
+
+    const data = {
+      labels: [
+        'Red',
+        'Blue',
+        'Yellow'
+      ],
+      datasets: [{
+        label: 'My First Dataset',
+        data: [300, 50, 100, 70,80,110],
+        backgroundColor: [
+          'rgb(255, 99, 132)',
+          'rgb(54, 162, 235)',
+          'rgb(255, 205, 86)'
+        ],
+        hoverOffset: 4
+      }]
+    };
+
+    const myChart = new Chart(ctx!, {
+      type: 'pie',
+      data: data
+    });
+  }
+
+  private initLanguagesUsed() {
+
+  }
+
 }

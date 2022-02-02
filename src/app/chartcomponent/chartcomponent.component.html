@@ -1,18 +1,12 @@
-<div class="card shadow mb-4">
-  <div class="card-header d-flex justify-content-between align-items-center">
-    <h4 style="margin-bottom: 4px;margin-top: 4px;">Language use distribution</h4>
-  </div>
-  <div class="card-body">
-    <ng-container *ngIf="this.loaded">
-      <div class="chart-area">
-        <div style="display: block;">
-          <canvas baseChart
-                  [data]="doughnutChartData"
-                  [labels]="doughnutChartLabels"
-                  [chartType]="doughnutChartType">
-          </canvas>
-        </div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card shadow mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h4 style="margin-bottom: 4px;margin-top: 4px;">Language use Distribution</h4>
       </div>
-    </ng-container>
+      <div class="card-body">
+        <canvas id="myChart" width="400" height="400"></canvas>
+      </div>
+    </div>
   </div>
 </div>
