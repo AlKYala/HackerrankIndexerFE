@@ -30,6 +30,7 @@ import { NavbarWithoutLoginComponent } from './navbar-without-login/navbar-witho
 import { FooterComponent } from './footer/footer.component';
 import {ToastrModule} from "ngx-toastr";
 import { SetNewPasswordComponent } from './set-new-password/set-new-password.component';
+import { VerifyUserComponent } from './verify-user/verify-user.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { SetNewPasswordComponent } from './set-new-password/set-new-password.com
     NavbarWithoutLoginComponent,
     FooterComponent,
     SetNewPasswordComponent,
+    VerifyUserComponent,
   ],
   imports: [
     RouterModule,

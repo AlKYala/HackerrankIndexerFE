@@ -9,6 +9,7 @@ import {LoginComponent} from "./login/login.component";
 import {SignupComponent} from "./signup/signup.component";
 import {ResetPasswordComponent} from "./reset-password/reset-password.component";
 import {SetNewPasswordComponent} from "./set-new-password/set-new-password.component";
+import {VerifyUserComponent} from "./verify-user/verify-user.component";
 
 const routes: Routes = [
   {path: 'submission/:id', component: SubmissionDetailComponent},
@@ -20,6 +21,7 @@ const routes: Routes = [
   {path: 'signup', component: SignupComponent},
   {path: 'passwordReset', component: ResetPasswordComponent},
   {path: 'setNewPassword', component: SetNewPasswordComponent},
+  {path: 'verify/:token', component: VerifyUserComponent},
   {path: '', component: LandingComponent}
 ];
 
