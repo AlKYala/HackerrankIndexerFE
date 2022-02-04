@@ -22,30 +22,30 @@ export class RequestService {
   }
 
   private anyDeleteRequest(text: string): Observable<any> {
-    const header: HttpHeaders = this.getJWTHeader();
-    return this.httpClient.delete(text, {headers: header}) as Observable<any>;
+    const header = this.getJWTHeader();
+    return this.httpClient.delete(text, {headers: {"Authorization": header}}) as Observable<any>;
   }
 
   private anyGetRequest(text: string): Observable<any> {
-    const header: HttpHeaders = this.getJWTHeader();
-    return this.httpClient.get(text, {headers: header}) as Observable<any>;
+    const header = this.getJWTHeader();
+    return this.httpClient.get(text, {headers: {"Authorization": header}}) as Observable<any>;
   }
 
   private anyPutRequest(text: string, payload: any): Observable<any> {
-    const header: HttpHeaders = this.getJWTHeader();
-    return this.httpClient.put(text, payload, {headers: header}) as Observable<any>;
+    const header = this.getJWTHeader();
+    return this.httpClient.put(text, payload, {headers: {"Authorization": header}}) as Observable<any>;
   }
 
   private anyPostRequest(text: string, payload: any): Observable<any> {
-    const header: HttpHeaders = this.getJWTHeader();
-    return this.httpClient.post(text, payload, {headers: header}) as Observable<any>;
+    const header = this.getJWTHeader();
+    return this.httpClient.post(text, payload, {headers: {"Authorization": header}}) as Observable<any>;
   }
 
   private getJWTHeader() {
-    const jwt = this.localStorageService.retrieve("jwt");
+    const jwt = this.localStorageService.retrieve("jwt").jwt;
     if(jwt !== undefined || jwt !== null) {
-      return new HttpHeaders({'authorization': jwt});
+      return jwt
     }
-    return new HttpHeaders();
+    return "";
   }
 }
