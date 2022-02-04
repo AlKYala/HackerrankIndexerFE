@@ -53,6 +53,7 @@ export class ChartcomponentComponent implements OnInit{
       const percentageUsage = statistics.numberSubmissions[i];
       this.pLanguageUsagePercentageMap.set(langaugeId!, percentageUsage);
     }
+    console.log(this.pLanguageUsagePercentageMap);
   }
 
   private initChart() {
