@@ -24,6 +24,9 @@ export class ChartcomponentComponent implements OnInit{
   private subscription: Subscription = new Subscription();
   private pLanguages!: Planguage[];
 
+  public labels!: string[];
+  public percentage: number[] = [];
+
   constructor(private analyticsService: AnalyticsService,
               private pLanguageService: PLanguageService) {
   }
@@ -48,13 +51,19 @@ export class ChartcomponentComponent implements OnInit{
     const numberSumbissions:  number[]  = [];
     const colors:             string[]  = [];
 
-    for(let i = 0; i < statistics.length; i++) {
+    for(let i = 0; i < statistics.length; i++)
+    {
       labels.push(statistics[i].planguage.language);
       colors.push(statistics[i].planguage.color);
       numberSumbissions.push(statistics[i].total);
+      this.percentage.push(statistics[i].percentage * 100); //TODO: find out what is wrong with these values - check in backend
     }
+
+    this.labels = labels;
+
     const chartDataDataSet = [{label: "", data: numberSumbissions, backgroundColor: colors, hoverOffset: 4}];
     const chartData: ChartJSData = {labels: labels, datasets: chartDataDataSet};
+
     this.renderChart(chartData);
   }
 
