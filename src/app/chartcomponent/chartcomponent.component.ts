@@ -9,6 +9,7 @@ import {PassPercentages} from "../../shared/datamodels/Analytics/models/PassPerc
 import {UsageStatistics} from "../../shared/datamodels/Analytics/models/UsageStatistics";
 import {Label, MultiDataSet} from "ng2-charts";
 import Chart, {ChartPoint, ChartType} from "chart.js";
+import {ChartJSData} from "../../shared/datamodels/Chart/ChartJSData";
 
 @Component({
   selector: 'app-chartcomponent',
@@ -20,11 +21,8 @@ export class ChartcomponentComponent implements OnInit{
 
 
   pLanguageUsagePercentageMap = new Map<number, number>();
-  private subscriptions!: Subscription[];
+  private subscription: Subscription = new Subscription();
   private pLanguages!: Planguage[];
-
-  private labels: string[] = [];
-  private percentages!: number [];
 
   constructor(private analyticsService: AnalyticsService,
               private pLanguageService: PLanguageService) {
@@ -35,69 +33,38 @@ export class ChartcomponentComponent implements OnInit{
   }
 
   private initData(): void {
-    const subscription: Subscription = this.pLanguageService
-      .findAll()
-      .pipe(switchMap((planguages: Planguage[]) => {
-        this.pLanguages = planguages;
-        return this.analyticsService.getUsagePercentagesOfPLanguages();
-      }))
-      .subscribe((data: UsageStatistics) => {
-        this.initUsagePercentages(data);
-        this.initChart();
-      })
+    this.initChartData()
   }
 
-  private initUsagePercentages(statistics: UsageStatistics): void {
-    for(let i = 0; i < statistics.planguages.length; i++) {
-      const langaugeId = statistics.planguages[i].id;
-      const percentageUsage = statistics.numberSubmissions[i];
-      this.pLanguageUsagePercentageMap.set(langaugeId!, percentageUsage);
+  private initChartData(): void {
+    const subscription = this.analyticsService.getUsagePercentagesOfPLanguages().subscribe((data: UsageStatistics[]) => {
+      this.fillChartData(data);
+    });
+    this.subscription.add(subscription);
+  }
+
+  private fillChartData(statistics: UsageStatistics[]) {
+    const labels:             string[]  = [];
+    const numberSumbissions:  number[]  = [];
+    const colors:             string[]  = [];
+
+    for(let i = 0; i < statistics.length; i++) {
+      labels.push(statistics[i].planguage.language);
+      colors.push(statistics[i].planguage.color);
+      numberSumbissions.push(statistics[i].total);
     }
-    console.log(this.pLanguageUsagePercentageMap);
+    const chartDataDataSet = [{label: "", data: numberSumbissions, backgroundColor: colors, hoverOffset: 4}];
+    const chartData: ChartJSData = {labels: labels, datasets: chartDataDataSet};
+    this.renderChart(chartData);
   }
 
-  private initChart() {
-    for(const language of this.pLanguages) {
-      const label: string = language.language;
-      const share: number | undefined = this.pLanguageUsagePercentageMap.get(language.id!);
-      this.labels.push(label);
-      this.percentages.push(share!);
-
-      console.log(this.labels);
-      console.log(this.percentages);
-    }
-  }
-
-  public initDummyChart() {
+  public renderChart(chartData: ChartJSData) {
     const canvas = document.getElementById('myChart') as HTMLCanvasElement;
     const ctx = canvas.getContext('2d');
 
-    const data = {
-      labels: [
-        'Red',
-        'Blue',
-        'Yellow'
-      ],
-      datasets: [{
-        label: 'My First Dataset',
-        data: [300, 50, 100, 70,80,110],
-        backgroundColor: [
-          'rgb(255, 99, 132)',
-          'rgb(54, 162, 235)',
-          'rgb(255, 205, 86)'
-        ],
-        hoverOffset: 4
-      }]
-    };
-
     const myChart = new Chart(ctx!, {
       type: 'pie',
-      data: data
+      data: chartData
     });
   }
-
-  private initLanguagesUsed() {
-
-  }
-
 }
