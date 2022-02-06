@@ -3,6 +3,6 @@ import {PLanguageService} from "../../PLanguage/service/PLanguageService";
 
 export interface UsageStatistics {
   planguage: Planguage;
-  percentage: number;
-  total: number;
+  passedSubmissions: number;
+  totalSubmissions: number;
 }
