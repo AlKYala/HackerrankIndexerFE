@@ -18,18 +18,22 @@ import {ChartJSData} from "../../shared/datamodels/Chart/ChartJSData";
 })
 export class ChartcomponentComponent implements OnInit{
 
-
-
   pLanguageUsagePercentageMap = new Map<number, number>();
   private subscription: Subscription = new Subscription();
-  private pLanguages!: Planguage[];
 
-  public labels!: string[];
-  public passedSubmissions: number[] = [];
-  public numberSubmissions: number[] = [];
+  public labels             : string[];
+  public passedSubmissions  : number[];
+  public numberSubmissions  : number[];
+  public percentagesRounded : number[];
+  public progressBarClasses : string[];
 
   constructor(private analyticsService: AnalyticsService,
               private pLanguageService: PLanguageService) {
+    this.labels = [];
+    this.passedSubmissions = [];
+    this.numberSubmissions = [];
+    this.percentagesRounded = [];
+    this.progressBarClasses = [];
   }
 
   ngOnInit() {
@@ -48,23 +52,28 @@ export class ChartcomponentComponent implements OnInit{
   }
 
   private fillChartData(statistics: UsageStatistics[]) {
-    const labels:             string[]  = [];
     const colors:             string[]  = [];
 
     console.log(statistics);
 
     for(let i = 0; i < statistics.length; i++)
     {
-      labels.push(statistics[i].planguage.language);
+      this.labels.push(statistics[i].planguage.language);
       colors.push(statistics[i].planguage.color);
       this.numberSubmissions.push(statistics[i].totalSubmissions);
-      this.passedSubmissions.push(statistics[i].passedSubmissions); //TODO: find out what is wrong with these values - check in backend
+      this.passedSubmissions.push(statistics[i].passedSubmissions);
+      let percentage: number = (statistics[i].passedSubmissions * 100) / statistics[i].totalSubmissions;
+      this.percentagesRounded.push(Math.floor(percentage));
+      this.progressBarClasses.push(this.pickProgressBarClass(percentage));
     }
 
-    this.labels = labels;
+
+    console.log(this.numberSubmissions);
+    console.log(this.passedSubmissions);
+    console.log(this.percentagesRounded);
 
     const chartDataDataSet = [{label: "", data: this.numberSubmissions, backgroundColor: colors, hoverOffset: 4}];
-    const chartData: ChartJSData = {labels: labels, datasets: chartDataDataSet};
+    const chartData: ChartJSData = {labels: this.labels, datasets: chartDataDataSet};
 
     this.renderChart(chartData);
   }
@@ -77,5 +86,16 @@ export class ChartcomponentComponent implements OnInit{
       type: 'pie',
       data: chartData
     });
+  }
+
+  private pickProgressBarClass(percentage: number): string {
+    switch(true) {
+      case (percentage > 80): return "progress-bar bg-success progress-bar-striped progress-bar-animated";
+      case (percentage > 65): return "progress-bar bg-primary progress-bar-striped progress-bar-animated";
+      case (percentage > 50): return "progress-bar bg-secondary progress-bar-striped progress-bar-animated";
+      case (percentage > 35): return "progress-bar bg-dark progress-bar-striped progress-bar-animated";
+      case (percentage > 20): return "progress-bar bg-warning progress-bar-striped progress-bar-animated";
+      default: return "progress-bar bg-danger progress-bar-striped progress-bar-animated";
+    }
   }
 }
