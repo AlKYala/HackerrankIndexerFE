@@ -15,9 +15,8 @@ import {RequestService} from "../../../services/ServiceHandler/RequestService";
 export class ChallengeService implements BaseService<Challenge>{
   private serviceHandler: ServiceHandler<Challenge>;
 
-  constructor(private httpClient: HttpClient,
-              private requestService: RequestService) {
-    this.serviceHandler = new ServiceHandler(this.httpClient, "challenge");
+  constructor(private requestService: RequestService) {
+    this.serviceHandler = new ServiceHandler(requestService, "challenge");
   }
 
   delete(id: number): Observable<number> {

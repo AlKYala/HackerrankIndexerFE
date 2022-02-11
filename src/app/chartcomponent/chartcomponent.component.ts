@@ -95,7 +95,7 @@ export class ChartcomponentComponent implements OnInit{
       case (percentage > 50): return "progress-bar bg-secondary progress-bar-striped progress-bar-animated";
       case (percentage > 35): return "progress-bar bg-dark progress-bar-striped progress-bar-animated";
       case (percentage > 20): return "progress-bar bg-warning progress-bar-striped progress-bar-animated";
-      default: return "progress-bar bg-danger progress-bar-striped progress-bar-animated";
+      default:                return "progress-bar bg-danger progress-bar-striped progress-bar-animated";
     }
   }
 }

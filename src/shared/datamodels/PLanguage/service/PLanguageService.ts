@@ -16,8 +16,8 @@ export class PLanguageService implements BaseService<Planguage> {
 
   private serviceHandler: ServiceHandler<Planguage>;
 
-  constructor(private httpClient: HttpClient, private requestService: RequestService) {
-    this.serviceHandler = new ServiceHandler<Planguage>(this.httpClient, "planguage");
+  constructor(private requestService: RequestService) {
+    this.serviceHandler = new ServiceHandler<Planguage>(requestService, "planguage");
   }
 
   delete(id: number): Observable<number> {

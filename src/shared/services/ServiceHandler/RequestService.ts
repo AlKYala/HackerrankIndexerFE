@@ -21,22 +21,22 @@ export class RequestService {
     }
   }
 
-  private anyDeleteRequest(text: string): Observable<any> {
+  public anyDeleteRequest(text: string): Observable<any> {
     const header = this.getJWTHeader();
     return this.httpClient.delete(text, {headers: {"Authorization": header}}) as Observable<any>;
   }
 
-  private anyGetRequest(text: string): Observable<any> {
+  public anyGetRequest(text: string): Observable<any> {
     const header = this.getJWTHeader();
     return this.httpClient.get(text, {headers: {"Authorization": header}}) as Observable<any>;
   }
 
-  private anyPutRequest(text: string, payload: any): Observable<any> {
+  public anyPutRequest(text: string, payload: any): Observable<any> {
     const header = this.getJWTHeader();
     return this.httpClient.put(text, payload, {headers: {"Authorization": header}}) as Observable<any>;
   }
 
-  private anyPostRequest(text: string, payload: any): Observable<any> {
+  public anyPostRequest(text: string, payload: any): Observable<any> {
     const header = this.getJWTHeader();
     return this.httpClient.post(text, payload, {headers: {"Authorization": header}}) as Observable<any>;
   }

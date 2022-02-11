@@ -5,6 +5,7 @@ import {ServiceHandler} from "../../../services/ServiceHandler/ServiceHandler";
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {BaseEntity} from "../../Base/model/BaseEntity";
+import {RequestService} from "../../../services/ServiceHandler/RequestService";
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,8 @@ export class SubmissionService implements BaseService<Submission> {
 
   private serviceHandler: ServiceHandler<Submission>;
 
-  constructor(private httpClient: HttpClient) {
-    this.serviceHandler = new ServiceHandler<Submission>(this.httpClient, "submission");
+  constructor(private requestService: RequestService) {
+    this.serviceHandler = new ServiceHandler<Submission>(requestService, "submission");
   }
 
   delete(id: number): Observable<number> {
