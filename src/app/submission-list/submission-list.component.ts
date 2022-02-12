@@ -14,6 +14,7 @@ import {environment} from "../../environments/environment";
 import {RequestService} from "../../shared/services/ServiceHandler/RequestService";
 import {JwPaginationComponent} from "jw-angular-pagination";
 import paginate from "jw-paginate";
+import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
 /**
  * TODO: du musst die pagination fixen
  * Wenn du dieses Component 2x nebeneinander hast, sieht das kacke aus
@@ -38,6 +39,9 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   @Input()
   inputLanguageid: number | undefined;
 
+  @Input()
+  isOnAnalyticsPage: boolean | undefined;
+
   filteredByInput: boolean = false;
 
   private challengeId: number = -1;
@@ -45,6 +49,9 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   faCoffee = faCoffee;
   //page: number = 1;
   //pageLimit: number = 16;
+
+  public languages!: Planguage[];
+  public enabledLanguages!: boolean[];
 
   pageOfItems!: Array<any>;
   pageSize = 5;
@@ -63,6 +70,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.scanForFilter();
+    this.initLanguages();
   }
 
   ngOnDestroy(): void {
@@ -163,5 +171,29 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
     this.pager = paginate(this.submissions.length, page, this.pageSize, this.maxPages);
     var pageOfItems = this.submissions.slice(this.pager.startIndex, this.pager.endIndex +1);
     this.changePage.emit(pageOfItems);
+  }
+
+  private initLanguages() {
+    this.pLanguageService.findAll().subscribe((data: Planguage[]) => {
+      this.languages = data;
+      this.enableLanguages(data.length);
+    });
+  }
+
+  private enableLanguages(size: number): void {
+    this.enabledLanguages = new Array<boolean>(size);
+    if(this.inputLanguageid == -1) {
+      this.enabledLanguages.fill(true, 0, size);
+      console.log(this.enabledLanguages);
+      return;
+    }
+    this.enabledLanguages.fill(false, 0, size);
+    for(let i = 0; i < size; i++) {
+      if(this.languages[i].id == this.inputLanguageid) {
+        this.enabledLanguages[i] = true;
+        return;
+      }
+    }
+
   }
 }
