@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
 import {Subscription} from "rxjs";
 import {AnalyticsService} from "../../shared/services/AnalyticsService";
+import {GeneralPercentage} from "../../shared/datamodels/Analytics/models/GeneralPercentage";
+import {GetEntryPointResult} from "@angular/compiler-cli/ngcc/src/packages/entry_point";
 
 @Component({
   selector: 'app-generalstatscomponent',
@@ -10,27 +12,49 @@ import {AnalyticsService} from "../../shared/services/AnalyticsService";
 })
 export class GeneralstatscomponentComponent implements OnInit {
 
-  private subscriptions!: Subscription[];
+  private mainSubscription!: Subscription;
+  generalPercentageObject!: GeneralPercentage;
 
-  percentageSubmissionsPassed!: number;
-
-  percentageChallengesPassed!: number;
-
-  favouriteLanguage: string = "";
+  challengesPassedClass: string = "";
+  submissionsPassedClass: string = "";
 
   constructor(private analyticsService: AnalyticsService) { }
 
   ngOnInit(): void {
-    this.subscriptions = [];
+    this.mainSubscription = new Subscription();
     this.initData();
   }
 
   private initData() {
-    this.initChallengesPercentage();
-    this.initSubmissionsPercentage();
-    this.initFavouriteLanguage();
+    this.initGeneralPercentages();
   }
 
+  private initGeneralPercentages() {
+    const subscription: Subscription = this.analyticsService.getGeneralPercentages()
+      .subscribe((data: GeneralPercentage) => {
+        this.generalPercentageObject = data;
+        this.initPassClasses(data);
+      });
+    this.mainSubscription.add(subscription);
+  }
+
+  private initPassClasses(data: GeneralPercentage) {
+    this.submissionsPassedClass = this.getClassForPercentage(data.percentageSubmissionPassed);
+    this.challengesPassedClass = this.getClassForPercentage(data.percentageChallengesSolved);
+  }
+
+  private getClassForPercentage(percentage: number): string {
+    switch(true) {
+      case (percentage > 80): return "progress-bar bg-success progress-bar-striped progress-bar-animated";
+      case (percentage > 65): return "progress-bar bg-primary progress-bar-striped progress-bar-animated";
+      case (percentage > 50): return "progress-bar bg-secondary progress-bar-striped progress-bar-animated";
+      case (percentage > 35): return "progress-bar bg-dark progress-bar-striped progress-bar-animated";
+      case (percentage > 20): return "progress-bar bg-warning progress-bar-striped progress-bar-animated";
+      default:                return "progress-bar bg-danger progress-bar-striped progress-bar-animated";
+    }
+  }
+
+  /*
   private initSubmissionsPercentage(): void {
     const subscription: Subscription = this.analyticsService.getPercentagePassedSubmissions()
       .pipe().subscribe((data: number) => {
@@ -69,5 +93,5 @@ export class GeneralstatscomponentComponent implements OnInit {
       document.getElementById("passedSubmissionsPercent")!.style.width = `${this.percentageSubmissionsPassed}%`;
     }
   }
-
+  */
 }

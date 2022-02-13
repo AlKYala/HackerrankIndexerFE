@@ -1,126 +1,71 @@
-<!--<div class="row text-start justify-content-center">
-  <div class="col-md-6 col-xl-3 mb-4">
-    <div class="card shadow border-start-info py-2">
-      <div class="card-body">
-        <div class="row align-items-center no-gutters">
-          <div class="col me-2">
-            <div class="text-uppercase text-info fw-bold text-xs mb-1"><span>PASSED SUBMISSIONS IN %</span></div>
+<div class="row">
+  <div class="col-md-12">
+    <h1 class="display-6">General Stats</h1>
+    <div class="row">
+      <div class="col-md-4" style="margin: 5px 0px;">
+        <div class="card shadow-sm">
+          <div class="card-body" data-bs-toggle="tooltip" title="Takes every submission you make into account.  Useless statistic but leetcode has it too.">
+            <h4 class="card-title">Submission Acceptance Rate</h4>
+            <h6 class="text-muted card-subtitle mb-2">Passed Submissions in %</h6>
+            <p class="card-text"></p>
+            <div class="row align-items-center no-gutters">
+              <div class="col me-2">
+                <div class="text-uppercase text-info fw-bold text-xs mb-1"></div>
+              </div>
+            </div>
             <div class="row g-0 align-items-center">
               <div class="col-auto">
-                <div class="text-dark fw-bold h5 mb-0 me-3"><span>{{this.percentageSubmissionsPassed}}%</span></div>
+                <div class="text-dark fw-bold h5 mb-0 me-3"><span>{{generalPercentageObject.percentageSubmissionPassed}}</span></div>
               </div>
               <div class="col">
                 <div class="progress progress-sm">
-                  <div id="passedSubmissionsPercent" class="progress-bar bg-info"><span class="visually-hidden"></span></div>
+                  <div [attr.class]="submissionsPassedClass" style="width: 50%;"><span class="visually-hidden">50%</span></div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="col-md-6 col-xl-3 mb-4">
-    <div class="card shadow border-start-info py-2">
-      <div class="card-body">
-        <div class="row align-items-center no-gutters">
-          <div class="col me-2">
-            <div class="text-uppercase text-info fw-bold text-xs mb-1"><span>PASSED CHALLENGES IN %</span></div>
+      <div class="col-md-4" style="margin: 5px 0px;">
+        <div class="card shadow-sm">
+          <div class="card-body" data-bs-toggle="tooltip" title="The percentage of all challenges with at least one passed submission. Useful statistic." style="box-shadow: 0px 0px;">
+            <h4 class="card-title">Challenge Acceptance Rate</h4>
+            <h6 class="text-muted card-subtitle mb-2">Passed Challenges in %</h6>
+            <p class="card-text"></p>
+            <div class="row align-items-center no-gutters">
+              <div class="col me-2">
+                <div class="text-uppercase text-info fw-bold text-xs mb-1"></div>
+              </div>
+            </div>
             <div class="row g-0 align-items-center">
               <div class="col-auto">
-                <div class="text-dark fw-bold h5 mb-0 me-3"><span>{{this.percentageChallengesPassed}}%</span></div>
+                <div class="text-dark fw-bold h5 mb-0 me-3"><span>{{generalPercentageObject.percentageChallengesSolved}}</span></div>
               </div>
               <div class="col">
                 <div class="progress progress-sm">
-                  <div id="challengesPassedProgress" class="progress-bar bg-info">
-                    <span class="visually-hidden"></span></div>
+                  <div [attr.class]="challengesPassedClass" style="width: 50%;"><span class="visually-hidden"></span></div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="col-md-6 col-xl-3 mb-4">
-    <div class="card shadow border-start-primary py-2">
-      <div class="card-body">
-        <div class="row align-items-center no-gutters">
-          <div class="col me-2">
-            <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>MOST USED LANGUAGE</span></div>
-            <div class="text-dark fw-bold h5 mb-0"><span>{{this.favouriteLanguage}}</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>-->
-
-<div class="row text-start justify-content-center">
-  <div class="col-md-6 col-xl-3 mb-4">
-    <div class="card shadow-sm">
-      <div class="card-body" data-bs-toggle="tooltip" data-bss-tooltip="" title="Takes every submission you make into account.  Useless statistic but leetcode has it too.">
-        <h4 class="card-title">Submission Acceptance Rate</h4>
-        <h6 class="text-muted card-subtitle mb-2">Passed Submissions in %</h6>
-        <p class="card-text"></p>
-        <div class="row align-items-center no-gutters">
-          <div class="col me-2">
-            <div class="text-uppercase text-info fw-bold text-xs mb-1"></div>
-          </div>
-        </div>
-        <div class="row g-0 align-items-center">
-          <div class="col-auto">
-            <div class="text-dark fw-bold h5 mb-0 me-3"><span>{{this.percentageSubmissionsPassed}}%</span></div>
-          </div>
-          <div class="col">
-            <div class="progress progress-sm">
-              <div id="passedSubmissionsPercent" class="progress-bar bg-info" aria-valuemin="0"
-                   aria-valuemax="100"><span class="visually-hidden"></span></div>
+      <div class="col-md-4" style="margin: 5px 0px;">
+        <div class="card shadow-sm">
+          <div class="card-body" data-bs-toggle="tooltip" title="Your most used language." style="box-shadow: 0px 0px;">
+            <h4 class="card-title">Favourite Language</h4>
+            <h6 class="text-muted card-subtitle mb-2">Your most used language</h6>
+            <p class="card-text"></p>
+            <div class="row align-items-center no-gutters">
+              <div class="col me-2">
+                <div class="text-uppercase text-info fw-bold text-xs mb-1"></div>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-4">
-    <div class="card shadow-sm">
-      <div class="card-body" data-bs-toggle="tooltip" data-bss-tooltip="" title="The percentage of all challenges with at least one passed submission. Useful statistic." style="box-shadow: 0px 0px;">
-        <h4 class="card-title">Challenge Acceptance Rate</h4>
-        <h6 class="text-muted card-subtitle mb-2">Passed Challenges in %</h6>
-        <p class="card-text"></p>
-        <div class="row align-items-center no-gutters">
-          <div class="col me-2">
-            <div class="text-uppercase text-info fw-bold text-xs mb-1"></div>
-          </div>
-        </div>
-        <div class="row g-0 align-items-center">
-          <div class="col-auto">
-            <div class="text-dark fw-bold h5 mb-0 me-3"><span>{{this.percentageChallengesPassed}}%</span></div>
-          </div>
-          <div class="col">
-            <div class="progress progress-sm">
-              <div id="challengesPassedProgress"
-                class="progress-bar bg-info" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" ><span class="visually-hidden">50%</span></div>
+            <div class="row g-0 align-items-center">
+              <div class="col-auto">
+                <div class="text-dark fw-bold h5 mb-0 me-3"><span>{{generalPercentageObject.favouriteLanguage.language}}</span></div>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-4">
-    <div class="card shadow-sm">
-      <div class="card-body" data-bs-toggle="tooltip" data-bss-tooltip="" title="The language you made the most submissions with">
-        <h4 class="card-title">Your favourite language</h4>
-        <h6 class="text-muted card-subtitle mb-2">Most used language</h6>
-        <p class="card-text"></p>
-        <div class="row align-items-center no-gutters">
-          <div class="col me-2">
-            <div class="text-uppercase text-info fw-bold text-xs mb-1"></div>
-          </div>
-        </div>
-        <div class="row g-0 align-items-center">
-          <div class="col-auto">
-            <div class="text-dark fw-bold h5 mb-0 me-3"><span>{{this.favouriteLanguage}}</span></div>
           </div>
         </div>
       </div>

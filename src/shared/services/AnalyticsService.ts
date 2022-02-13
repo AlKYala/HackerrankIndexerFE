@@ -8,6 +8,7 @@ import {PassPercentages} from "../datamodels/Analytics/models/PassPercentages";
 import {ServiceHandler} from "./ServiceHandler/ServiceHandler";
 import {RequestServiceEnum} from "./ServiceHandler/RequestServiceEnum";
 import {RequestService} from "./ServiceHandler/RequestService";
+import {GeneralPercentage} from "../datamodels/Analytics/models/GeneralPercentage";
 
 //TODO bei bedarf die endpunkte anpassen!!!
 
@@ -77,5 +78,10 @@ export class AnalyticsService {
   public getNumberOfSubmissions(): Observable<number> {
     return this.requestService
       .anyRequest(RequestServiceEnum.GET, `${this.path}/numberSubmissions`) as Observable<number>;
+  }
+
+  public getGeneralPercentages(): Observable<GeneralPercentage> {
+    return this.requestService
+      .anyRequest(RequestServiceEnum.GET, `${this.path}/general`) as Observable<GeneralPercentage>;
   }
 }
