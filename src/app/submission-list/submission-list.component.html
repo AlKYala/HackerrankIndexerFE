@@ -5,7 +5,11 @@
   <div class="card-body">
     <div class="row align-items-center no-gutters" style="margin: 10px 0px;">
       <div class="col">
-        <div class="input-group"><span class="input-group-text">Filter By Name</span><input class="form-control" type="text" /><button class="btn btn-primary" type="button">Search</button></div>
+        <div class="input-group">
+          <span class="input-group-text">Filter By Name</span>
+          <input [formControl]="searchFormControl" class="form-control" type="text" />
+          <button (click)="filterSubmissions()" class="btn btn-primary" type="button">Search</button>
+        </div>
       </div>
     </div>
     <div class="row align-items-center no-gutters" style="margin: 10px 0px;">

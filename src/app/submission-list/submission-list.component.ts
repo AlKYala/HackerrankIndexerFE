@@ -15,6 +15,7 @@ import {RequestService} from "../../shared/services/ServiceHandler/RequestServic
 import {JwPaginationComponent} from "jw-angular-pagination";
 import paginate from "jw-paginate";
 import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
+import {FormControl} from "@angular/forms";
 /**
  * TODO: du musst die pagination fixen
  * Wenn du dieses Component 2x nebeneinander hast, sieht das kacke aus
@@ -32,7 +33,9 @@ import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
 export class SubmissionListComponent implements OnInit, OnDestroy {
 
   submissions: Submission[] = [];
+  submissionsBackup: Submission[] = [];
   private subscriptions: Subscription[] = [];
+
 
   @Input()
   inputChallengeId: number | undefined;
@@ -53,6 +56,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   public languages!: Planguage[];
   public enabledLanguages!: boolean[];
 
+  searchFormControl = new FormControl();
   pageOfItems!: Array<any>;
   pageSize = 5;
   pager: any = {};
@@ -74,6 +78,18 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+  }
+
+  public filterSubmissions() {
+    const search = this.searchFormControl.value;
+    console.log(search);
+    if(search == null || search.length == 0) {
+      this.submissions = this.submissionsBackup;
+      return;
+    }
+    this.submissions = this.submissionsBackup.filter(submission => submission.challenge.challengeName.includes(search));
+    console.log(this.submissions);
+    this.pageOfItems = this.submissions;
   }
 
   private scanForFilter() {
@@ -148,6 +164,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
     const subscription : Subscription = this.submissionService.findAll().
     pipe().subscribe((submissions: Submission[]) => {
       this.submissions = submissions;
+      this.submissionsBackup = submissions;
     });
     this.subscriptions.push(subscription);
   }
@@ -194,6 +211,5 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
         return;
       }
     }
-
   }
 }

@@ -32,14 +32,23 @@ export class GeneralstatscomponentComponent implements OnInit {
   private initGeneralPercentages() {
     const subscription: Subscription = this.analyticsService.getGeneralPercentages()
       .subscribe((data: GeneralPercentage) => {
-        this.generalPercentageObject = data;
+        console.log(data);
+        this.assignGeneralPercentagesObject(data);
         this.initPassClasses(data);
       });
     this.mainSubscription.add(subscription);
   }
 
+  private assignGeneralPercentagesObject(instance: GeneralPercentage) {
+    this.generalPercentageObject = instance;
+    this.generalPercentageObject.percentageSubmissionsPassed =
+      Math.floor(this.generalPercentageObject.percentageSubmissionsPassed);
+    this.generalPercentageObject.percentageChallengesSolved =
+      Math.floor(this.generalPercentageObject.percentageChallengesSolved);
+  }
+
   private initPassClasses(data: GeneralPercentage) {
-    this.submissionsPassedClass = this.getClassForPercentage(data.percentageSubmissionPassed);
+    this.submissionsPassedClass = this.getClassForPercentage(data.percentageSubmissionsPassed);
     this.challengesPassedClass = this.getClassForPercentage(data.percentageChallengesSolved);
   }
 
@@ -53,45 +62,4 @@ export class GeneralstatscomponentComponent implements OnInit {
       default:                return "progress-bar bg-danger progress-bar-striped progress-bar-animated";
     }
   }
-
-  /*
-  private initSubmissionsPercentage(): void {
-    const subscription: Subscription = this.analyticsService.getPercentagePassedSubmissions()
-      .pipe().subscribe((data: number) => {
-        this.percentageSubmissionsPassed = Math.round(data*100);
-        this.visualizePassedSubmissions();
-      })
-    this.subscriptions.push(subscription);
-  }
-
-  private initChallengesPercentage(): void {
-    const subscription: Subscription = this.analyticsService.getPercentagePassedChallenges()
-      .pipe().subscribe((data: number) => {
-        //debug
-        this.percentageChallengesPassed = Math.round(data*100);
-        this.visualizePassedChallenges();
-      });
-    this.subscriptions.push(subscription);
-  }
-
-
-  private initFavouriteLanguage() {
-    const subscription = this.analyticsService.getFavouritePLanguage().pipe().subscribe((data: Planguage) => {
-      this.favouriteLanguage = data.language;
-    });
-    this.subscriptions.push(subscription);
-  }
-
-  private visualizePassedChallenges() {
-    if( document.getElementById("challengesPassedProgress") != null) {
-      document.getElementById("challengesPassedProgress")!.style.width = `${this.percentageChallengesPassed}%`;
-    }
-  }
-
-  private visualizePassedSubmissions() {
-    if(document.getElementById("passedSubmissionsPercent") != null) {
-      document.getElementById("passedSubmissionsPercent")!.style.width = `${this.percentageSubmissionsPassed}%`;
-    }
-  }
-  */
 }
