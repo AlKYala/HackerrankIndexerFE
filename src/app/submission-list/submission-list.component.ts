@@ -34,8 +34,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
 
   submissions: Submission[] = [];
   submissionsBackup: Submission[] = [];
-  private subscriptions: Subscription[] = [];
-
+  private mainSubscription: Subscription;
 
   @Input()
   inputChallengeId: number | undefined;
@@ -55,6 +54,11 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
 
   public languages!: Planguage[];
   public enabledLanguages!: boolean[];
+  private selectedLanguages: Set<number>;
+
+  onlyPassedSubmissions:      boolean   = false;
+  onlyFailedSubmissions:      boolean   = false;
+  onlyLastPassedSubmissions:  boolean   = false;
 
   searchFormControl = new FormControl();
   pageOfItems!: Array<any>;
@@ -70,7 +74,10 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
               private pLanguageService: PLanguageService,
               private challengeService: ChallengeService,
               private router: Router,
-              private requestService: RequestService) { }
+              private requestService: RequestService) {
+    this.mainSubscription   = new Subscription();
+    this.selectedLanguages  = new Set<number>();
+  }
 
   ngOnInit(): void {
     this.scanForFilter();
@@ -90,6 +97,61 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
     this.submissions = this.submissionsBackup.filter(submission => submission.challenge.challengeName.includes(search));
     console.log(this.submissions);
     this.pageOfItems = this.submissions;
+  }
+
+  public clickLanguage(pLanguage: Planguage): void {
+    const id: number = pLanguage.id!;
+    if(this.selectedLanguages.has(id)) {
+      this.selectedLanguages.delete(id);
+      return;
+    }
+
+    this.selectedLanguages.add(id);
+  }
+
+  public fireLanguageFilter() {
+    this.filterByLanguageIDs();
+  }
+
+  public checkOnlyPassedSubmissions() {
+    if(this.onlyPassedSubmissions) {
+      this.onlyPassedSubmissions = false;
+      return;
+    }
+    this.onlyFailedSubmissions = false;
+    this.onlyLastPassedSubmissions = false;
+    this.onlyPassedSubmissions = true;
+  }
+
+  public checkOnlyFailedSubmissions() {
+    if(this.onlyFailedSubmissions) {
+      this.onlyFailedSubmissions = false;
+      return;
+    }
+    this.onlyFailedSubmissions = true;
+    this.onlyLastPassedSubmissions = false;
+    this.onlyPassedSubmissions = false;
+  }
+
+  public checkOnlyLastPassedSubmissions() {
+    if(this.onlyLastPassedSubmissions) {
+      this.onlyLastPassedSubmissions = false;
+      return;
+    }
+    this.onlyFailedSubmissions = false;
+    this.onlyLastPassedSubmissions = true;
+    this.onlyPassedSubmissions = false;
+  }
+
+  private filterByLanguageIDs() {
+    if(this.selectedLanguages.size == 0) {
+      return;
+    }
+    for(let submission of this.submissionsBackup) {
+      if(this.selectedLanguages.has(submission.language.id!)) {
+        this.submissions.push(submission);
+      }
+    }
   }
 
   private scanForFilter() {
@@ -149,7 +211,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
         this.submissions = submissions;
         this.setPage(1);
       })
-    this.subscriptions.push(subscription);
+    this.mainSubscription.add(subscription);
   }
 
   private getSubmissionsByPLanguageId(pLanguageId: number) {
@@ -157,7 +219,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
       .pipe().subscribe((submissions: Submission[]) => {
         this.submissions = submissions;
       })
-    this.subscriptions.push(subscription);
+    this.mainSubscription.add(subscription);
   }
 
   private getAllSubmissions() {
@@ -166,7 +228,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
       this.submissions = submissions;
       this.submissionsBackup = submissions;
     });
-    this.subscriptions.push(subscription);
+    this.mainSubscription.add(subscription);
   }
 
   private getAllSubmissionsRequest(): Observable<Submission[]> {
@@ -191,10 +253,11 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   }
 
   private initLanguages() {
-    this.pLanguageService.findAll().subscribe((data: Planguage[]) => {
+    const subscription: Subscription = this.pLanguageService.findAll().subscribe((data: Planguage[]) => {
       this.languages = data;
       this.enableLanguages(data.length);
     });
+    this.mainSubscription.add(subscription);
   }
 
   private enableLanguages(size: number): void {

@@ -18,9 +18,21 @@
           <div class="col-md-12 col-lg-12 col-xxl-12 offset-xxl-0 me-2">
             <div class="text-uppercase text-warning fw-bold text-xs mb-1"><span style="color: var(--bs-gray-900);">Filter Options</span></div>
             <div class="text-dark fw-bold h5 mb-0">
-              <div class="form-check"><input id="formCheck-1" class="form-check-input" type="checkbox" /><label class="form-check-label" for="formCheck-1">All Passed Submissions</label></div>
-              <div class="form-check"><input id="formCheck-3" class="form-check-input" type="checkbox" /><label class="form-check-label" for="formCheck-3">All Failed Submissions</label></div>
-              <div class="form-check"><input id="formCheck-4" class="form-check-input" type="checkbox" /><label class="form-check-label" for="formCheck-4">Only latest passed Submissions</label></div>
+              <div class="form-check">
+                <input [checked]="onlyPassedSubmissions" (change)="this.checkOnlyPassedSubmissions()"
+                       id="formCheck-1" class="form-check-input" type="checkbox" />
+                <label class="form-check-label" for="formCheck-1">Only Passed Submissions</label>
+              </div>
+              <div class="form-check">
+                <input [checked]="onlyFailedSubmissions" (change)="this.checkOnlyFailedSubmissions()"
+                       id="formCheck-3" class="form-check-input" type="checkbox" />
+                <label class="form-check-label" for="formCheck-3">Only Failed Submissions</label>
+              </div>
+              <div class="form-check">
+                <input [checked]="onlyLastPassedSubmissions" (change)="this.checkOnlyLastPassedSubmissions()"
+                       id="formCheck-4" class="form-check-input" type="checkbox" />
+                <label class="form-check-label" for="formCheck-4">Only latest passed Submissions</label>
+              </div>
             </div>
           </div>
         </div>
@@ -32,16 +44,13 @@
           </div>
         </div>
         <div class="row no-gutters">
-          <ng-container *ngFor="let language of languages; index as i">
+          <ng-container *ngFor="let language of languages">
             <div class="col-12 col-sm-4 col-md-3 col-lg-4 col-xl-3 col-xxl-3">
-              <!-- TODO das will noch nicht -->
-              <div class="form-check"><input [id]="i" [checked]="enabledLanguages[i]" class="form-check-input" type="checkbox" />
-                <label class="form-check-label" [htmlFor]="i" ]]>{{languages[i].language}}</label></div>
+              <div class="form-check"><input (click)="this.clickLanguage(language)" id="formCheck-6" class="form-check-input" type="checkbox" />
+                <label class="form-check-label">{{language.language}}</label></div>
             </div>
           </ng-container>
-
         </div>
-
         <!-- LANGUAGE SELECTION END -->
       </div>
     </div>
