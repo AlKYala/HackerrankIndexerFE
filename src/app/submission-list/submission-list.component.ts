@@ -16,6 +16,7 @@ import {JwPaginationComponent} from "jw-angular-pagination";
 import paginate from "jw-paginate";
 import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
 import {FormControl} from "@angular/forms";
+import {HashMap} from "../../shared/other/HashMap";
 /**
  * TODO: du musst die pagination fixen
  * Wenn du dieses Component 2x nebeneinander hast, sieht das kacke aus
@@ -151,6 +152,35 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
       if(this.selectedLanguages.has(submission.language.id!)) {
         this.submissions.push(submission);
       }
+    }
+  }
+
+  private filterByCriteria() {
+    switch(true) {
+      case this.onlyPassedSubmissions: this.filterOnlyPassed(); break;
+      case this.onlyFailedSubmissions: this.filterOnlyFailed(); break;
+      case this.onlyLastPassedSubmissions: this.filterLastPassed(); break;
+    }
+  }
+
+  private filterOnlyPassed() {
+    this.submissions = this.submissions.filter(submission => submission.score == 1);
+  }
+
+  private filterOnlyFailed() {
+    this.submissions = this.submissions.filter(submission => submission.score < 1);
+  }
+
+  private filterLastPassed() {
+    let hash = [];
+    this.filterOnlyPassed();
+    for(let submission of this.submissions) {
+      hash[submission.challenge.id!] = submission;
+    }
+
+    this.submissions = [];
+    for(let key of hash.keys()) {
+      this.submissions.push(hash[key]);
     }
   }
 
