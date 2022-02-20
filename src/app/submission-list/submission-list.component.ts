@@ -112,6 +112,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
 
   public fireLanguageFilter() {
     this.filterByLanguageIDs();
+    this.filterByCriteria();
   }
 
   public checkOnlyPassedSubmissions() {

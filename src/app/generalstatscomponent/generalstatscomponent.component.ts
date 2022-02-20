@@ -18,7 +18,8 @@ export class GeneralstatscomponentComponent implements OnInit {
   challengesPassedClass: string = "";
   submissionsPassedClass: string = "";
 
-  constructor(private analyticsService: AnalyticsService) { }
+  constructor(private analyticsService: AnalyticsService) {
+  }
 
   ngOnInit(): void {
     this.mainSubscription = new Subscription();
