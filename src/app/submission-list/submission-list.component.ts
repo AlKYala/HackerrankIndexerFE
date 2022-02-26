@@ -17,6 +17,7 @@ import paginate from "jw-paginate";
 import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
 import {FormControl} from "@angular/forms";
 import {HashMap} from "../../shared/other/HashMap";
+import {FilterRequest} from "../../shared/datamodels/Submission/model/FilterRequest";
 /**
  * TODO: du musst die pagination fixen
  * Wenn du dieses Component 2x nebeneinander hast, sieht das kacke aus
@@ -88,11 +89,10 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
   }
 
-  public filterSubmissions() {
+  public filterSubmissionsByName() {
     const search = this.searchFormControl.value;
     console.log(search);
     if(search == null || search.length == 0) {
-      this.submissions = this.submissionsBackup;
       return;
     }
     this.submissions = this.submissionsBackup.filter(submission => submission.challenge.challengeName.includes(search));
@@ -111,8 +111,31 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   }
 
   public fireLanguageFilter() {
-    this.filterByLanguageIDs();
-    this.filterByCriteria();
+
+    console.log("Firing filter");
+
+    this.submissions = this.submissionsBackup;
+
+    const filterRequest: FilterRequest = this.createFilterRequest();
+
+    console.log(filterRequest);
+    let arr: number[] = [];
+    Object.assign(arr, filterRequest.languageIDs);
+
+    console.log(arr);
+
+    if(filterRequest.languageIDs.length == 0 && filterRequest.mode == 4) {
+
+      this.filterSubmissionsByName();
+      return;
+    }
+
+    const subscription: Subscription = this.submissionService.findWithFilterRequest(filterRequest)
+      .subscribe((data: Submission[]) => {
+        this.submissions = data;
+        this.filterSubmissionsByName();
+      });
+    this.mainSubscription.add(subscription);
   }
 
   public checkOnlyPassedSubmissions() {
@@ -145,7 +168,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
     this.onlyPassedSubmissions = false;
   }
 
-  private filterByLanguageIDs() {
+  /*private filterByLanguageIDs() {
     if(this.selectedLanguages.size == 0) {
       return;
     }
@@ -183,7 +206,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
     for(let key of hash.keys()) {
       this.submissions.push(hash[key]);
     }
-  }
+  }*/
 
   private scanForFilter() {
     const foundRouting: boolean = this.scanForRoutingParameters();
@@ -304,6 +327,27 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
         this.enabledLanguages[i] = true;
         return;
       }
+    }
+  }
+
+  private createFilterRequest(): FilterRequest {
+    return {mode: this.getFilterMode(), languageIDs: this.setToArray(this.selectedLanguages)};
+  }
+
+  private setToArray(nums: Set<number>): number[] {
+    const numArray: number[] = [];
+    for(let num of nums.values()) {
+      numArray.push(num);
+    }
+    return numArray;
+  }
+
+  private getFilterMode(): number {
+    switch (true) {
+      case (this.onlyPassedSubmissions): return 1;
+      case (this.onlyFailedSubmissions): return 2;
+      case (this.onlyLastPassedSubmissions): return 3;
+      default: return 4;
     }
   }
 }
