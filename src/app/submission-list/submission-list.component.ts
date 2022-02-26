@@ -168,6 +168,10 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
     this.onlyPassedSubmissions = false;
   }
 
+  public restoreSubmissions() {
+    this.submissions = this.submissionsBackup;
+  }
+
   /*private filterByLanguageIDs() {
     if(this.selectedLanguages.size == 0) {
       return;
