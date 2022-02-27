@@ -9,6 +9,7 @@ import {switchMap} from "rxjs/operators";
 import {PassPercentages} from "../../shared/datamodels/Analytics/models/PassPercentages";
 import {LegendPosition} from "@swimlane/ngx-charts";
 import {HackerrrankJSONService} from "../../shared/datamodels/HackerrankJSON/service/HackerrrankJSONService";
+import Chart from "chart.js";
 
 @Component({
   selector: 'app-analytics',
@@ -32,6 +33,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscriptions = [];
     this.checkIsUploadedAlready();
+    this.initStyleAndStats();
     this.initStyleAndStats();
   }
 

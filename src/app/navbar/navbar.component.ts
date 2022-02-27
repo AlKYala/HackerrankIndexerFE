@@ -1,6 +1,9 @@
 import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {MediaMatcher} from "@angular/cdk/layout";
 import {Router} from "@angular/router";
+import {RoutingService} from "../../shared/services/RoutingService";
+import {LocalStorageService} from "ngx-webstorage";
+import {AuthenticationService} from "../../shared/services/AuthenticationService";
 
 @Component({
   selector: 'app-navbar',
@@ -11,17 +14,27 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   public toggle: boolean;
 
-  ngOnInit(): void {
-  }
-  mobileQuery: MediaQueryList;
+  public username!: string;
 
-  private _mobileQueryListener: () => void;
-
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private router: Router) {
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,
+              private routerService: RoutingService,
+              private localStorageService: LocalStorageService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
     this.toggle = false;
+  }
+
+  ngOnInit(): void {
+    this.initUsername();
+  }
+
+  mobileQuery: MediaQueryList;
+
+  private _mobileQueryListener: () => void;
+
+  private initUsername() {
+    this.username = this.localStorageService.retrieve("email");
   }
 
   public toggleDropdown() {
@@ -34,7 +47,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   public route(event: Event, path: string) {
-    event.preventDefault();
-    this.router.navigate([path]);
+    this.routerService.route(path, event);
   }
 }

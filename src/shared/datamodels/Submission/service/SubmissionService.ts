@@ -5,6 +5,9 @@ import {ServiceHandler} from "../../../services/ServiceHandler/ServiceHandler";
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {BaseEntity} from "../../Base/model/BaseEntity";
+import {RequestService} from "../../../services/ServiceHandler/RequestService";
+import {FilterRequest} from "../model/FilterRequest";
+import {environment} from "../../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +16,8 @@ export class SubmissionService implements BaseService<Submission> {
 
   private serviceHandler: ServiceHandler<Submission>;
 
-  constructor(private httpClient: HttpClient) {
-    this.serviceHandler = new ServiceHandler<Submission>(this.httpClient, "submission");
+  constructor(private requestService: RequestService) {
+    this.serviceHandler = new ServiceHandler<Submission>(requestService, "submission");
   }
 
   delete(id: number): Observable<number> {
@@ -35,5 +38,13 @@ export class SubmissionService implements BaseService<Submission> {
 
   update(id: number, instance: Submission): Observable<Submission> {
     return this.serviceHandler.update(id, instance);
+  }
+
+  /**
+   * A method that takes a filterRequest instance and returns the found results from backend
+   * @param filterRequest
+   */
+  findWithFilterRequest(filterRequest: FilterRequest): Observable<Submission[]> {
+    return this.requestService.anyPostRequest(`${environment.api}/submission/filter`, filterRequest) as Observable<Submission[]>;
   }
 }

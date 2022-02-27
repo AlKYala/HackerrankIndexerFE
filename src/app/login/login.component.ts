@@ -53,6 +53,7 @@ export class LoginComponent implements OnInit {
         data => {
           console.log(data);
           this.localStorageService.store('jwt', data);
+          this.localStorageService.store('email', userLogin.email);
           this.router.navigate(['/']);
         },
         error => {
