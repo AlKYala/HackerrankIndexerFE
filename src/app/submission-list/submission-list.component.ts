@@ -91,12 +91,10 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
 
   public filterSubmissionsByName() {
     const search = this.searchFormControl.value;
-    console.log(search);
     if(search == null || search.length == 0) {
       return;
     }
     this.submissions = this.submissionsBackup.filter(submission => submission.challenge.challengeName.includes(search));
-    console.log(this.submissions);
     this.pageOfItems = this.submissions;
   }
 
@@ -112,17 +110,13 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
 
   public fireLanguageFilter() {
 
-    console.log("Firing filter");
-
     this.submissions = this.submissionsBackup;
 
     const filterRequest: FilterRequest = this.createFilterRequest();
 
-    console.log(filterRequest);
     let arr: number[] = [];
     Object.assign(arr, filterRequest.languageIDs);
 
-    console.log(arr);
 
     if(filterRequest.languageIDs.length == 0 && filterRequest.mode == 4) {
 
@@ -169,48 +163,35 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   }
 
   public restoreSubmissions() {
+    this.resetSearchBox();
+    this.resetButtonClicks();
     this.submissions = this.submissionsBackup;
   }
 
-  /*private filterByLanguageIDs() {
-    if(this.selectedLanguages.size == 0) {
-      return;
-    }
-    for(let submission of this.submissionsBackup) {
-      if(this.selectedLanguages.has(submission.language.id!)) {
-        this.submissions.push(submission);
-      }
+  private resetButtonClicks() {
+    this.resetLangaugeClicks();
+    this.resetModeButtonClicks();
+  }
+
+  private resetModeButtonClicks() {
+    this.onlyLastPassedSubmissions = false;
+    this.onlyFailedSubmissions = false;
+    this.onlyPassedSubmissions = false;
+  }
+
+  private resetLangaugeClicks() {
+    this.selectedLanguages = new Set<number>();
+    const languageCheckBoxes: HTMLCollection = document.getElementsByClassName("languageCheckBox");
+
+    for(let i = 0; i < languageCheckBoxes.length; i++) {
+      var temp = <HTMLInputElement> languageCheckBoxes.item(i);
+      temp.checked = false;
     }
   }
 
-  private filterByCriteria() {
-    switch(true) {
-      case this.onlyPassedSubmissions: this.filterOnlyPassed(); break;
-      case this.onlyFailedSubmissions: this.filterOnlyFailed(); break;
-      case this.onlyLastPassedSubmissions: this.filterLastPassed(); break;
-    }
+  private resetSearchBox() {
+    this.searchFormControl.setValue("");
   }
-
-  private filterOnlyPassed() {
-    this.submissions = this.submissions.filter(submission => submission.score == 1);
-  }
-
-  private filterOnlyFailed() {
-    this.submissions = this.submissions.filter(submission => submission.score < 1);
-  }
-
-  private filterLastPassed() {
-    let hash = [];
-    this.filterOnlyPassed();
-    for(let submission of this.submissions) {
-      hash[submission.challenge.id!] = submission;
-    }
-
-    this.submissions = [];
-    for(let key of hash.keys()) {
-      this.submissions.push(hash[key]);
-    }
-  }*/
 
   private scanForFilter() {
     const foundRouting: boolean = this.scanForRoutingParameters();
@@ -322,7 +303,6 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
     this.enabledLanguages = new Array<boolean>(size);
     if(this.inputLanguageid == -1) {
       this.enabledLanguages.fill(true, 0, size);
-      console.log(this.enabledLanguages);
       return;
     }
     this.enabledLanguages.fill(false, 0, size);
