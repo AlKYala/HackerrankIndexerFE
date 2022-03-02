@@ -58,7 +58,9 @@ export class ChartcomponentComponent implements OnInit{
 
     for(let i = 0; i < statistics.length; i++)
     {
-      this.labels.push(statistics[i].planguage.language);
+
+      let label = this.getLabelFromStatisticsInstance(statistics[i]);
+      this.labels.push(label);
       colors.push(statistics[i].planguage.color);
       this.numberSubmissions.push(statistics[i].totalSubmissions);
       this.passedSubmissions.push(statistics[i].passedSubmissions);
@@ -76,6 +78,10 @@ export class ChartcomponentComponent implements OnInit{
     const chartData: ChartJSData = {labels: this.labels, datasets: chartDataDataSet};
 
     this.renderChart(chartData);
+  }
+
+  private getLabelFromStatisticsInstance(statistic: UsageStatistics): string {
+    return (statistic.planguage.displayName != null) ? statistic.planguage.displayName : statistic.planguage.language;
   }
 
   public renderChart(chartData: ChartJSData) {
