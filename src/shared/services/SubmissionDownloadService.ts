@@ -1,9 +1,16 @@
 import {Injectable} from "@angular/core";
 import {Submission} from "../datamodels/Submission/model/Submission";
 import {formatDate} from "@angular/common";
+import {HttpClient} from "@angular/common/http";
+import {environment} from "../../environments/environment";
+import {Observable} from "rxjs";
+import {DownloadFile} from "../datamodels/DownloadFile/Model/DownloadFile";
 
 @Injectable({providedIn: 'root'})
 export class SubmissionDownloadService {
+
+  constructor(private httpClient: HttpClient) {
+  }
 
   public generateAndDownloadSubmission(submission: Submission) {
     let a = document.createElement("a");
@@ -52,5 +59,17 @@ export class SubmissionDownloadService {
       extension = 'py';
     }
     return extension;
+  }
+
+  public getDownloadFilesBySubmissions(submissions: Submission[]) {
+    const numbers: number[] = [];
+    for(let submission of submissions) {
+      numbers.push(submission.id!);
+    }
+    return this.getDownloadFilesBySubmissionIds(numbers);
+  }
+
+  public getDownloadFilesBySubmissionIds(numbers: number[]): Observable<DownloadFile[]> {
+    return this.httpClient.post(`${environment.api}/downloadSubmissions`, numbers) as Observable<DownloadFile[]>;
   }
 }
