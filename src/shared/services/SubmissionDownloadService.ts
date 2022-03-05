@@ -5,11 +5,12 @@ import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {Observable} from "rxjs";
 import {DownloadFile} from "../datamodels/DownloadFile/Model/DownloadFile";
+import {RequestService} from "./ServiceHandler/RequestService";
 
 @Injectable({providedIn: 'root'})
 export class SubmissionDownloadService {
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private requestService: RequestService) {
   }
 
   public generateAndDownloadSubmission(submission: Submission) {
@@ -70,6 +71,7 @@ export class SubmissionDownloadService {
   }
 
   public getDownloadFilesBySubmissionIds(numbers: number[]): Observable<DownloadFile[]> {
-    return this.httpClient.post(`${environment.api}/downloadSubmissions`, numbers) as Observable<DownloadFile[]>;
+    //return this.httpClient.post(`${environment.api}/downloadSubmissions`, numbers) as Observable<DownloadFile[]>;
+    return this.requestService.anyPostRequest(`${environment.api}/downloadSubmissions`, numbers) as Observable<DownloadFile[]>;
   }
 }

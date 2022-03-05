@@ -18,6 +18,8 @@ import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
 import {FormControl} from "@angular/forms";
 import {HashMap} from "../../shared/other/HashMap";
 import {FilterRequest} from "../../shared/datamodels/Submission/model/FilterRequest";
+import {SubmissionDownloadService} from "../../shared/services/SubmissionDownloadService";
+import {DownloadFile} from "../../shared/datamodels/DownloadFile/Model/DownloadFile";
 /**
  * TODO: du musst die pagination fixen
  * Wenn du dieses Component 2x nebeneinander hast, sieht das kacke aus
@@ -76,7 +78,8 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
               private pLanguageService: PLanguageService,
               private challengeService: ChallengeService,
               private router: Router,
-              private requestService: RequestService) {
+              private requestService: RequestService,
+              private submissionDownloadService: SubmissionDownloadService) {
     this.mainSubscription   = new Subscription();
     this.selectedLanguages  = new Set<number>();
   }
@@ -166,6 +169,13 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
     this.resetSearchBox();
     this.resetButtonClicks();
     this.submissions = this.submissionsBackup;
+  }
+
+  public fireDownload(): void {
+    const numbers: number[] = this.getSubmissionIDs();
+    const subscription = this.submissionDownloadService.getDownloadFilesBySubmissionIds(numbers)
+      .subscribe((data: DownloadFile[]) => {});
+    this.mainSubscription.add(subscription);
   }
 
   private resetButtonClicks() {
@@ -333,5 +343,13 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
       case (this.onlyLastPassedSubmissions): return 3;
       default: return 4;
     }
+  }
+
+  private getSubmissionIDs(): number[] {
+    const numbers: number[] = [];
+    for(let submission of this.submissions) {
+      numbers.push(submission.id!);
+    }
+    return numbers;
   }
 }
