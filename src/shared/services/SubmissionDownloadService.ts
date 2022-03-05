@@ -6,6 +6,8 @@ import {environment} from "../../environments/environment";
 import {Observable} from "rxjs";
 import {DownloadFile} from "../datamodels/DownloadFile/Model/DownloadFile";
 import {RequestService} from "./ServiceHandler/RequestService";
+import {CollectionWrapper} from "../datamodels/shared/collectionWrapper";
+import JSZip from "jszip";
 
 @Injectable({providedIn: 'root'})
 export class SubmissionDownloadService {
@@ -71,7 +73,27 @@ export class SubmissionDownloadService {
   }
 
   public getDownloadFilesBySubmissionIds(numbers: number[]): Observable<DownloadFile[]> {
-    //return this.httpClient.post(`${environment.api}/downloadSubmissions`, numbers) as Observable<DownloadFile[]>;
-    return this.requestService.anyPostRequest(`${environment.api}/downloadSubmissions`, numbers) as Observable<DownloadFile[]>;
+    const collectionWrapper: CollectionWrapper<number> = {collection: numbers};
+    return this.requestService.anyPostRequest(`${environment.api}/downloadSubmissions`, collectionWrapper) as Observable<DownloadFile[]>;
+  }
+
+  public downloadSubmissions(downloadFiles: DownloadFile[]) {
+    var zip = new JSZip();
+    for(const downloadFile of downloadFiles) {
+      //zip files here
+    }
+    //fire download
+  }
+
+  private downloadFileInstanceToBlob(downlaodFile: DownloadFile): Blob {
+    const bytesCharacterValues = atob(downlaodFile.base64);
+    const byteNumberValues = new Array(bytesCharacterValues.length);
+    for(let i = 0; i < bytesCharacterValues.length; i++) {
+      byteNumberValues[i] = bytesCharacterValues.charCodeAt(i);
+    }
+
+    const bytes = new Uint8Array(byteNumberValues);
+    const blob = new Blob([bytes], {type: 'application/json'});
+    return blob;
   }
 }
