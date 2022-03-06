@@ -8,6 +8,7 @@ import {DownloadFile} from "../datamodels/DownloadFile/Model/DownloadFile";
 import {RequestService} from "./ServiceHandler/RequestService";
 import {CollectionWrapper} from "../datamodels/shared/collectionWrapper";
 import JSZip from "jszip";
+import {Zip} from "../datamodels/Zip/model/Zip";
 
 @Injectable({providedIn: 'root'})
 export class SubmissionDownloadService {
@@ -78,10 +79,11 @@ export class SubmissionDownloadService {
   }
 
   public downloadSubmissions(downloadFiles: DownloadFile[]) {
-    var zip = new JSZip();
+    const zip = new Zip("submissions.zip");
     for(const downloadFile of downloadFiles) {
-      //zip files here
+      zip.addFile(downloadFile.base64, true, downloadFile.filename);
     }
+    zip.fireDownload();
     //fire download
   }
 
