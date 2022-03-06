@@ -73,15 +73,20 @@ export class SubmissionDownloadService {
     return this.getDownloadFilesBySubmissionIds(numbers);
   }
 
-  public getDownloadFilesBySubmissionIds(numbers: number[]): Observable<DownloadFile[]> {
+  public getDownloadFilesBySubmissionIds(numbers: number[]) {
     const collectionWrapper: CollectionWrapper<number> = {collection: numbers};
-    return this.requestService.anyPostRequest(`${environment.api}/downloadSubmissions`, collectionWrapper) as Observable<DownloadFile[]>;
+    this.requestService
+      .anyPostRequest(`${environment.api}/downloadSubmissions`, collectionWrapper)
+      .subscribe((data: DownloadFile[]) => {
+        this.downloadSubmissions(data);
+      })
   }
 
   public downloadSubmissions(downloadFiles: DownloadFile[]) {
+    console.log(downloadFiles);
     const zip = new Zip("submissions.zip");
     for(const downloadFile of downloadFiles) {
-      zip.addFile(downloadFile.base64, true, downloadFile.filename);
+      zip.addFile(downloadFile.base64, true, downloadFile.fileName);
     }
     zip.fireDownload();
     //fire download

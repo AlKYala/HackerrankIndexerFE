@@ -1,4 +1,4 @@
 export interface DownloadFile {
-  filename: string;
+  fileName: string;
   base64: string;
 }

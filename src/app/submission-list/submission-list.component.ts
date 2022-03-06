@@ -173,9 +173,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
 
   public fireDownload(): void {
     const numbers: number[] = this.getSubmissionIDs();
-    const subscription = this.submissionDownloadService.getDownloadFilesBySubmissionIds(numbers)
-      .subscribe((data: DownloadFile[]) => {});
-    this.mainSubscription.add(subscription);
+    this.submissionDownloadService.getDownloadFilesBySubmissionIds(numbers);
   }
 
   private resetButtonClicks() {

@@ -9,11 +9,13 @@ export class Zip {
   private zipFile: JSZip;
   private zipFileName: string;
   private folders: {[key:string]: any};
+  private fileNames: {[key:string]: any};
 
   constructor(zipFileName: string) {
     this.zipFileName = zipFileName;
     this.zipFile = new JSZip();
     this.folders = {};
+    this.fileNames = {};
   }
 
   public fireDownload() {
@@ -25,6 +27,7 @@ export class Zip {
   }
 
   public addFile(data: any, isBase64: boolean, fileName: string, folderName?: string) {
+    fileName = this.formatFileName(fileName);
     if(folderName != undefined) {
       this.addFileToFolder(data, isBase64, fileName, folderName);
       return;
@@ -37,7 +40,7 @@ export class Zip {
   }
 
   private addFileToFolder(data: any, isBase64: boolean, fileName: string, folderName: string) {
-    const folder = this.folders[folderName];
+    const folder = this.getFolder(folderName);
     folder.file(fileName, data, {base64: isBase64});
   }
 
@@ -48,4 +51,12 @@ export class Zip {
     return this.folders[folderName];
   }
 
+  private formatFileName(fileName: string): string {
+    if(this.fileNames[fileName] == undefined) {
+      this.fileNames[fileName] = -1;
+    }
+    this.fileNames[fileName]++;
+    let formatted = `${fileName}${this.fileNames[fileName]}`;
+    return formatted.trim();
+  }
 }
