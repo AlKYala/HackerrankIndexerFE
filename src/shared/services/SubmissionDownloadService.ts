@@ -86,7 +86,7 @@ export class SubmissionDownloadService {
     console.log(downloadFiles);
     const zip = new Zip("submissions.zip");
     for(const downloadFile of downloadFiles) {
-      zip.addFile(downloadFile.base64, true, downloadFile.challengeName);
+      zip.addFile(downloadFile.base64, true, downloadFile.fileName, downloadFile.challengeName);
     }
     zip.fireDownload();
     //fire download

@@ -28,7 +28,7 @@ export class Zip {
 
   public addFile(data: any, isBase64: boolean, fileName: string, folderName?: string) {
     fileName = this.formatFileName(fileName);
-    if(folderName != undefined) {
+    if(folderName != null) {
       this.addFileToFolder(data, isBase64, fileName, folderName);
       return;
     }
@@ -56,7 +56,7 @@ export class Zip {
       this.fileNames[fileName] = -1;
     }
     this.fileNames[fileName]++;
-    let formatted = `${fileName}${this.fileNames[fileName]}`;
+    let formatted = `${this.fileNames[fileName]}_${fileName}`;
     return formatted.trim();
   }
 }
