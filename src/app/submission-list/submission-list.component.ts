@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy, OnInit, EventEmitter} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Observable, Subscription} from "rxjs";
+import {async, Observable, Subscription} from "rxjs";
 import {Submission} from "../../shared/datamodels/Submission/model/Submission";
 import {SubmissionService} from "../../shared/datamodels/Submission/service/SubmissionService";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -71,6 +71,8 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   changePage = new EventEmitter<any>(true);
   maxPages = 5;
 
+  private isFilterFired: boolean;
+
   constructor(private httpClient: HttpClient,
               private submissionService: SubmissionService,
               private submissionDataService: SubmissionDataService,
@@ -82,6 +84,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
               private submissionDownloadService: SubmissionDownloadService) {
     this.mainSubscription   = new Subscription();
     this.selectedLanguages  = new Set<number>();
+    this.isFilterFired = true;
   }
 
   ngOnInit(): void {
@@ -102,6 +105,9 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   }
 
   public clickLanguage(pLanguage: Planguage): void {
+
+    this.isFilterFired = false;
+
     const id: number = pLanguage.id!;
     if(this.selectedLanguages.has(id)) {
       this.selectedLanguages.delete(id);
@@ -111,7 +117,9 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
     this.selectedLanguages.add(id);
   }
 
-  public fireLanguageFilter() {
+  public async fireLanguageFilter() {
+
+    this.isFilterFired = true;
 
     this.submissions = this.submissionsBackup;
 
@@ -127,15 +135,25 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const subscription: Subscription = this.submissionService.findWithFilterRequest(filterRequest)
+    await this.submissionService.findWithFilterRequest(filterRequest).toPromise()
+      .then((data) => {
+        this.submissions = data;
+        console.log("data loaded");
+      });
+
+
+
+    /*this.submissionService.findWithFilterRequest(filterRequest)
       .subscribe((data: Submission[]) => {
         this.submissions = data;
         this.filterSubmissionsByName();
-      });
-    this.mainSubscription.add(subscription);
+      });*/
   }
 
   public checkOnlyPassedSubmissions() {
+
+    this.isFilterFired = false;
+
     if(this.onlyPassedSubmissions) {
       this.onlyPassedSubmissions = false;
       return;
@@ -146,6 +164,9 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   }
 
   public checkOnlyFailedSubmissions() {
+
+    this.isFilterFired = false;
+
     if(this.onlyFailedSubmissions) {
       this.onlyFailedSubmissions = false;
       return;
@@ -156,6 +177,9 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   }
 
   public checkOnlyLastPassedSubmissions() {
+
+    this.isFilterFired = false;
+
     if(this.onlyLastPassedSubmissions) {
       this.onlyLastPassedSubmissions = false;
       return;
@@ -166,14 +190,39 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   }
 
   public restoreSubmissions() {
+    this.isFilterFired = true;
     this.resetSearchBox();
     this.resetButtonClicks();
     this.submissions = this.submissionsBackup;
   }
 
   public fireDownload(): void {
+
+    /* TODO: Pruefen ob man nicht eine warnmeldung anzeigen soll */
+
+    let filterFirst: boolean = false;
+
+    if(!this.isFilterFired) {
+      filterFirst = window.confirm("Do you want to fire the filter first?");
+    }
+
+    if(filterFirst) {
+      this.filterAndDownload();
+      return;
+    }
+
     const numbers: number[] = this.getSubmissionIDs();
     this.submissionDownloadService.getDownloadFilesBySubmissionIds(numbers);
+  }
+
+  private filterAndDownload() {
+    //wait for request to finish
+    this.filterSubmissionsByName();
+    this.fireLanguageFilter()
+      .then(() => {
+        const numbers: number[] = this.getSubmissionIDs();
+        this.submissionDownloadService.getDownloadFilesBySubmissionIds(numbers);
+      });
   }
 
   private resetButtonClicks() {
