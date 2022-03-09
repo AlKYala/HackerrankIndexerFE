@@ -35,6 +35,8 @@
     "jszip": "^3.7.1",
     "jw-angular-pagination": "^1.2.0",
     "ng2-charts": "^2.2.3",
+    "ngx-bootstrap": "^8.0.0",
+    "ngx-bootstrap-confirm": "^4.0.3",
     "ngx-chart": "^1.0.5",
     "ngx-pagination": "^5.1.1",
     "ngx-toastr": "^14.2.1",

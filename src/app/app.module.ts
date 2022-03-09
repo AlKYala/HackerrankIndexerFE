@@ -30,6 +30,8 @@ import { FooterComponent } from './footer/footer.component';
 import {ToastrModule} from "ngx-toastr";
 import { SetNewPasswordComponent } from './set-new-password/set-new-password.component';
 import { VerifyUserComponent } from './verify-user/verify-user.component';
+import {ConfirmBoxConfigModule, NgxAwesomePopupModule} from "@costlydeveloper/ngx-awesome-popup";
+import {NgxBootstrapConfirmModule} from "ngx-bootstrap-confirm";
 
 @NgModule({
   declarations: [
@@ -65,7 +67,8 @@ import { VerifyUserComponent } from './verify-user/verify-user.component';
     ChartsModule,
     NgxWebstorageModule.forRoot(),
     ReactiveFormsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    NgxBootstrapConfirmModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -20,6 +20,7 @@ import {HashMap} from "../../shared/other/HashMap";
 import {FilterRequest} from "../../shared/datamodels/Submission/model/FilterRequest";
 import {SubmissionDownloadService} from "../../shared/services/SubmissionDownloadService";
 import {DownloadFile} from "../../shared/datamodels/DownloadFile/Model/DownloadFile";
+import {NgxBootstrapConfirmService} from "ngx-bootstrap-confirm";
 /**
  * TODO: du musst die pagination fixen
  * Wenn du dieses Component 2x nebeneinander hast, sieht das kacke aus
@@ -81,7 +82,8 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
               private challengeService: ChallengeService,
               private router: Router,
               private requestService: RequestService,
-              private submissionDownloadService: SubmissionDownloadService) {
+              private submissionDownloadService: SubmissionDownloadService,
+              private ngxBootstrapConfirmService: NgxBootstrapConfirmService) {
     this.mainSubscription   = new Subscription();
     this.selectedLanguages  = new Set<number>();
     this.isFilterFired = true;
@@ -203,11 +205,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
     let filterFirst: boolean = false;
 
     if(!this.isFilterFired) {
-      filterFirst = window.confirm("Do you want to fire the filter first?");
-    }
-
-    if(filterFirst) {
-      this.filterAndDownload();
+      this.runConfirmDialog();
       return;
     }
 
@@ -223,6 +221,22 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
         const numbers: number[] = this.getSubmissionIDs();
         this.submissionDownloadService.getDownloadFilesBySubmissionIds(numbers);
       });
+  }
+
+  private runConfirmDialog() {
+    let options = {
+      title: 'Do you want to filter first before you download?',
+      confirmLabel: 'Yes',
+      declineLabel: 'No - Download anyway'
+    }
+    this.ngxBootstrapConfirmService.confirm(options).then((res: boolean) => {
+      if (res) {
+        this.filterAndDownload();
+      } else {
+        const numbers: number[] = this.getSubmissionIDs();
+        this.submissionDownloadService.getDownloadFilesBySubmissionIds(numbers);
+      }
+    });
   }
 
   private resetButtonClicks() {
