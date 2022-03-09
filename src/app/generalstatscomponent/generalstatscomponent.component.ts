@@ -14,6 +14,9 @@ export class GeneralstatscomponentComponent implements OnInit {
 
   private mainSubscription!: Subscription;
   generalPercentageObject!: GeneralPercentage;
+  favoriteLanguageString = "";
+  challengesPassedPercentage = 0;
+  submissionsSolvedPercentage = 0;
 
   challengesPassedClass: string = "";
   submissionsPassedClass: string = "";
@@ -35,6 +38,7 @@ export class GeneralstatscomponentComponent implements OnInit {
       .subscribe((data: GeneralPercentage) => {
         console.log(data);
         this.assignGeneralPercentagesObject(data);
+        this.initInfo(data);
         this.initPassClasses(data);
       });
     this.mainSubscription.add(subscription);
@@ -46,6 +50,12 @@ export class GeneralstatscomponentComponent implements OnInit {
       Math.floor(this.generalPercentageObject.percentageSubmissionsPassed);
     this.generalPercentageObject.percentageChallengesSolved =
       Math.floor(this.generalPercentageObject.percentageChallengesSolved);
+  }
+
+  private initInfo(data: GeneralPercentage) {
+    this.submissionsSolvedPercentage = data.percentageSubmissionsPassed;
+    this.challengesPassedPercentage = data.percentageChallengesSolved;
+    this.favoriteLanguageString = data.favouriteLanguage.displayName;
   }
 
   private initPassClasses(data: GeneralPercentage) {

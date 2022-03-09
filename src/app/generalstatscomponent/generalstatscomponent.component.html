@@ -16,13 +16,14 @@
             <div class="row g-0 align-items-center">
               <div class="col-auto">
                 <div class="text-dark fw-bold h5 mb-0 me-3">
-                  <span>{{generalPercentageObject.percentageSubmissionsPassed}}%</span>
+                  <span>{{submissionsSolvedPercentage}}%</span>
                 </div>
               </div>
               <div class="col">
                 <div class="progress progress-sm">
-                  <div [attr.class]="submissionsPassedClass"
-                       [style.width.%]="generalPercentageObject.percentageSubmissionsPassed"></div>
+                  <div  id="submissionPercentage"
+                        [attr.class]="submissionsPassedClass"
+                        [style.width.%]="submissionsSolvedPercentage"></div>
                 </div>
               </div>
             </div>
@@ -42,12 +43,15 @@
             </div>
             <div class="row g-0 align-items-center">
               <div class="col-auto">
-                <div class="text-dark fw-bold h5 mb-0 me-3"><span>{{generalPercentageObject.percentageChallengesSolved}}%</span></div>
+                <div class="text-dark fw-bold h5 mb-0 me-3"><span>{{challengesPassedPercentage}}%</span></div>
               </div>
               <div class="col">
                 <div class="progress progress-sm">
-                  <div [attr.class]="challengesPassedClass" [style.width.%]="this.generalPercentageObject.percentageChallengesSolved"
-                       style="width: 50%;"></div>
+                  <div
+                        id="challengePercentage"
+                        [attr.class]="challengesPassedClass"
+                        [style.width.%]="challengesPassedPercentage">
+                  </div>
                 </div>
               </div>
             </div>
@@ -67,7 +71,7 @@
             </div>
             <div class="row g-0 align-items-center">
               <div class="col-auto">
-                <div class="text-dark fw-bold h5 mb-0 me-3"><span>{{generalPercentageObject.favouriteLanguage.language}}</span></div>
+                <div class="text-dark fw-bold h5 mb-0 me-3"><span>{{favoriteLanguageString}}</span></div>
               </div>
             </div>
           </div>

@@ -13,7 +13,6 @@ import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {NgxChartModule} from "ngx-chart";
 import {PieChartModule} from "@swimlane/ngx-charts";
 import {GeneralstatscomponentComponent} from './generalstatscomponent/generalstatscomponent.component';
-import {LanguageSubmissionPassRateComponentComponent} from './language-submission-pass-rate-component/language-submission-pass-rate-component.component';
 import {ChartcomponentComponent} from './chartcomponent/chartcomponent.component';
 import {NgxPaginationModule} from "ngx-pagination";
 import {LandingComponent} from './landing/landing.component';
@@ -31,6 +30,8 @@ import { FooterComponent } from './footer/footer.component';
 import {ToastrModule} from "ngx-toastr";
 import { SetNewPasswordComponent } from './set-new-password/set-new-password.component';
 import { VerifyUserComponent } from './verify-user/verify-user.component';
+import {ConfirmBoxConfigModule, NgxAwesomePopupModule} from "@costlydeveloper/ngx-awesome-popup";
+import {NgxBootstrapConfirmModule} from "ngx-bootstrap-confirm";
 
 @NgModule({
   declarations: [
@@ -40,7 +41,6 @@ import { VerifyUserComponent } from './verify-user/verify-user.component';
     SubmissionDetailComponent,
     AnalyticsComponent,
     GeneralstatscomponentComponent,
-    LanguageSubmissionPassRateComponentComponent,
     ChartcomponentComponent,
     LandingComponent,
     HowtocomponentComponent,
@@ -67,7 +67,8 @@ import { VerifyUserComponent } from './verify-user/verify-user.component';
     ChartsModule,
     NgxWebstorageModule.forRoot(),
     ReactiveFormsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    NgxBootstrapConfirmModule
   ],
   providers: [],
   bootstrap: [AppComponent]
