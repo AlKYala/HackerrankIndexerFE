@@ -19,10 +19,16 @@ export class Zip {
   }
 
   public fireDownload() {
+    const fileName = this.zipFileName;
     this.zipFile.generateAsync({type: "blob"})
       .then(function (zip: Blob)  {
-        const url = window.URL.createObjectURL(zip);
-        window.open(url);
+        let a = document.createElement("a");
+        a.setAttribute("style", "display: none");
+        a.download = fileName;
+        const blobUrl = window.URL.createObjectURL(zip);
+        a.setAttribute("href", blobUrl);
+        a.click();
+        window.URL.revokeObjectURL(blobUrl);
     })
   }
 
