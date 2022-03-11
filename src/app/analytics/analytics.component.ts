@@ -10,6 +10,7 @@ import {PassPercentages} from "../../shared/datamodels/Analytics/models/PassPerc
 import {LegendPosition} from "@swimlane/ngx-charts";
 import {HackerrrankJSONService} from "../../shared/datamodels/HackerrankJSON/service/HackerrrankJSONService";
 import Chart from "chart.js";
+import {LogInOutService} from "../../shared/services/LogInOutService";
 
 @Component({
   selector: 'app-analytics',
@@ -28,9 +29,21 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   constructor(private subscriptionService: SubscriptionService,
               private analyticsService: AnalyticsService,
-              private hackerrankJsonService: HackerrrankJSONService) { }
+              private hackerrankJsonService: HackerrrankJSONService,
+              private logInOutService: LogInOutService) { }
 
   ngOnInit(): void {
+    this.logInOutService.checkIfLoginExpiredAndLogoutIfTrue().then(() => this.onInit());
+  }
+
+  /**
+   * wraps ngOnInit - fired after logInCheckIsComplete
+   * @private
+   */
+  private onInit() {
+    if(this.logInOutService.checkStopInit()) {
+      return;
+    }
     this.subscriptions = [];
     this.checkIsUploadedAlready();
     this.initStyleAndStats();
