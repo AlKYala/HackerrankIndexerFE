@@ -21,6 +21,7 @@ import {FilterRequest} from "../../shared/datamodels/Submission/model/FilterRequ
 import {SubmissionDownloadService} from "../../shared/services/SubmissionDownloadService";
 import {DownloadFile} from "../../shared/datamodels/DownloadFile/Model/DownloadFile";
 import {NgxBootstrapConfirmService} from "ngx-bootstrap-confirm";
+import {LogInOutService} from "../../shared/services/LogInOutService";
 /**
  * TODO: du musst die pagination fixen
  * Wenn du dieses Component 2x nebeneinander hast, sieht das kacke aus
@@ -81,6 +82,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
               private pLanguageService: PLanguageService,
               private challengeService: ChallengeService,
               private router: Router,
+              private logInOutService: LogInOutService,
               private requestService: RequestService,
               private submissionDownloadService: SubmissionDownloadService,
               private ngxBootstrapConfirmService: NgxBootstrapConfirmService) {
@@ -89,9 +91,15 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
     this.isFilterFired = true;
   }
 
-  ngOnInit(): void {
-    this.scanForFilter();
-    this.initLanguages();
+  async ngOnInit() {
+    await this.logInOutService.checkLoggedIn().then((result: boolean) => {
+      if(!result) {
+        return;
+      }
+      //STUFF
+      this.scanForFilter();
+      this.initLanguages();
+    })
   }
 
   ngOnDestroy(): void {

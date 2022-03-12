@@ -20,10 +20,6 @@ export class AuthenticationService {
               private router: Router) {
   }
 
-  public isLoggedIn(): boolean {
-    return this.localStorageService.retrieve("jwt") != undefined;
-  }
-
   public signUp(user: UserSignUp): Observable<any> {
     const loginUser: UserLogin = {email: user.email, password: user.passwordHashed};
     return this.httpClient.post(`${environment.api}/user/register`, user);

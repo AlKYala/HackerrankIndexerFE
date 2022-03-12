@@ -54,10 +54,12 @@ export class LoginComponent implements OnInit {
           console.log(data);
           this.localStorageService.store('jwt', data);
           this.localStorageService.store('email', userLogin.email);
+          this.localStorageService.store("isLoggedIn", 1);
           this.router.navigate(['/']);
         },
         error => {
           this.incorrectPassword = true;
+          this.localStorageService.store("isLoggedIn", 0);
         }
       );
     }

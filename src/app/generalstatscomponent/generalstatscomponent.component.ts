@@ -4,6 +4,8 @@ import {Subscription} from "rxjs";
 import {AnalyticsService} from "../../shared/services/AnalyticsService";
 import {GeneralPercentage} from "../../shared/datamodels/Analytics/models/GeneralPercentage";
 import {GetEntryPointResult} from "@angular/compiler-cli/ngcc/src/packages/entry_point";
+import {LocalStorageService} from "ngx-webstorage";
+import {LogInOutService} from "../../shared/services/LogInOutService";
 
 @Component({
   selector: 'app-generalstatscomponent',
@@ -21,12 +23,20 @@ export class GeneralstatscomponentComponent implements OnInit {
   challengesPassedClass: string = "";
   submissionsPassedClass: string = "";
 
-  constructor(private analyticsService: AnalyticsService) {
+  constructor(private analyticsService: AnalyticsService,
+              private logInOutService: LogInOutService,
+              private localStorageService: LocalStorageService) {
   }
 
-  ngOnInit(): void {
-    this.mainSubscription = new Subscription();
-    this.initData();
+  async ngOnInit() {
+    await this.logInOutService.checkLoggedIn().then((result: boolean) => {
+      if(!result) {
+        return;
+      }
+      //STUFF
+      this.mainSubscription = new Subscription();
+      this.initData();
+    })
   }
 
   private initData() {

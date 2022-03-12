@@ -11,6 +11,7 @@ import {LegendPosition} from "@swimlane/ngx-charts";
 import {HackerrrankJSONService} from "../../shared/datamodels/HackerrankJSON/service/HackerrrankJSONService";
 import Chart from "chart.js";
 import {LogInOutService} from "../../shared/services/LogInOutService";
+import {Route, Router} from "@angular/router";
 
 @Component({
   selector: 'app-analytics',
@@ -30,10 +31,23 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   constructor(private subscriptionService: SubscriptionService,
               private analyticsService: AnalyticsService,
               private hackerrankJsonService: HackerrrankJSONService,
-              private logInOutService: LogInOutService) { }
+              private router: Router,
+              private logInOutService: LogInOutService) {
+    this.subscriptions = [];
+  }
 
-  ngOnInit(): void {
-    this.logInOutService.checkIfLoginExpiredAndLogoutIfTrue().then(() => this.onInit());
+  async ngOnInit() {
+    await this.logInOutService.checkLoggedIn().then(
+      (result: boolean) => {
+        if(!result) {
+          this.logInOutService.fireLogOut();
+          console.log("should navigate");
+          this.router.navigate(['/']);
+          return;
+        }
+        this.onInit();
+      }
+    );
   }
 
   /**
@@ -41,9 +55,6 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
    * @private
    */
   private onInit() {
-    if(this.logInOutService.checkStopInit()) {
-      return;
-    }
     this.subscriptions = [];
     this.checkIsUploadedAlready();
     this.initStyleAndStats();
