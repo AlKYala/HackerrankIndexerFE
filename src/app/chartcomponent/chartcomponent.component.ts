@@ -10,6 +10,7 @@ import {UsageStatistics} from "../../shared/datamodels/Analytics/models/UsageSta
 import {Label, MultiDataSet} from "ng2-charts";
 import Chart, {ChartPoint, ChartType} from "chart.js";
 import {ChartJSData} from "../../shared/datamodels/Chart/ChartJSData";
+import {LogInOutService} from "../../shared/services/LogInOutService";
 
 @Component({
   selector: 'app-chartcomponent',
@@ -28,6 +29,7 @@ export class ChartcomponentComponent implements OnInit{
   public progressBarClasses : string[];
 
   constructor(private analyticsService: AnalyticsService,
+              private logInOutService: LogInOutService,
               private pLanguageService: PLanguageService) {
     this.labels = [];
     this.passedSubmissions = [];
@@ -36,8 +38,13 @@ export class ChartcomponentComponent implements OnInit{
     this.progressBarClasses = [];
   }
 
-  ngOnInit() {
-    this.initData();
+  async ngOnInit() {
+    await this.logInOutService.checkLoggedIn().then((result: boolean) => {
+      if(!result) {
+        return;
+      }
+      this.initData();
+    })
   }
 
   private initData(): void {

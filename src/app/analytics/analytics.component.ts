@@ -10,6 +10,8 @@ import {PassPercentages} from "../../shared/datamodels/Analytics/models/PassPerc
 import {LegendPosition} from "@swimlane/ngx-charts";
 import {HackerrrankJSONService} from "../../shared/datamodels/HackerrankJSON/service/HackerrrankJSONService";
 import Chart from "chart.js";
+import {LogInOutService} from "../../shared/services/LogInOutService";
+import {Route, Router} from "@angular/router";
 
 @Component({
   selector: 'app-analytics',
@@ -28,9 +30,31 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   constructor(private subscriptionService: SubscriptionService,
               private analyticsService: AnalyticsService,
-              private hackerrankJsonService: HackerrrankJSONService) { }
+              private hackerrankJsonService: HackerrrankJSONService,
+              private router: Router,
+              private logInOutService: LogInOutService) {
+    this.subscriptions = [];
+  }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    await this.logInOutService.checkLoggedIn().then(
+      (result: boolean) => {
+        if(!result) {
+          this.logInOutService.fireLogOut();
+          console.log("should navigate");
+          this.router.navigate(['/']);
+          return;
+        }
+        this.onInit();
+      }
+    );
+  }
+
+  /**
+   * wraps ngOnInit - fired after logInCheckIsComplete
+   * @private
+   */
+  private onInit() {
     this.subscriptions = [];
     this.checkIsUploadedAlready();
     this.initStyleAndStats();

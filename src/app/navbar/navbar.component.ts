@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {RoutingService} from "../../shared/services/RoutingService";
 import {LocalStorageService} from "ngx-webstorage";
 import {AuthenticationService} from "../../shared/services/AuthenticationService";
+import {LogInOutService} from "../../shared/services/LogInOutService";
 
 @Component({
   selector: 'app-navbar',
@@ -18,6 +19,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,
               private routerService: RoutingService,
+              private logInOutService: LogInOutService,
               private localStorageService: LocalStorageService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -48,5 +50,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   public route(event: Event, path: string) {
     this.routerService.route(path, event);
+  }
+
+  public logOut() {
+    this.logInOutService.fireLogOut();
   }
 }

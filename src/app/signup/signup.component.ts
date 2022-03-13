@@ -5,6 +5,7 @@ import {UserSignUp} from "../../shared/datamodels/User/model/UserSignUp";
 import {AuthenticationService} from "../../shared/services/AuthenticationService";
 import {UserLogin} from "../../shared/datamodels/User/model/UserLogin";
 import {Router} from "@angular/router";
+import {LocalStorageService} from "ngx-webstorage";
 
 @Component({
   selector: 'app-signup',
@@ -20,6 +21,7 @@ export class SignupComponent implements OnInit {
   public signupPasswordFormRepeat!: FormControl;
 
   constructor(private authenticationService: AuthenticationService,
+              private localStorageService: LocalStorageService,
               private router: Router) { }
 
   ngOnInit(): void {
@@ -55,11 +57,17 @@ export class SignupComponent implements OnInit {
     this.authenticationService.signUp(userSignup).subscribe(
 
       data => {
-        this.authenticationService.fireLogin(userLogin).subscribe(data => this.router.navigate(['/']));
+        this.authenticationService.fireLogin(userLogin)
+          .subscribe(
+            data => {
+              this.localStorageService.store("isLoggedIn", 1);
+              this.router.navigate(['/'])
+            },
+            error => {
+              this.localStorageService.store("isLoggedIn", 0);
+            }
+          );
       },
-      error => {
-        //TODO
-      }
     )
   }
 
