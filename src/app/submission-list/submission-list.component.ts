@@ -150,14 +150,6 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
         this.submissions = data;
         console.log("data loaded");
       });
-
-
-
-    /*this.submissionService.findWithFilterRequest(filterRequest)
-      .subscribe((data: Submission[]) => {
-        this.submissions = data;
-        this.filterSubmissionsByName();
-      });*/
   }
 
   public checkOnlyPassedSubmissions() {
