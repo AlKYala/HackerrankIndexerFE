@@ -10,23 +10,26 @@
 
 <body>
 <app-navbar></app-navbar>
-<div class="container">
+<div class="container" id="analyticsContainer">
   <div class="row">
     <div class="col-md-12">
       <div class="intro">
-        <h1 class="display-3 text-center" style="font-family: sans-serif;">Analytics</h1>
+        <h1 class="display-3 text-center" style="margin-top: 5vh">Analytics</h1>
         <h3 class="display-6 text-center">See all your stats here</h3>
       </div>
     </div>
   </div>
     <app-generalstatscomponent></app-generalstatscomponent>
-  <h4 style="margin-top: 8px;">Language specific stats</h4>
+  <h1 class="display-6">Language Specific Stats</h1>
   <div class="row">
-    <div class="col-md-12 col-lg-5 col-xl-5">
+    <div class="col-12 col-lg-5 col-xl-4 col-xxl-3">
       <app-chartcomponent></app-chartcomponent>
     </div>
-    <div class="col-lg-7">
+    <div class="col-12 col-lg-7 col-xxl-6">
       <app-submission-list></app-submission-list>
+    </div>
+    <div class="col-12 col-lg-2 col-xl-2 col-xxl-3">
+      <app-share-component></app-share-component>
     </div>
   </div>
 </div>

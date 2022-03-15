@@ -31,6 +31,7 @@ import { SetNewPasswordComponent } from './set-new-password/set-new-password.com
 import { VerifyUserComponent } from './verify-user/verify-user.component';
 import {ConfirmBoxConfigModule, NgxAwesomePopupModule} from "@costlydeveloper/ngx-awesome-popup";
 import {NgxBootstrapConfirmModule} from "ngx-bootstrap-confirm";
+import { ShareComponentComponent } from './share-component/share-component.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import {NgxBootstrapConfirmModule} from "ngx-bootstrap-confirm";
     FooterComponent,
     SetNewPasswordComponent,
     VerifyUserComponent,
+    ShareComponentComponent,
   ],
   imports: [
     RouterModule,
