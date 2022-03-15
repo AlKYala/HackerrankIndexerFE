@@ -32,6 +32,7 @@ import { VerifyUserComponent } from './verify-user/verify-user.component';
 import {ConfirmBoxConfigModule, NgxAwesomePopupModule} from "@costlydeveloper/ngx-awesome-popup";
 import {NgxBootstrapConfirmModule} from "ngx-bootstrap-confirm";
 import { ShareComponentComponent } from './share-component/share-component.component';
+import {NgxMasonryModule} from "ngx-masonry";
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { ShareComponentComponent } from './share-component/share-component.compo
     NgxWebstorageModule.forRoot(),
     ReactiveFormsModule,
     ToastrModule.forRoot(),
-    NgxBootstrapConfirmModule
+    NgxBootstrapConfirmModule,
+    NgxMasonryModule
   ],
   providers: [],
   bootstrap: [AppComponent]
