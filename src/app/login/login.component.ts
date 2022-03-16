@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
           this.localStorageService.store('jwt', data);
           this.localStorageService.store('email', userLogin.email);
           this.localStorageService.store("isLoggedIn", 1);
-          this.router.navigate(['/']);
+          this.router.navigate(['/landing']);
         },
         error => {
           this.incorrectPassword = true;

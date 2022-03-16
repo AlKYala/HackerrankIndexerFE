@@ -61,7 +61,7 @@ export class SignupComponent implements OnInit {
           .subscribe(
             data => {
               this.localStorageService.store("isLoggedIn", 1);
-              this.router.navigate(['/'])
+              this.router.navigate(['/landing'])
             },
             error => {
               this.localStorageService.store("isLoggedIn", 0);

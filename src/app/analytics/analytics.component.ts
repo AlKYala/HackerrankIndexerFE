@@ -42,7 +42,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
         if(!result) {
           this.logInOutService.fireLogOut();
           console.log("should navigate");
-          this.router.navigate(['/']);
+          this.router.navigate(['/landing']);
           return;
         }
         this.onInit();

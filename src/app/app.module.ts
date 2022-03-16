@@ -33,6 +33,7 @@ import {ConfirmBoxConfigModule, NgxAwesomePopupModule} from "@costlydeveloper/ng
 import {NgxBootstrapConfirmModule} from "ngx-bootstrap-confirm";
 import { ShareComponentComponent } from './share-component/share-component.component';
 import {NgxMasonryModule} from "ngx-masonry";
+import { InitialLandingComponent } from './initial-landing/initial-landing.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import {NgxMasonryModule} from "ngx-masonry";
     SetNewPasswordComponent,
     VerifyUserComponent,
     ShareComponentComponent,
+    InitialLandingComponent,
   ],
   imports: [
     RouterModule,
