@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import {LegendPosition} from "@swimlane/ngx-charts";
 import {AnalyticsService} from "../../shared/services/AnalyticsService";
 import {PLanguageService} from "../../shared/datamodels/PLanguage/service/PLanguageService";
@@ -18,6 +18,9 @@ import {LogInOutService} from "../../shared/services/LogInOutService";
   styleUrls: ['./chartcomponent.component.css']
 })
 export class ChartcomponentComponent implements OnInit{
+
+  @Input()
+  usageStatistics!: UsageStatistics; //TODO load from user instance
 
   pLanguageUsagePercentageMap = new Map<number, number>();
   private subscription: Subscription = new Subscription();
@@ -39,6 +42,11 @@ export class ChartcomponentComponent implements OnInit{
   }
 
   async ngOnInit() {
+    if(this.usageStatistics != undefined) {
+
+    }
+
+
     await this.logInOutService.checkLoggedIn().then((result: boolean) => {
       if(!result) {
         return;

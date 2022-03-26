@@ -55,6 +55,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
    * @private
    */
   private onInit() {
+    //TODO load user
     this.subscriptions = [];
     this.checkIsUploadedAlready();
     this.initStyleAndStats();

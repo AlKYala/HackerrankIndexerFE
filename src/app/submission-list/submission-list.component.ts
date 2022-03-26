@@ -38,6 +38,9 @@ import {LogInOutService} from "../../shared/services/LogInOutService";
 })
 export class SubmissionListComponent implements OnInit, OnDestroy {
 
+  @Input()
+  submissionInput!: Submission[]; //TODO if not null override
+
   submissions: Submission[] = [];
   submissionsBackup: Submission[] = [];
   private mainSubscription: Subscription;
