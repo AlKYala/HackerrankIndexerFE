@@ -33,12 +33,11 @@ export class GeneralstatscomponentComponent implements OnInit {
 
   async ngOnInit() {
     if(this.generalStatsInput != undefined) {
-      // TODO import here
-
+      this.generalPercentageObject = this.generalStatsInput;
+      this.assignData(this.generalStatsInput);
       console.log("Input found");
       return;
     }
-
 
     await this.logInOutService.checkLoggedIn().then((result: boolean) => {
       if(!result) {
@@ -58,11 +57,15 @@ export class GeneralstatscomponentComponent implements OnInit {
     const subscription: Subscription = this.analyticsService.getGeneralPercentages()
       .subscribe((data: GeneralPercentage) => {
         console.log(data);
-        this.assignGeneralPercentagesObject(data);
-        this.initInfo(data);
-        this.initPassClasses(data);
+        this.assignData(data);
       });
     this.mainSubscription.add(subscription);
+  }
+
+  private assignData(data: GeneralPercentage) {
+    this.assignGeneralPercentagesObject(data);
+    this.initInfo(data);
+    this.initPassClasses(data);
   }
 
   private assignGeneralPercentagesObject(instance: GeneralPercentage) {

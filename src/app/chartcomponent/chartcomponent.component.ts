@@ -20,7 +20,7 @@ import {LogInOutService} from "../../shared/services/LogInOutService";
 export class ChartcomponentComponent implements OnInit{
 
   @Input()
-  usageStatistics!: UsageStatistics; //TODO load from user instance
+  usageStatistics!: UsageStatistics[]; //TODO load from user instance
 
   pLanguageUsagePercentageMap = new Map<number, number>();
   private subscription: Subscription = new Subscription();
@@ -44,6 +44,10 @@ export class ChartcomponentComponent implements OnInit{
   async ngOnInit() {
     if(this.usageStatistics != undefined) {
 
+      this.fillChartData(this.usageStatistics);
+
+      console.log("input Found");
+      return;
     }
 
 
@@ -51,12 +55,8 @@ export class ChartcomponentComponent implements OnInit{
       if(!result) {
         return;
       }
-      this.initData();
+      this.initChartData();
     })
-  }
-
-  private initData(): void {
-    this.initChartData()
   }
 
   private initChartData(): void {

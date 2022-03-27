@@ -23,6 +23,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   private subscriptions!: Subscription[];
 
+  //TODO load user
+
   datafound: boolean = false; //
   wait: boolean = true; //wait for the data to load
   submitted: boolean = false;

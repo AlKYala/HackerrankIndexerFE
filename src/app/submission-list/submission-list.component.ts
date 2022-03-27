@@ -95,6 +95,11 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+    if(this.submissionInput != null) {
+      this.submissions = this.submissionInput;
+      return;
+    }
+
     await this.logInOutService.checkLoggedIn().then((result: boolean) => {
       if(!result) {
         return;

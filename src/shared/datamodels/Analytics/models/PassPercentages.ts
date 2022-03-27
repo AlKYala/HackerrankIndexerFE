@@ -1,3 +1,4 @@
+//TODO: Find workaround with PassPercentage.ts
 import {Planguage} from "../../PLanguage/model/PLanguage";
 
 export interface PassPercentages {
