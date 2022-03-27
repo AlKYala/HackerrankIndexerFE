@@ -12,6 +12,9 @@ import {HackerrrankJSONService} from "../../shared/datamodels/HackerrankJSON/ser
 import Chart from "chart.js";
 import {LogInOutService} from "../../shared/services/LogInOutService";
 import {Route, Router} from "@angular/router";
+import {UserDataService} from "../../shared/services/UserDataService";
+import {UserData} from "../../shared/datamodels/User/model/UserData";
+import {LocalStorageService} from "ngx-webstorage";
 
 @Component({
   selector: 'app-analytics',
@@ -25,6 +28,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   //TODO load user
 
+  userData!: UserData;
+
   datafound: boolean = false; //
   wait: boolean = true; //wait for the data to load
   submitted: boolean = false;
@@ -34,7 +39,9 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
               private analyticsService: AnalyticsService,
               private hackerrankJsonService: HackerrrankJSONService,
               private router: Router,
-              private logInOutService: LogInOutService) {
+              private logInOutService: LogInOutService,
+              private userDataService: UserDataService,
+              private localStorageService: LocalStorageService) {
     this.subscriptions = [];
   }
 
@@ -47,9 +54,22 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
           this.router.navigate(['/landing']);
           return;
         }
-        this.onInit();
       }
     );
+    await this.loadUserData().finally(() => {
+      this.onInit();
+    });
+  }
+
+  async loadUserData() {
+
+    if(this.localStorageService.retrieve("userData")) {
+      return;
+    }
+
+    await this.userDataService.loadUserData().then((userData: UserData) => {
+      this.userData = userData;
+    })
   }
 
   /**
@@ -57,7 +77,6 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
    * @private
    */
   private onInit() {
-    //TODO load user
     this.subscriptions = [];
     this.checkIsUploadedAlready();
     this.initStyleAndStats();
