@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
 import {Subscription} from "rxjs";
 import {AnalyticsService} from "../../shared/services/AnalyticsService";
@@ -12,7 +12,7 @@ import {LogInOutService} from "../../shared/services/LogInOutService";
   templateUrl: './generalstatscomponent.component.html',
   styleUrls: ['./generalstatscomponent.component.css']
 })
-export class GeneralstatscomponentComponent implements OnInit {
+export class GeneralstatscomponentComponent implements OnChanges {
 
   @Input()
   generalStatsInput!: GeneralPercentage; // TODO Get info from user instance in analytics
@@ -31,22 +31,9 @@ export class GeneralstatscomponentComponent implements OnInit {
               private localStorageService: LocalStorageService) {
   }
 
-  async ngOnInit() {
-    if(this.generalStatsInput != undefined) {
-      this.generalPercentageObject = this.generalStatsInput;
-      this.assignData(this.generalStatsInput);
-      console.log("Input found");
-      return;
-    }
-
-    await this.logInOutService.checkLoggedIn().then((result: boolean) => {
-      if(!result) {
-        return;
-      }
-      //STUFF
-      this.mainSubscription = new Subscription();
-      this.initData();
-    })
+  ngOnChanges() {
+    this.generalPercentageObject = this.generalStatsInput;
+    this.initData();
   }
 
   private initData() {

@@ -15,6 +15,8 @@ import {Route, Router} from "@angular/router";
 import {UserDataService} from "../../shared/services/UserDataService";
 import {UserData} from "../../shared/datamodels/User/model/UserData";
 import {LocalStorageService} from "ngx-webstorage";
+import {GeneralPercentage} from "../../shared/datamodels/Analytics/models/GeneralPercentage";
+import {load} from "@syncfusion/ej2-angular-charts";
 
 @Component({
   selector: 'app-analytics',
@@ -26,9 +28,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   private subscriptions!: Subscription[];
 
-  //TODO load user
-
   userData!: UserData;
+  generalPercentage!: GeneralPercentage;
 
   datafound: boolean = false; //
   wait: boolean = true; //wait for the data to load
@@ -46,6 +47,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+    console.log("First")
     await this.logInOutService.checkLoggedIn().then(
       (result: boolean) => {
         if(!result) {
@@ -54,8 +56,10 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
           this.router.navigate(['/landing']);
           return;
         }
+        console.log("Logged in");
       }
     );
+    console.log("Second");
     await this.loadUserData().finally(() => {
       this.onInit();
     });
@@ -64,12 +68,21 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   async loadUserData() {
 
     if(this.localStorageService.retrieve("userData")) {
+      this.userData = this.localStorageService.retrieve("userData");
+      console.log("localStorageFound");
       return;
     }
 
     await this.userDataService.loadUserData().then((userData: UserData) => {
       this.userData = userData;
+      console.log(userData);
+      //this.localStorageService.store("userData", userData); //TODO find a way to store more memory in localStorage
     })
+  }
+
+  private initImportDataFromUserData(userData: UserData) {
+    this.generalPercentage = userData.user.generalPercentage;
+    console.log(this.generalPercentage);
   }
 
   /**
@@ -78,8 +91,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
    */
   private onInit() {
     this.subscriptions = [];
+    this.initImportDataFromUserData(this.userData);
     this.checkIsUploadedAlready();
-    this.initStyleAndStats();
     this.initStyleAndStats();
   }
 
@@ -113,7 +126,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   private fireParseRequest(hackerrankJsonFile: File) {
     this.wait = true;
-    const subscription: Subscription = this.hackerrankJsonService.fireHackerrankParsing(hackerrankJsonFile).pipe().subscribe((response: string) => {
+    const subscription: Subscription = this.hackerrankJsonService.fireHackerrankParsing(hackerrankJsonFile)
+      .pipe().subscribe((response: string) => {
       this.datafound = true;
       this.wait = false;
     });
