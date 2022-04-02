@@ -1,4 +1,4 @@
-import {AfterViewChecked, AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {AnalyticsService} from "../../shared/services/AnalyticsService";
 import {UsageStatistics} from "../../shared/datamodels/Analytics/models/UsageStatistics";
 import {SubscriptionService} from "../../shared/services/SubscriptionService";
@@ -30,6 +30,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   userData!: UserData;
   generalPercentage!: GeneralPercentage;
+  usageStatistics!: UsageStatistics[];
 
   datafound: boolean = false; //
   wait: boolean = true; //wait for the data to load
@@ -81,7 +82,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   }
 
   private initImportDataFromUserData(userData: UserData) {
-    this.generalPercentage = userData.user.generalPercentage;
+    this.generalPercentage  = userData.user.generalPercentage;
+    this.usageStatistics    = userData.user.usagePercentages;
     console.log(this.generalPercentage);
   }
 

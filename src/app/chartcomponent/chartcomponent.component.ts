@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnChanges, OnInit} from '@angular/core';
 import {LegendPosition} from "@swimlane/ngx-charts";
 import {AnalyticsService} from "../../shared/services/AnalyticsService";
 import {PLanguageService} from "../../shared/datamodels/PLanguage/service/PLanguageService";
@@ -17,10 +17,11 @@ import {LogInOutService} from "../../shared/services/LogInOutService";
   templateUrl: './chartcomponent.component.html',
   styleUrls: ['./chartcomponent.component.css']
 })
-export class ChartcomponentComponent implements OnInit{
+export class ChartcomponentComponent implements OnChanges {
 
   @Input()
   usageStatistics!: UsageStatistics[]; //TODO load from user instance
+  public show: boolean = false;
 
   pLanguageUsagePercentageMap = new Map<number, number>();
   private subscription: Subscription = new Subscription();
@@ -31,7 +32,9 @@ export class ChartcomponentComponent implements OnInit{
   public percentagesRounded : number[];
   public progressBarClasses : string[];
 
-  constructor(private analyticsService: AnalyticsService,
+  constructor(
+              private ref: ChangeDetectorRef,
+              private analyticsService: AnalyticsService,
               private logInOutService: LogInOutService,
               private pLanguageService: PLanguageService) {
     this.labels = [];
@@ -41,30 +44,19 @@ export class ChartcomponentComponent implements OnInit{
     this.progressBarClasses = [];
   }
 
-  async ngOnInit() {
-    if(this.usageStatistics != undefined) {
-
-      this.fillChartData(this.usageStatistics);
-
-      console.log("input Found");
-      return;
-    }
-
-
-    await this.logInOutService.checkLoggedIn().then((result: boolean) => {
-      if(!result) {
-        return;
-      }
-      this.initChartData();
-    })
+  ngOnChanges() {
+    console.log(this.usageStatistics);
+    this.show = true;
+    this.fillChartData(this.usageStatistics);
+    this.ref.markForCheck();
   }
 
-  private initChartData(): void {
+  /*private initChartData(): void {
     const subscription = this.analyticsService.getUsagePercentagesOfPLanguages().subscribe((data: UsageStatistics[]) => {
       this.fillChartData(data);
     });
     this.subscription.add(subscription);
-  }
+  }*/
 
   private fillChartData(statistics: UsageStatistics[]) {
     const colors:             string[]  = [];
