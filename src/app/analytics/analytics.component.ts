@@ -1,22 +1,14 @@
-import {AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AnalyticsService} from "../../shared/services/AnalyticsService";
-import {UsageStatistics} from "../../shared/datamodels/Analytics/models/UsageStatistics";
 import {SubscriptionService} from "../../shared/services/SubscriptionService";
 import {Subscription} from "rxjs";
-import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
-import {PLanguageService} from "../../shared/datamodels/PLanguage/service/PLanguageService";
-import {switchMap} from "rxjs/operators";
-import {PassPercentages} from "../../shared/datamodels/Analytics/models/PassPercentages";
-import {LegendPosition} from "@swimlane/ngx-charts";
 import {HackerrrankJSONService} from "../../shared/datamodels/HackerrankJSON/service/HackerrrankJSONService";
-import Chart from "chart.js";
 import {LogInOutService} from "../../shared/services/LogInOutService";
-import {Route, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {UserDataService} from "../../shared/services/UserDataService";
 import {UserData} from "../../shared/datamodels/User/model/UserData";
 import {LocalStorageService} from "ngx-webstorage";
 import {GeneralPercentage} from "../../shared/datamodels/Analytics/models/GeneralPercentage";
-import {load} from "@syncfusion/ej2-angular-charts";
 import {PassPercentage} from "../../shared/datamodels/Analytics/models/PassPercentage";
 
 @Component({
@@ -31,7 +23,6 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   userData!: UserData;
   generalPercentage!: GeneralPercentage;
-  usageStatistics!: UsageStatistics[];
   passPercentages: PassPercentage[] = null!;
 
   datafound: boolean = false; //
@@ -85,7 +76,6 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   private initImportDataFromUserData(userData: UserData) {
     this.generalPercentage  = userData.user.generalPercentage;
-    this.usageStatistics    = userData.user.usagePercentages;
     this.passPercentages    = userData.user.passPercentages;
     ////console.log(this.generalPercentage);
   }

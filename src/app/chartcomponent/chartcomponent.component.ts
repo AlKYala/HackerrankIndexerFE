@@ -6,7 +6,6 @@ import {Subscription} from "rxjs";
 import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
 import {switchMap} from "rxjs/operators";
 import {PassPercentages} from "../../shared/datamodels/Analytics/models/PassPercentages";
-import {UsageStatistics} from "../../shared/datamodels/Analytics/models/UsageStatistics";
 import {Label, MultiDataSet} from "ng2-charts";
 import Chart, {ChartPoint, ChartType} from "chart.js";
 import {ChartJSData} from "../../shared/datamodels/Chart/ChartJSData";
@@ -56,16 +55,7 @@ export class ChartcomponentComponent implements OnChanges {
     if(changes['passPercentages'].currentValue) {
       this.show = true;
       this.fillChartData(this.passPercentages);
-      this.debug();
     }
-  }
-
-  private debug() {
-    console.log(this.labels);
-    console.log(this.passedSubmissions);
-    console.log(this.numberSubmissions);
-    console.log(this.percentagesRounded);
-    console.log(this.progressBarClasses);
   }
 
   private fillChartData(statistics: PassPercentage[]) {
