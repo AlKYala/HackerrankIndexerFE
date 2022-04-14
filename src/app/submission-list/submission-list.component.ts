@@ -156,7 +156,7 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
     await this.submissionService.findWithFilterRequest(filterRequest).toPromise()
       .then((data) => {
         this.submissions = data;
-        console.log("data loaded");
+        //console.log("data loaded");
       });
   }
 

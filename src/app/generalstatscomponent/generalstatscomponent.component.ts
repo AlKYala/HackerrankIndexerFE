@@ -15,63 +15,48 @@ import {LogInOutService} from "../../shared/services/LogInOutService";
 export class GeneralstatscomponentComponent implements OnChanges {
 
   @Input()
-  generalStatsInput!: GeneralPercentage; // TODO Get info from user instance in analytics
+  generalStatsInput           :   GeneralPercentage = null!
 
-  private mainSubscription!: Subscription;
-  generalPercentageObject!: GeneralPercentage;
-  favoriteLanguageString = "";
-  challengesPassedPercentage = 0;
-  submissionsSolvedPercentage = 0;
+  generalPercentageObject     :   GeneralPercentage = null!;
+  favoriteLanguageString      :   string            = "";
+  challengesPassedPercentage  :   number            = 0;
+  submissionsSolvedPercentage :   number            = 0;
 
-  challengesPassedClass: string = "";
-  submissionsPassedClass: string = "";
+  challengesPassedClass       :   string            = "";
+  submissionsPassedClass      :   string            = "";
 
-  constructor(private analyticsService: AnalyticsService,
-              private logInOutService: LogInOutService,
-              private localStorageService: LocalStorageService) {
-  }
+  constructor() {}
 
   ngOnChanges() {
-    this.generalPercentageObject = this.generalStatsInput;
-    this.initData();
-  }
-
-  private initData() {
-    this.initGeneralPercentages();
-  }
-
-  private initGeneralPercentages() {
-    const subscription: Subscription = this.analyticsService.getGeneralPercentages()
-      .subscribe((data: GeneralPercentage) => {
-        console.log(data);
-        this.assignData(data);
-      });
-    this.mainSubscription.add(subscription);
+    this.generalPercentageObject =  this.generalStatsInput;
+    this.assignData         (this.generalPercentageObject);
   }
 
   private assignData(data: GeneralPercentage) {
-    this.assignGeneralPercentagesObject(data);
-    this.initInfo(data);
-    this.initPassClasses(data);
+    this.normalizeGeneralPercentagesObject  (data);
+    this.initInfo                           (data);
+    this.initPassClasses                    (data);
   }
 
-  private assignGeneralPercentagesObject(instance: GeneralPercentage) {
-    this.generalPercentageObject = instance;
-    this.generalPercentageObject.percentageSubmissionsPassed =
+  private normalizeGeneralPercentagesObject(instance: GeneralPercentage) {
+    this.generalPercentageObject                              = instance;
+
+    this.generalPercentageObject.percentageSubmissionsPassed  =
       Math.floor(this.generalPercentageObject.percentageSubmissionsPassed);
-    this.generalPercentageObject.percentageChallengesSolved =
+
+    this.generalPercentageObject.percentageChallengesSolved   =
       Math.floor(this.generalPercentageObject.percentageChallengesSolved);
   }
 
   private initInfo(data: GeneralPercentage) {
-    this.submissionsSolvedPercentage = data.percentageSubmissionsPassed;
-    this.challengesPassedPercentage = data.percentageChallengesSolved;
-    this.favoriteLanguageString = data.favouriteLanguage.displayName;
+    this.submissionsSolvedPercentage  = data.percentageSubmissionsPassed;
+    this.challengesPassedPercentage   = data.percentageChallengesSolved;
+    this.favoriteLanguageString       = data.favouriteLanguage.displayName;
   }
 
   private initPassClasses(data: GeneralPercentage) {
-    this.submissionsPassedClass = this.getClassForPercentage(data.percentageSubmissionsPassed);
-    this.challengesPassedClass = this.getClassForPercentage(data.percentageChallengesSolved);
+    this.submissionsPassedClass = this.getClassForPercentage  (data.percentageSubmissionsPassed);
+    this.challengesPassedClass  = this.getClassForPercentage  (data.percentageChallengesSolved);
   }
 
   private getClassForPercentage(percentage: number): string {

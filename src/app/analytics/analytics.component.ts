@@ -48,19 +48,19 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    console.log("First")
+    ////console.log("First")
     await this.logInOutService.checkLoggedIn().then(
       (result: boolean) => {
         if(!result) {
           this.logInOutService.fireLogOut();
-          console.log("should navigate");
+          ////console.log("should navigate");
           this.router.navigate(['/landing']);
           return;
         }
-        console.log("Logged in");
+        //console.log("Logged in");
       }
     );
-    console.log("Second");
+    //console.log("Second");
     await this.loadUserData().finally(() => {
       this.onInit();
     });
@@ -70,13 +70,13 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
     if(this.localStorageService.retrieve("userData")) {
       this.userData = this.localStorageService.retrieve("userData");
-      console.log("localStorageFound");
+      //console.log("localStorageFound");
       return;
     }
 
     await this.userDataService.loadUserData().then((userData: UserData) => {
       this.userData = userData;
-      console.log(userData);
+      //console.log(userData);
       //this.localStorageService.store("userData", userData); //TODO find a way to store more memory in localStorage
     })
   }
@@ -84,7 +84,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   private initImportDataFromUserData(userData: UserData) {
     this.generalPercentage  = userData.user.generalPercentage;
     this.usageStatistics    = userData.user.usagePercentages;
-    console.log(this.generalPercentage);
+    //console.log(this.generalPercentage);
   }
 
   /**
@@ -141,8 +141,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       .pipe().subscribe((data: boolean) => {
         this.datafound = data;
         this.wait = false;
-        console.log(this.wait);
-        console.log(this.datafound);
+        //console.log(this.wait);
+        //console.log(this.datafound);
       })
     this.subscriptions.push(subscription);
   }
@@ -151,7 +151,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     let node = document.createElement('script');
     node.src = url;
     node.type = 'text/javascript';
-    console.log(node);
+    //console.log(node);
     document.getElementsByTagName('head')[0].appendChild(node);
   }
 

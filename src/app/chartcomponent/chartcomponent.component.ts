@@ -45,7 +45,7 @@ export class ChartcomponentComponent implements OnChanges {
   }
 
   ngOnChanges() {
-    console.log(this.usageStatistics);
+    //console.log(this.usageStatistics);
     this.show = true;
     this.fillChartData(this.usageStatistics);
     this.ref.markForCheck();
@@ -61,7 +61,7 @@ export class ChartcomponentComponent implements OnChanges {
   private fillChartData(statistics: UsageStatistics[]) {
     const colors:             string[]  = [];
 
-    console.log(statistics);
+    //console.log(statistics);
 
     for(let i = 0; i < statistics.length; i++)
     {
@@ -77,9 +77,9 @@ export class ChartcomponentComponent implements OnChanges {
     }
 
 
-    console.log(this.numberSubmissions);
-    console.log(this.passedSubmissions);
-    console.log(this.percentagesRounded);
+    //console.log(this.numberSubmissions);
+    //console.log(this.passedSubmissions);
+    //console.log(this.percentagesRounded);
 
     const chartDataDataSet = [{label: "", data: this.numberSubmissions, backgroundColor: colors, hoverOffset: 4}];
     const chartData: ChartJSData = {labels: this.labels, datasets: chartDataDataSet};

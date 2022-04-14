@@ -52,7 +52,7 @@ export class SignupComponent implements OnInit {
 
     const userLogin: UserLogin = {email: signUpEmail, password: signUpPassword};
 
-    console.log(userSignup);
+    //console.log(userSignup);
 
     this.authenticationService.signUp(userSignup).subscribe(
 
