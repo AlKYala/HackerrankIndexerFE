@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, Input, OnChanges, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {LegendPosition} from "@swimlane/ngx-charts";
 import {AnalyticsService} from "../../shared/services/AnalyticsService";
 import {PLanguageService} from "../../shared/datamodels/PLanguage/service/PLanguageService";
@@ -11,6 +11,7 @@ import {Label, MultiDataSet} from "ng2-charts";
 import Chart, {ChartPoint, ChartType} from "chart.js";
 import {ChartJSData} from "../../shared/datamodels/Chart/ChartJSData";
 import {LogInOutService} from "../../shared/services/LogInOutService";
+import {PassPercentage} from "../../shared/datamodels/Analytics/models/PassPercentage";
 
 @Component({
   selector: 'app-chartcomponent',
@@ -20,7 +21,8 @@ import {LogInOutService} from "../../shared/services/LogInOutService";
 export class ChartcomponentComponent implements OnChanges {
 
   @Input()
-  usageStatistics!: UsageStatistics[]; //TODO load from user instance
+  passPercentages: PassPercentage[] = null!;
+
   public show: boolean = false;
 
   pLanguageUsagePercentageMap = new Map<number, number>();
@@ -44,42 +46,50 @@ export class ChartcomponentComponent implements OnChanges {
     this.progressBarClasses = [];
   }
 
-  ngOnChanges() {
-    //console.log(this.usageStatistics);
-    this.show = true;
-    this.fillChartData(this.usageStatistics);
-    this.ref.markForCheck();
+  ngOnChanges(changes: SimpleChanges) {
+    this.checkIfStatisticsChange(changes);
+    this.fillChartData(this.passPercentages);
   }
 
-  /*private initChartData(): void {
-    const subscription = this.analyticsService.getUsagePercentagesOfPLanguages().subscribe((data: UsageStatistics[]) => {
-      this.fillChartData(data);
-    });
-    this.subscription.add(subscription);
-  }*/
+  private checkIfStatisticsChange(changes: SimpleChanges) {
+    //Listener in Angular
+    if(changes['passPercentages'].currentValue) {
+      this.show = true;
+      this.fillChartData(this.passPercentages);
+      this.debug();
+    }
+  }
 
-  private fillChartData(statistics: UsageStatistics[]) {
+  private debug() {
+    console.log(this.labels);
+    console.log(this.passedSubmissions);
+    console.log(this.numberSubmissions);
+    console.log(this.percentagesRounded);
+    console.log(this.progressBarClasses);
+  }
+
+  private fillChartData(statistics: PassPercentage[]) {
     const colors:             string[]  = [];
-
-    //console.log(statistics);
+    ////console.log(statistics);
+    this.emptyChartData();
+    console.log("filling");
 
     for(let i = 0; i < statistics.length; i++)
     {
-
       let label = this.getLabelFromStatisticsInstance(statistics[i]);
       this.labels.push(label);
       colors.push(statistics[i].planguage.color);
-      this.numberSubmissions.push(statistics[i].totalSubmissions);
-      this.passedSubmissions.push(statistics[i].passedSubmissions);
-      let percentage: number = (statistics[i].passedSubmissions * 100) / statistics[i].totalSubmissions;
+      this.numberSubmissions.push(statistics[i].total);
+      this.passedSubmissions.push(statistics[i].passed);
+      let percentage: number = (statistics[i].passed * 100) / statistics[i].total;
       this.percentagesRounded.push(Math.floor(percentage));
       this.progressBarClasses.push(this.pickProgressBarClass(percentage));
     }
 
 
-    //console.log(this.numberSubmissions);
-    //console.log(this.passedSubmissions);
-    //console.log(this.percentagesRounded);
+    ////console.log(this.numberSubmissions);
+    ////console.log(this.passedSubmissions);
+    ////console.log(this.percentagesRounded);
 
     const chartDataDataSet = [{label: "", data: this.numberSubmissions, backgroundColor: colors, hoverOffset: 4}];
     const chartData: ChartJSData = {labels: this.labels, datasets: chartDataDataSet};
@@ -87,7 +97,7 @@ export class ChartcomponentComponent implements OnChanges {
     this.renderChart(chartData);
   }
 
-  private getLabelFromStatisticsInstance(statistic: UsageStatistics): string {
+  private getLabelFromStatisticsInstance(statistic: PassPercentage): string {
     return (statistic.planguage.displayName != null) ? statistic.planguage.displayName : statistic.planguage.language;
   }
 
@@ -110,5 +120,13 @@ export class ChartcomponentComponent implements OnChanges {
       case (percentage > 20): return "progress-bar bg-warning progress-bar-striped progress-bar-animated";
       default:                return "progress-bar bg-danger progress-bar-striped progress-bar-animated";
     }
+  }
+
+  private emptyChartData() {
+    this.labels = [];
+    this.passedSubmissions = [];
+    this.numberSubmissions = [];
+    this.percentagesRounded = [];
+    this.progressBarClasses = [];
   }
 }

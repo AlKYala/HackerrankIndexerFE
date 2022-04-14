@@ -40,7 +40,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   public toggleDropdown() {
-    //console.log("Toggling");
+    ////console.log("Toggling");
     this.toggle = !(this.toggle);
   }
 

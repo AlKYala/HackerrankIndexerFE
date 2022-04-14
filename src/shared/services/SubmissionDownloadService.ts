@@ -48,7 +48,7 @@ export class SubmissionDownloadService {
   private findExtensionForFile(submission: Submission): string {
     const language: string = submission.language.language;
     let extension: string = "txt";
-    //console.log(language);
+    ////console.log(language);
     if(language.includes('java')) {
 
       extension = 'java';
@@ -83,7 +83,7 @@ export class SubmissionDownloadService {
   }
 
   public downloadSubmissions(downloadFiles: DownloadFile[]) {
-    //console.log(downloadFiles);
+    ////console.log(downloadFiles);
     const zip = new Zip("submissions.zip");
     for(const downloadFile of downloadFiles) {
       zip.addFile(downloadFile.base64, true, downloadFile.fileName, downloadFile.challengeName);

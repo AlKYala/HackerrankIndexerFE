@@ -43,11 +43,11 @@ export class SubmissionDetailComponent implements OnInit, OnDestroy {
 
   private resolveSubmissionId(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    //console.log(id);
+    ////console.log(id);
     if(typeof id === "string") {
       this.submissionid = parseInt(id);
     }
-    //console.log(this.submissionid);
+    ////console.log(this.submissionid);
   }
 
   private fetchSubmission() {
@@ -56,7 +56,7 @@ export class SubmissionDetailComponent implements OnInit, OnDestroy {
         this.routeToHomepage();
       }
       this.submission = submission;
-      //console.log(submission);
+      ////console.log(submission);
       this.submissionCode = submission.code;
       this.loaded = true;
     });
