@@ -20,38 +20,26 @@ import {PassPercentage} from "../../shared/datamodels/Analytics/models/PassPerce
 export class ChartcomponentComponent implements OnChanges {
 
   @Input()
-  passPercentages: PassPercentage[] = null!;
+  passPercentages             : PassPercentage[]    = null!;
 
-  public show: boolean = false;
+  public show                 : boolean             = false;
 
-  pLanguageUsagePercentageMap = new Map<number, number>();
-  private subscription: Subscription = new Subscription();
+  pLanguageUsagePercentageMap : Map<number, number> = new Map<number, number>();
 
-  public labels             : string[];
-  public passedSubmissions  : number[];
-  public numberSubmissions  : number[];
-  public percentagesRounded : number[];
-  public progressBarClasses : string[];
+  public labels               : string[]            = [];
+  public passedSubmissions    : number[]            = [];
+  public numberSubmissions    : number[]            = [];
+  public percentagesRounded   : number[]            = [];
+  public progressBarClasses   : string[]            = [];
 
-  constructor(
-              private ref: ChangeDetectorRef,
-              private analyticsService: AnalyticsService,
-              private logInOutService: LogInOutService,
-              private pLanguageService: PLanguageService) {
-    this.labels = [];
-    this.passedSubmissions = [];
-    this.numberSubmissions = [];
-    this.percentagesRounded = [];
-    this.progressBarClasses = [];
-  }
+  constructor() {}
 
   ngOnChanges(changes: SimpleChanges) {
-    this.checkIfStatisticsChange(changes);
-    this.fillChartData(this.passPercentages);
+    this.listenStatisticsChange     (changes);
+    this.fillChartData              (this.passPercentages);
   }
 
-  private checkIfStatisticsChange(changes: SimpleChanges) {
-    //Listener in Angular
+  private listenStatisticsChange(changes: SimpleChanges) {
     if(changes['passPercentages'].currentValue) {
       this.show = true;
       this.fillChartData(this.passPercentages);
@@ -60,29 +48,37 @@ export class ChartcomponentComponent implements OnChanges {
 
   private fillChartData(statistics: PassPercentage[]) {
     const colors:             string[]  = [];
-    ////console.log(statistics);
     this.emptyChartData();
-    console.log("filling");
 
-    for(let i = 0; i < statistics.length; i++)
-    {
-      let label = this.getLabelFromStatisticsInstance(statistics[i]);
-      this.labels.push(label);
-      colors.push(statistics[i].planguage.color);
-      this.numberSubmissions.push(statistics[i].total);
-      this.passedSubmissions.push(statistics[i].passed);
-      let percentage: number = (statistics[i].passed * 100) / statistics[i].total;
-      this.percentagesRounded.push(Math.floor(percentage));
-      this.progressBarClasses.push(this.pickProgressBarClass(percentage));
+    for(let i = 0; i < statistics.length; i++) {
+      let label: string       = this.getLabelFromStatisticsInstance (statistics[i]);
+      let percentage: number  = (statistics[i].passed * 100) / statistics[i].total;
+
+      colors.push                   (statistics[i].planguage.color);
+
+      this.labels.push              (label);
+      this.numberSubmissions.push   (statistics[i].total);
+      this.passedSubmissions.push   (statistics[i].passed);
+      this.percentagesRounded.push  (Math.floor(percentage));
+      this.progressBarClasses.push  (this.pickProgressBarClass(percentage));
     }
 
 
-    ////console.log(this.numberSubmissions);
-    ////console.log(this.passedSubmissions);
-    ////console.log(this.percentagesRounded);
+    const chartDataDataSet =
+      [
+      {
+        label: "",
+        data: this.numberSubmissions,
+        backgroundColor: colors,
+        hoverOffset: 4
+      }
+    ];
 
-    const chartDataDataSet = [{label: "", data: this.numberSubmissions, backgroundColor: colors, hoverOffset: 4}];
-    const chartData: ChartJSData = {labels: this.labels, datasets: chartDataDataSet};
+    const chartData: ChartJSData =
+      {
+        labels: this.labels,
+        datasets: chartDataDataSet
+      };
 
     this.renderChart(chartData);
   }
@@ -92,13 +88,15 @@ export class ChartcomponentComponent implements OnChanges {
   }
 
   public renderChart(chartData: ChartJSData) {
-    const canvas = document.getElementById('myChart') as HTMLCanvasElement;
-    const ctx = canvas.getContext('2d');
+    const canvas  = document.getElementById('myChart') as HTMLCanvasElement;
+    const ctx     = canvas.getContext('2d');
 
-    const myChart = new Chart(ctx!, {
-      type: 'pie',
-      data: chartData
-    });
+    const myChart = new Chart(ctx!,
+      {
+        type: 'pie',
+        data: chartData
+      }
+    );
   }
 
   private pickProgressBarClass(percentage: number): string {
@@ -113,9 +111,9 @@ export class ChartcomponentComponent implements OnChanges {
   }
 
   private emptyChartData() {
-    this.labels = [];
-    this.passedSubmissions = [];
-    this.numberSubmissions = [];
+    this.labels             = [];
+    this.passedSubmissions  = [];
+    this.numberSubmissions  = [];
     this.percentagesRounded = [];
     this.progressBarClasses = [];
   }
