@@ -10,6 +10,8 @@ import {UserData} from "../../shared/datamodels/User/model/UserData";
 import {LocalStorageService} from "ngx-webstorage";
 import {GeneralPercentage} from "../../shared/datamodels/Analytics/models/GeneralPercentage";
 import {PassPercentage} from "../../shared/datamodels/Analytics/models/PassPercentage";
+import {Submission} from "../../shared/datamodels/Submission/model/Submission";
+import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
 
 @Component({
   selector: 'app-analytics',
@@ -24,6 +26,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   userData!: UserData;
   generalPercentage!: GeneralPercentage;
   passPercentages: PassPercentage[] = null!;
+  submissions: Submission[] = [];
+  languages: Planguage[] = [];
 
   datafound: boolean = false; //
   wait: boolean = true; //wait for the data to load
@@ -46,43 +50,30 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       (result: boolean) => {
         if(!result) {
           this.logInOutService.fireLogOut();
-          //////console.log("should navigate");
           this.router.navigate(['/landing']);
           return;
         }
-        ////console.log("Logged in");
       }
     );
-    ////console.log("Second");
     await this.loadUserData().finally(() => {
       this.onInit();
     });
   }
 
   async loadUserData() {
-
-    if(this.localStorageService.retrieve("userData")) {
-      this.userData = this.localStorageService.retrieve("userData");
-      ////console.log("localStorageFound");
-      return;
-    }
-
     await this.userDataService.loadUserData().then((userData: UserData) => {
       this.userData = userData;
-      ////console.log(userData);
-      //this.localStorageService.store("userData", userData); //TODO find a way to store more memory in localStorage
     })
   }
 
   private initImportDataFromUserData(userData: UserData) {
     this.generalPercentage  = userData.user.generalPercentage;
     this.passPercentages    = userData.user.passPercentages;
-    ////console.log(this.generalPercentage);
+    this.submissions        = userData.submissionList;
   }
 
   /**
    * wraps ngOnInit - fired after logInCheckIsComplete
-   * @private
    */
   private onInit() {
     this.subscriptions = [];

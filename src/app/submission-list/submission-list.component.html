@@ -7,8 +7,7 @@
       <div class="col">
         <div class="input-group">
           <span class="input-group-text">Filter By Name</span>
-          <input [formControl]="searchFormControl" class="form-control" type="text" />
-          <button (click)="filterSubmissionsByName()" class="btn btn-primary" type="button">Search</button>
+          <input (keydown)="this.fireEnitreFilter()" [formControl]="searchFormControl" class="form-control" type="text" />
         </div>
       </div>
     </div>
@@ -59,7 +58,7 @@
           <div class="col-6 offset-0 text-end">
             <div class="btn-group" role="group">
               <button (click)="restoreSubmissions()" class="btn btn-danger" type="button"><i class="fa fa-undo"></i> Reset Filter</button>
-              <button (click)="fireLanguageFilter()" class="btn btn-primary" type="button"><i class="fa fa-filter"></i> Filter</button></div>
+              <button (click)="fireEnitreFilter()" class="btn btn-primary" type="button"><i class="fa fa-filter"></i> Filter</button></div>
           </div>
         </div>
         <!-- LANGUAGE SELECTION END -->

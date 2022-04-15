@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit, EventEmitter} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, EventEmitter, OnChanges, SimpleChanges} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {async, Observable, Subscription} from "rxjs";
 import {Submission} from "../../shared/datamodels/Submission/model/Submission";
@@ -29,6 +29,12 @@ import {LogInOutService} from "../../shared/services/LogInOutService";
  * Dann beeinflussen diese sich gegenseitig - das ist zu verhindern!
  *
  * Erste idee: Sind components singletons?
+ *
+ *
+ * Filter logic is simple:
+ * When something in the state changes, run every filter. That's it.
+ *
+ * Provice filter methods for each.
  */
 
 @Component({
@@ -36,14 +42,16 @@ import {LogInOutService} from "../../shared/services/LogInOutService";
   templateUrl: './submission-list.component.html',
   styleUrls: ['./submission-list.component.scss']
 })
-export class SubmissionListComponent implements OnInit, OnDestroy {
+export class SubmissionListComponent implements OnChanges, OnDestroy {
 
   @Input()
-  submissionInput!: Submission[]; //TODO if not null override
-
   submissions: Submission[] = [];
+
+  @Input()
+  languages: Planguage[] = [];
+
+
   submissionsBackup: Submission[] = [];
-  private mainSubscription: Subscription;
 
   @Input()
   inputChallengeId: number | undefined;
@@ -53,15 +61,13 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   @Input()
   isOnAnalyticsPage: boolean | undefined;
 
+
   filteredByInput: boolean = false;
 
   private challengeId: number = -1;
   private pLanguageId: number = -1;
   faCoffee = faCoffee;
-  //page: number = 1;
-  //pageLimit: number = 16;
 
-  public languages!: Planguage[];
   public enabledLanguages!: boolean[];
   private selectedLanguages: Set<number>;
 
@@ -76,8 +82,6 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   changePage = new EventEmitter<any>(true);
   maxPages = 5;
 
-  private isFilterFired: boolean;
-
   constructor(private httpClient: HttpClient,
               private submissionService: SubmissionService,
               private submissionDataService: SubmissionDataService,
@@ -89,162 +93,176 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
               private requestService: RequestService,
               private submissionDownloadService: SubmissionDownloadService,
               private ngxBootstrapConfirmService: NgxBootstrapConfirmService) {
-    this.mainSubscription   = new Subscription();
     this.selectedLanguages  = new Set<number>();
-    this.isFilterFired = true;
   }
 
-  async ngOnInit() {
-    if(this.submissionInput != null) {
-      this.submissions = this.submissionInput;
-      return;
-    }
-
-    await this.logInOutService.checkLoggedIn().then((result: boolean) => {
-      if(!result) {
-        return;
-      }
-      //STUFF
-      this.scanForFilter();
-      this.initLanguages();
-    })
+  ngOnChanges(changes: SimpleChanges) {
+    this.submissionsBackup = this.submissions;
+    this.enableLanguages(this.languages.length); //langaugeSize
   }
 
   ngOnDestroy(): void {
   }
 
-  public filterSubmissionsByName() {
+
+  /**
+   * FILTERING BEGIN
+   */
+
+  /**
+   * FIred when:
+   * Searchbox changes
+   * language is clicked
+   * after state change (see filter by state)
+   * @private
+   */
+  public fireEnitreFilter() {
+
+    this.submissions = this.submissionsBackup;
+
+    //CHECKBOX STATE
+    this.filterByState();
+
+    //SEARCHBOX
+    this.filterByChallengeName();
+
+    //LANGUAGES
+    this.filterByChallengeName()
+  }
+
+  /**
+   * FILTERING BY NAME
+   */
+  public filterByChallengeName() {
     const search = this.searchFormControl.value;
     if(search == null || search.length == 0) {
       return;
     }
-    this.submissions = this.submissionsBackup.filter(submission => submission.challenge.challengeName.includes(search));
-    this.pageOfItems = this.submissions;
+    this.submissions = this.submissions.filter(submission => submission.challenge.challengeName.toLowerCase().includes(search.toLowerCase()));
+  }
+
+  /**
+   * FILTERING BY NAME END
+   */
+
+  /**
+   * FILTERING BY LANGUAGE BEGIN
+   */
+
+  private fireBySelectedLanguages() {
+    this.submissions = this.submissions.filter((submission: Submission) => this.selectedLanguages.has(submission.language.id!));
   }
 
   public clickLanguage(pLanguage: Planguage): void {
 
-    this.isFilterFired = false;
-
     const id: number = pLanguage.id!;
     if(this.selectedLanguages.has(id)) {
       this.selectedLanguages.delete(id);
-      return;
     }
-
-    this.selectedLanguages.add(id);
+    else {
+      this.selectedLanguages.add(id);
+    }
+    //Fire filter
   }
 
-  public async fireLanguageFilter() {
+  /**
+   * FILTERING BY LANGAUGES END
+   */
 
-    this.isFilterFired = true;
+  /**
+   * FILTERING BY STATE BEGIN
+   */
 
-    this.submissions = this.submissionsBackup;
-
-    const filterRequest: FilterRequest = this.createFilterRequest();
-
-    let arr: number[] = [];
-    Object.assign(arr, filterRequest.languageIDs);
-
-
-    if(filterRequest.languageIDs.length == 0 && filterRequest.mode == 4) {
-
-      this.filterSubmissionsByName();
+  private filterByState() {
+    if(this.onlyPassedSubmissions) {
+      this.filterForPassedSubmissions();
       return;
     }
 
-    await this.submissionService.findWithFilterRequest(filterRequest).toPromise()
-      .then((data) => {
-        this.submissions = data;
-        ////console.log("data loaded");
-      });
+    if(this.onlyFailedSubmissions) {
+      this.filterForFailedSubmissions();
+      return;
+    }
+
+    if(this.onlyLastPassedSubmissions) {
+      this.filterForMostRecentPassedSubmissions();
+    }
   }
 
   public checkOnlyPassedSubmissions() {
 
-    this.isFilterFired = false;
 
     if(this.onlyPassedSubmissions) {
       this.onlyPassedSubmissions = false;
+      this.fireEnitreFilter();
       return;
     }
     this.onlyFailedSubmissions = false;
     this.onlyLastPassedSubmissions = false;
     this.onlyPassedSubmissions = true;
+
+    this.fireEnitreFilter();
   }
 
   public checkOnlyFailedSubmissions() {
 
-    this.isFilterFired = false;
-
     if(this.onlyFailedSubmissions) {
       this.onlyFailedSubmissions = false;
+      this.fireEnitreFilter();
       return;
     }
     this.onlyFailedSubmissions = true;
     this.onlyLastPassedSubmissions = false;
     this.onlyPassedSubmissions = false;
+
+    this.fireEnitreFilter();
   }
 
   public checkOnlyLastPassedSubmissions() {
-
-    this.isFilterFired = false;
-
     if(this.onlyLastPassedSubmissions) {
       this.onlyLastPassedSubmissions = false;
+      this.fireEnitreFilter();
       return;
     }
     this.onlyFailedSubmissions = false;
     this.onlyLastPassedSubmissions = true;
     this.onlyPassedSubmissions = false;
+
+    this.fireEnitreFilter();
   }
 
+  private filterForPassedSubmissions(): void {
+    this.submissions = this.submissions.filter((submission: Submission) => submission.score == 1);
+  }
+
+  private filterForFailedSubmissions(): void {
+    this.submissions = this.submissions.filter((submission: Submission) => submission.score < 1);
+  }
+
+  private filterForMostRecentPassedSubmissions(): void {
+    this.filterForPassedSubmissions();
+
+    const mostRecent = [];
+    for(const submission of this.submissions) {
+      const id: number = submission.id!;
+      mostRecent[id] = submission;
+    }
+
+    this.submissions = mostRecent;
+  }
+
+  /**
+   * FILTERING BY STATE END
+   */
+
+  /**
+   * RESTORE FILTER BEGIN
+   */
+
   public restoreSubmissions() {
-    this.isFilterFired = true;
     this.resetSearchBox();
     this.resetButtonClicks();
     this.submissions = this.submissionsBackup;
-  }
-
-  public fireDownload(): void {
-
-    /* TODO: Pruefen ob man nicht eine warnmeldung anzeigen soll */
-
-    let filterFirst: boolean = false;
-
-    if(!this.isFilterFired) {
-      this.runConfirmDialog();
-      return;
-    }
-
-    const numbers: number[] = this.getSubmissionIDs();
-    this.submissionDownloadService.getDownloadFilesBySubmissionIds(numbers);
-  }
-
-  private filterAndDownload() {
-    //wait for request to finish
-    this.filterSubmissionsByName();
-    this.fireLanguageFilter()
-      .then(() => {
-        const numbers: number[] = this.getSubmissionIDs();
-        this.submissionDownloadService.getDownloadFilesBySubmissionIds(numbers);
-      });
-  }
-
-  private runConfirmDialog() {
-    let options = {
-      title: 'Do you want to filter first before you download?',
-      confirmLabel: 'Yes',
-      declineLabel: 'No - Download anyway'
-    }
-    this.ngxBootstrapConfirmService.confirm(options).then((res: boolean) => {
-      if (res) {
-        this.filterAndDownload();
-      } else {
-        const numbers: number[] = this.getSubmissionIDs();
-        this.submissionDownloadService.getDownloadFilesBySubmissionIds(numbers);
-      }
-    });
   }
 
   private resetButtonClicks() {
@@ -272,23 +290,35 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
     this.searchFormControl.setValue("");
   }
 
-  private scanForFilter() {
-    const foundRouting: boolean = this.scanForRoutingParameters();
-    if(foundRouting) {
-      return;
-    }
-    const foundInput: boolean = this.scanForInputParameters();
-    if(foundInput) {
-      return;
-    }
-    this.getAllSubmissions();
+  /**
+   * RESTORE END
+   */
+
+  /**
+   * DOWNLOAD BEGIN
+   */
+
+  public fireDownload(): void {
+
+
+    const numbers: number[] = this.getSubmissionIDs();
+    this.submissionDownloadService.getDownloadFilesBySubmissionIds(numbers);
   }
+
+  private filterAndDownload() {
+    //TODO - see old version for ideas
+  }
+
+  /**
+   * DOWNLOAD END
+   */
 
   /**
    * Returns true if filter fires
    * @private
    */
   private scanForInputParameters(): boolean {
+    //TODO need?
     if(this.inputChallengeId != null && this.inputChallengeId > -1) {
       this.getSubmissionsByChallengeId(this.inputChallengeId);
       this.filteredByInput = true;
@@ -303,10 +333,15 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * RELATED BEGIN
+   */
+
+  /**
    * Returns true if filter fires
    * @private
    */
   private scanForRoutingParameters(): boolean {
+    //TODO need?
     const challengeIdString = this.route.snapshot.paramMap.get('challengeId');
     const pLanguageIdString = this.route.snapshot.paramMap.get('pLanguageId');
 
@@ -324,36 +359,16 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
   }
 
   private getSubmissionsByChallengeId(challengeId: number) {
-    const subscription: Subscription = this.challengeService.getSubmissionsByChallengeId(challengeId)
-      .pipe().subscribe((submissions: Submission[]) => {
-        this.submissions = submissions;
-        this.setPage(1);
-      })
-    this.mainSubscription.add(subscription);
+    this.submissions.filter((submission: Submission) => {submission.challenge.id == challengeId});
   }
 
   private getSubmissionsByPLanguageId(pLanguageId: number) {
-    const subscription: Subscription = this.pLanguageService.getSubmissionsByPLanguageId(pLanguageId)
-      .pipe().subscribe((submissions: Submission[]) => {
-        this.submissions = submissions;
-      })
-    this.mainSubscription.add(subscription);
+    this.submissions.filter((submission:Submission) => {submission.language.id == pLanguageId});
   }
 
-  private getAllSubmissions() {
-    const subscription : Subscription = this.submissionService.findAll().
-    pipe().subscribe((submissions: Submission[]) => {
-      this.submissions = submissions;
-      this.submissionsBackup = submissions;
-    });
-    this.mainSubscription.add(subscription);
-  }
-
-  private getAllSubmissionsRequest(): Observable<Submission[]> {
-    //return this.httpClient.get(`${environment.api}/submission`) as Observable<Submission[]>;
-    //TODO try this and check if works
-    return this.requestService.anyRequest(RequestServiceEnum.GET, `${environment.api}/submission`) as Observable<Submission[]>;
-  }
+  /**
+   * RELATED END
+   */
 
   public navigateToListingDetail(submission: Submission): void {
     this.submissionDataService.setSubmission(submission);
@@ -368,14 +383,6 @@ export class SubmissionListComponent implements OnInit, OnDestroy {
     this.pager = paginate(this.submissions.length, page, this.pageSize, this.maxPages);
     var pageOfItems = this.submissions.slice(this.pager.startIndex, this.pager.endIndex +1);
     this.changePage.emit(pageOfItems);
-  }
-
-  private initLanguages() {
-    const subscription: Subscription = this.pLanguageService.findAll().subscribe((data: Planguage[]) => {
-      this.languages = data;
-      this.enableLanguages(data.length);
-    });
-    this.mainSubscription.add(subscription);
   }
 
   private enableLanguages(size: number): void {
