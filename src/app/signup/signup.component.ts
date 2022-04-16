@@ -52,7 +52,7 @@ export class SignupComponent implements OnInit {
 
     const userLogin: UserLogin = {email: signUpEmail, password: signUpPassword};
 
-    console.log(userSignup);
+    ////console.log(userSignup);
 
     this.authenticationService.signUp(userSignup).subscribe(
 
@@ -61,7 +61,7 @@ export class SignupComponent implements OnInit {
           .subscribe(
             data => {
               this.localStorageService.store("isLoggedIn", 1);
-              this.router.navigate(['/'])
+              this.router.navigate(['/landing'])
             },
             error => {
               this.localStorageService.store("isLoggedIn", 0);

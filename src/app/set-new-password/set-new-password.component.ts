@@ -54,8 +54,8 @@ export class SetNewPasswordComponent implements OnInit {
     const subscription: Subscription = this.route.queryParams.subscribe(params => {
       this.token = params['token'];
       this.email = params['email'];
-      console.log(this.token);
-      console.log(this.email);
+      ////console.log(this.token);
+      ////console.log(this.email);
     });
     this.baseSubscription.add(subscription)
   }
@@ -63,7 +63,7 @@ export class SetNewPasswordComponent implements OnInit {
   public sendPasswordReset() {
     const password = this.passwordForm.value;
     const resetInfo: PasswordResetModel = {token: this.token, email: this.email, password: password};
-    console.log(resetInfo);
+    ////console.log(resetInfo);
     this.httpClient.post(`${environment.api}/user/updatePassword`, resetInfo).subscribe();
   }
 }

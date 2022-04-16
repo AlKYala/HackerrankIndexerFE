@@ -26,7 +26,7 @@ export class AuthenticationService {
   }
 
   public fireLogin(user: UserLogin) : Observable<any> {
-    console.log(user);
+    ////console.log(user);
     return this.httpClient.post(`${environment.api}/authenticate`, user);
   }
 }

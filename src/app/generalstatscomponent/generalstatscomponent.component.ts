@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
 import {Subscription} from "rxjs";
 import {AnalyticsService} from "../../shared/services/AnalyticsService";
@@ -12,65 +12,51 @@ import {LogInOutService} from "../../shared/services/LogInOutService";
   templateUrl: './generalstatscomponent.component.html',
   styleUrls: ['./generalstatscomponent.component.css']
 })
-export class GeneralstatscomponentComponent implements OnInit {
+export class GeneralstatscomponentComponent implements OnChanges {
 
-  private mainSubscription!: Subscription;
-  generalPercentageObject!: GeneralPercentage;
-  favoriteLanguageString = "";
-  challengesPassedPercentage = 0;
-  submissionsSolvedPercentage = 0;
+  @Input()
+  generalStatsInput           :   GeneralPercentage = null!
 
-  challengesPassedClass: string = "";
-  submissionsPassedClass: string = "";
+  generalPercentageObject     :   GeneralPercentage = null!;
+  favoriteLanguageString      :   string            = "";
+  challengesPassedPercentage  :   number            = 0;
+  submissionsSolvedPercentage :   number            = 0;
 
-  constructor(private analyticsService: AnalyticsService,
-              private logInOutService: LogInOutService,
-              private localStorageService: LocalStorageService) {
+  challengesPassedClass       :   string            = "";
+  submissionsPassedClass      :   string            = "";
+
+  constructor() {}
+
+  ngOnChanges() {
+    this.generalPercentageObject =  this.generalStatsInput;
+    this.assignData         (this.generalPercentageObject);
   }
 
-  async ngOnInit() {
-    await this.logInOutService.checkLoggedIn().then((result: boolean) => {
-      if(!result) {
-        return;
-      }
-      //STUFF
-      this.mainSubscription = new Subscription();
-      this.initData();
-    })
+  private assignData(data: GeneralPercentage) {
+    this.normalizeGeneralPercentagesObject  (data);
+    this.initInfo                           (data);
+    this.initPassClasses                    (data);
   }
 
-  private initData() {
-    this.initGeneralPercentages();
-  }
+  private normalizeGeneralPercentagesObject(instance: GeneralPercentage) {
+    this.generalPercentageObject                              = instance;
 
-  private initGeneralPercentages() {
-    const subscription: Subscription = this.analyticsService.getGeneralPercentages()
-      .subscribe((data: GeneralPercentage) => {
-        console.log(data);
-        this.assignGeneralPercentagesObject(data);
-        this.initInfo(data);
-        this.initPassClasses(data);
-      });
-    this.mainSubscription.add(subscription);
-  }
-
-  private assignGeneralPercentagesObject(instance: GeneralPercentage) {
-    this.generalPercentageObject = instance;
-    this.generalPercentageObject.percentageSubmissionsPassed =
+    this.generalPercentageObject.percentageSubmissionsPassed  =
       Math.floor(this.generalPercentageObject.percentageSubmissionsPassed);
-    this.generalPercentageObject.percentageChallengesSolved =
+
+    this.generalPercentageObject.percentageChallengesSolved   =
       Math.floor(this.generalPercentageObject.percentageChallengesSolved);
   }
 
   private initInfo(data: GeneralPercentage) {
-    this.submissionsSolvedPercentage = data.percentageSubmissionsPassed;
-    this.challengesPassedPercentage = data.percentageChallengesSolved;
-    this.favoriteLanguageString = data.favouriteLanguage.displayName;
+    this.submissionsSolvedPercentage  = data.percentageSubmissionsPassed;
+    this.challengesPassedPercentage   = data.percentageChallengesSolved;
+    this.favoriteLanguageString       = data.favouriteLanguage.displayName;
   }
 
   private initPassClasses(data: GeneralPercentage) {
-    this.submissionsPassedClass = this.getClassForPercentage(data.percentageSubmissionsPassed);
-    this.challengesPassedClass = this.getClassForPercentage(data.percentageChallengesSolved);
+    this.submissionsPassedClass = this.getClassForPercentage  (data.percentageSubmissionsPassed);
+    this.challengesPassedClass  = this.getClassForPercentage  (data.percentageChallengesSolved);
   }
 
   private getClassForPercentage(percentage: number): string {

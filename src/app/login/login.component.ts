@@ -51,11 +51,11 @@ export class LoginComponent implements OnInit {
     this.authenticationService.fireLogin(userLogin)
       .subscribe(
         data => {
-          console.log(data);
+          ////console.log(data);
           this.localStorageService.store('jwt', data);
           this.localStorageService.store('email', userLogin.email);
           this.localStorageService.store("isLoggedIn", 1);
-          this.router.navigate(['/']);
+          this.router.navigate(['/landing']);
         },
         error => {
           this.incorrectPassword = true;

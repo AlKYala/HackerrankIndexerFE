@@ -17,7 +17,6 @@ import {ChartcomponentComponent} from './chartcomponent/chartcomponent.component
 import {NgxPaginationModule} from "ngx-pagination";
 import {LandingComponent} from './landing/landing.component';
 import {HowtocomponentComponent} from './howtocomponent/howtocomponent.component';
-import {IntroFeaturesComponentComponent} from './intro-features-component/intro-features-component.component';
 import {JwPaginationModule} from "jw-angular-pagination";
 import {ChartsModule} from "ng2-charts";
 import {NgxWebstorageModule} from "ngx-webstorage";
@@ -32,6 +31,9 @@ import { SetNewPasswordComponent } from './set-new-password/set-new-password.com
 import { VerifyUserComponent } from './verify-user/verify-user.component';
 import {ConfirmBoxConfigModule, NgxAwesomePopupModule} from "@costlydeveloper/ngx-awesome-popup";
 import {NgxBootstrapConfirmModule} from "ngx-bootstrap-confirm";
+import { ShareComponentComponent } from './share-component/share-component.component';
+import {NgxMasonryModule} from "ngx-masonry";
+import { InitialLandingComponent } from './initial-landing/initial-landing.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,6 @@ import {NgxBootstrapConfirmModule} from "ngx-bootstrap-confirm";
     ChartcomponentComponent,
     LandingComponent,
     HowtocomponentComponent,
-    IntroFeaturesComponentComponent,
     LoginComponent,
     SignupComponent,
     ResetPasswordComponent,
@@ -52,6 +53,8 @@ import {NgxBootstrapConfirmModule} from "ngx-bootstrap-confirm";
     FooterComponent,
     SetNewPasswordComponent,
     VerifyUserComponent,
+    ShareComponentComponent,
+    InitialLandingComponent,
   ],
   imports: [
     RouterModule,
@@ -68,7 +71,8 @@ import {NgxBootstrapConfirmModule} from "ngx-bootstrap-confirm";
     NgxWebstorageModule.forRoot(),
     ReactiveFormsModule,
     ToastrModule.forRoot(),
-    NgxBootstrapConfirmModule
+    NgxBootstrapConfirmModule,
+    NgxMasonryModule
   ],
   providers: [],
   bootstrap: [AppComponent]

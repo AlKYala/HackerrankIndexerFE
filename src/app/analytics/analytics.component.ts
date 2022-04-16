@@ -1,17 +1,17 @@
-import {AfterViewChecked, AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AnalyticsService} from "../../shared/services/AnalyticsService";
-import {UsageStatistics} from "../../shared/datamodels/Analytics/models/UsageStatistics";
 import {SubscriptionService} from "../../shared/services/SubscriptionService";
 import {Subscription} from "rxjs";
-import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
-import {PLanguageService} from "../../shared/datamodels/PLanguage/service/PLanguageService";
-import {switchMap} from "rxjs/operators";
-import {PassPercentages} from "../../shared/datamodels/Analytics/models/PassPercentages";
-import {LegendPosition} from "@swimlane/ngx-charts";
 import {HackerrrankJSONService} from "../../shared/datamodels/HackerrankJSON/service/HackerrrankJSONService";
-import Chart from "chart.js";
 import {LogInOutService} from "../../shared/services/LogInOutService";
-import {Route, Router} from "@angular/router";
+import {Router} from "@angular/router";
+import {UserDataService} from "../../shared/services/UserDataService";
+import {UserData} from "../../shared/datamodels/User/model/UserData";
+import {LocalStorageService} from "ngx-webstorage";
+import {GeneralPercentage} from "../../shared/datamodels/Analytics/models/GeneralPercentage";
+import {PassPercentage} from "../../shared/datamodels/Analytics/models/PassPercentage";
+import {Submission} from "../../shared/datamodels/Submission/model/Submission";
+import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
 
 @Component({
   selector: 'app-analytics',
@@ -23,6 +23,12 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   private subscriptions!: Subscription[];
 
+  userData!: UserData;
+  generalPercentage!: GeneralPercentage;
+  passPercentages: PassPercentage[] = null!;
+  submissions: Submission[] = [];
+  languages: Planguage[] = [];
+
   datafound: boolean = false; //
   wait: boolean = true; //wait for the data to load
   submitted: boolean = false;
@@ -32,33 +38,63 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
               private analyticsService: AnalyticsService,
               private hackerrankJsonService: HackerrrankJSONService,
               private router: Router,
-              private logInOutService: LogInOutService) {
+              private logInOutService: LogInOutService,
+              private userDataService: UserDataService,
+              private localStorageService: LocalStorageService) {
     this.subscriptions = [];
   }
 
   async ngOnInit() {
+    //////console.log("First")
     await this.logInOutService.checkLoggedIn().then(
       (result: boolean) => {
         if(!result) {
           this.logInOutService.fireLogOut();
-          console.log("should navigate");
-          this.router.navigate(['/']);
+          this.router.navigate(['/landing']);
           return;
         }
-        this.onInit();
       }
     );
+    await this.loadUserData().finally(() => {
+      this.onInit();
+    });
+  }
+
+  async loadUserData() {
+    //TODO error interception when data is not found
+    await this.userDataService.loadUserData().then((userData: UserData) => {
+      this.userData = userData;
+      this.datafound = this.checkDataFound(userData);
+    })
+  }
+
+  private checkDataFound(userdata: UserData) {
+    return userdata.submissionList.length > 0;
+  }
+
+  private initImportDataFromUserData(userData: UserData) {
+    this.generalPercentage  = userData.user.generalPercentage;
+    this.passPercentages    = userData.user.passPercentages;
+    this.submissions        = userData.submissionList;
+    this.languages          = this.extractUsedLanguages(userData.user.passPercentages);
+  }
+
+  private extractUsedLanguages(passPercentages: PassPercentage[]): Planguage[] {
+    const languagesSet: Set<Planguage> = new Set<Planguage>();
+
+    passPercentages.forEach((element: PassPercentage) => languagesSet.add(element.planguage));
+
+    return [...languagesSet];
   }
 
   /**
    * wraps ngOnInit - fired after logInCheckIsComplete
-   * @private
    */
   private onInit() {
     this.subscriptions = [];
-    this.checkIsUploadedAlready();
+    this.initImportDataFromUserData(this.userData);
     this.initStyleAndStats();
-    this.initStyleAndStats();
+    this.wait = false;
   }
 
   ngOnDestroy(): void {
@@ -91,21 +127,11 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   private fireParseRequest(hackerrankJsonFile: File) {
     this.wait = true;
-    const subscription: Subscription = this.hackerrankJsonService.fireHackerrankParsing(hackerrankJsonFile).pipe().subscribe((response: string) => {
+    const subscription: Subscription = this.hackerrankJsonService.fireHackerrankParsing(hackerrankJsonFile)
+      .pipe().subscribe((response: string) => {
       this.datafound = true;
       this.wait = false;
     });
-    this.subscriptions.push(subscription);
-  }
-
-  private checkIsUploadedAlready(): void {
-    const subscription: Subscription = this.analyticsService.checkUploadsExist()
-      .pipe().subscribe((data: boolean) => {
-        this.datafound = data;
-        this.wait = false;
-        console.log(this.wait);
-        console.log(this.datafound);
-      })
     this.subscriptions.push(subscription);
   }
 
@@ -113,7 +139,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     let node = document.createElement('script');
     node.src = url;
     node.type = 'text/javascript';
-    console.log(node);
+    ////console.log(node);
     document.getElementsByTagName('head')[0].appendChild(node);
   }
 
