@@ -128,7 +128,7 @@ export class SubmissionListComponent implements OnChanges, OnDestroy {
 
 
     //LANGUAGES
-    //TODO
+    this.filterBySelectedLanguages();
   }
 
   /**
@@ -151,7 +151,7 @@ export class SubmissionListComponent implements OnChanges, OnDestroy {
    * FILTERING BY LANGUAGE BEGIN
    */
 
-  private fireBySelectedLanguages() {
+  private filterBySelectedLanguages() {
     this.submissions = this.submissions.filter((submission: Submission) => this.selectedLanguages.has(submission.language.id!));
   }
 
@@ -164,7 +164,7 @@ export class SubmissionListComponent implements OnChanges, OnDestroy {
     else {
       this.selectedLanguages.add(id);
     }
-    //Fire filter
+    this.fireEnitreFilter();
   }
 
   /**
@@ -398,6 +398,7 @@ export class SubmissionListComponent implements OnChanges, OnDestroy {
   }
 
   private enableLanguages(size: number): void {
+    console.log(this.languages);
     this.enabledLanguages = new Array<boolean>(size);
     if(this.inputLanguageid == -1) {
       this.enabledLanguages.fill(true, 0, size);

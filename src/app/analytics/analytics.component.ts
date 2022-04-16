@@ -70,6 +70,15 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     this.generalPercentage  = userData.user.generalPercentage;
     this.passPercentages    = userData.user.passPercentages;
     this.submissions        = userData.submissionList;
+    this.languages          = this.extractUsedLanguages(userData.user.passPercentages);
+  }
+
+  private extractUsedLanguages(passPercentages: PassPercentage[]): Planguage[] {
+    const languagesSet: Set<Planguage> = new Set<Planguage>();
+
+    passPercentages.forEach((element: PassPercentage) => languagesSet.add(element.planguage));
+
+    return [...languagesSet];
   }
 
   /**
