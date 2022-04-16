@@ -7,4 +7,6 @@ export interface User {
   usagePercentages: any; //TODO
   passPercentages: PassPercentage[];
   email: string;
+  "userDataToken": string,
+  "verified": boolean
 }

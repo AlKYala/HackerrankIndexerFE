@@ -38,7 +38,7 @@
             <app-submission-list [languages]="languages" [submissions]="submissions"></app-submission-list>
           </div>
           <div class="col-12 col-lg-4 col-xxl-3">
-            <app-share-component></app-share-component>
+            <app-share-component [userDataToken]="this.userDataToken"></app-share-component>
           </div>
         </div>
       </ngx-masonry>

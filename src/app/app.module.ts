@@ -34,6 +34,7 @@ import {NgxBootstrapConfirmModule} from "ngx-bootstrap-confirm";
 import { ShareComponentComponent } from './share-component/share-component.component';
 import {NgxMasonryModule} from "ngx-masonry";
 import { InitialLandingComponent } from './initial-landing/initial-landing.component';
+import {NgxQRCodeModule} from "@techiediaries/ngx-qrcode";
 
 @NgModule({
   declarations: [
@@ -72,7 +73,9 @@ import { InitialLandingComponent } from './initial-landing/initial-landing.compo
     ReactiveFormsModule,
     ToastrModule.forRoot(),
     NgxBootstrapConfirmModule,
-    NgxMasonryModule
+    NgxMasonryModule,
+    BrowserModule,
+    NgxQRCodeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

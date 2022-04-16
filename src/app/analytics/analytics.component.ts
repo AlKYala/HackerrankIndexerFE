@@ -28,6 +28,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   passPercentages: PassPercentage[] = null!;
   submissions: Submission[] = [];
   languages: Planguage[] = [];
+  userDataToken: string = "";
 
   datafound: boolean = false; //
   wait: boolean = true; //wait for the data to load
@@ -77,6 +78,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     this.passPercentages    = userData.user.passPercentages;
     this.submissions        = userData.submissionList;
     this.languages          = this.extractUsedLanguages(userData.user.passPercentages);
+    this.userDataToken      = this.userData.user.userDataToken;
   }
 
   private extractUsedLanguages(passPercentages: PassPercentage[]): Planguage[] {
