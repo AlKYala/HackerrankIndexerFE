@@ -61,9 +61,15 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   }
 
   async loadUserData() {
+    //TODO error interception when data is not found
     await this.userDataService.loadUserData().then((userData: UserData) => {
       this.userData = userData;
+      this.datafound = this.checkDataFound(userData);
     })
+  }
+
+  private checkDataFound(userdata: UserData) {
+    return userdata.submissionList.length > 0;
   }
 
   private initImportDataFromUserData(userData: UserData) {
@@ -87,8 +93,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   private onInit() {
     this.subscriptions = [];
     this.initImportDataFromUserData(this.userData);
-    this.checkIsUploadedAlready();
     this.initStyleAndStats();
+    this.wait = false;
   }
 
   ngOnDestroy(): void {
@@ -126,17 +132,6 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       this.datafound = true;
       this.wait = false;
     });
-    this.subscriptions.push(subscription);
-  }
-
-  private checkIsUploadedAlready(): void {
-    const subscription: Subscription = this.analyticsService.checkUploadsExist()
-      .pipe().subscribe((data: boolean) => {
-        this.datafound = data;
-        this.wait = false;
-        ////console.log(this.wait);
-        ////console.log(this.datafound);
-      })
     this.subscriptions.push(subscription);
   }
 

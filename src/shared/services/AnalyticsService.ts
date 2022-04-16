@@ -57,11 +57,11 @@ export class AnalyticsService {
       .anyRequest(RequestServiceEnum.GET, `${this.path}/pLanguage/favourite`) as Observable<Planguage>;
   }
 
-  public checkUploadsExist(): Observable<boolean> {
+  /*public checkUploadsExist(): Observable<boolean> {
     //return this.httpClient.get(`${this.path}/exists`) as Observable<boolean>;
     return this.requestService
       .anyRequest(RequestServiceEnum.GET, `${this.path}/exists`) as Observable<boolean>;
-  }
+  }*/
 
   public getNumberOfUsers(): Observable<number> {
     return this.requestService
