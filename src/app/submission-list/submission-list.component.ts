@@ -119,15 +119,16 @@ export class SubmissionListComponent implements OnChanges, OnDestroy {
   public fireEnitreFilter() {
 
     this.submissions = this.submissionsBackup;
+    //SEARCHBOX - THIS HAS TO BE FIRST
+    this.filterByChallengeName();
 
     //CHECKBOX STATE
     this.filterByState();
 
-    //SEARCHBOX
-    this.filterByChallengeName();
+
 
     //LANGUAGES
-    this.filterByChallengeName()
+    //TODO
   }
 
   /**
@@ -135,7 +136,8 @@ export class SubmissionListComponent implements OnChanges, OnDestroy {
    */
   public filterByChallengeName() {
     const search = this.searchFormControl.value;
-    if(search == null || search.length == 0) {
+    if(search == null || search.length == 1) {
+      this.submissions = this.submissionsBackup; // REASON WHY HAS TO BE FIRST
       return;
     }
     this.submissions = this.submissions.filter(submission => submission.challenge.challengeName.toLowerCase().includes(search.toLowerCase()));
@@ -242,13 +244,23 @@ export class SubmissionListComponent implements OnChanges, OnDestroy {
   private filterForMostRecentPassedSubmissions(): void {
     this.filterForPassedSubmissions();
 
-    const mostRecent = [];
+    const mostRecent = {};
     for(const submission of this.submissions) {
       const id: number = submission.id!;
-      mostRecent[id] = submission;
+      // @ts-ignore
+      mostRecent[submission.challenge.id] = submission;
     }
 
-    this.submissions = mostRecent;
+    const filteredSubmissions: Submission[] = [];
+
+    for(const key of Object.keys(mostRecent)) {
+      // @ts-ignore
+      filteredSubmissions.push(mostRecent[key]);
+    }
+
+    this.submissions = filteredSubmissions;
+
+    //this.submissions = mostRecent.
   }
 
   /**
