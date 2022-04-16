@@ -22,20 +22,6 @@ import {SubmissionDownloadService} from "../../shared/services/SubmissionDownloa
 import {DownloadFile} from "../../shared/datamodels/DownloadFile/Model/DownloadFile";
 import {NgxBootstrapConfirmService} from "ngx-bootstrap-confirm";
 import {LogInOutService} from "../../shared/services/LogInOutService";
-/**
- * TODO: du musst die pagination fixen
- * Wenn du dieses Component 2x nebeneinander hast, sieht das kacke aus
- * z.B. 2 Listen mit 2 verschiedenen Seitenanzahlen
- * Dann beeinflussen diese sich gegenseitig - das ist zu verhindern!
- *
- * Erste idee: Sind components singletons?
- *
- *
- * Filter logic is simple:
- * When something in the state changes, run every filter. That's it.
- *
- * Provice filter methods for each.
- */
 
 @Component({
   selector: 'app-submission-list',
@@ -91,8 +77,7 @@ export class SubmissionListComponent implements OnChanges, OnDestroy {
               private router: Router,
               private logInOutService: LogInOutService,
               private requestService: RequestService,
-              private submissionDownloadService: SubmissionDownloadService,
-              private ngxBootstrapConfirmService: NgxBootstrapConfirmService) {
+              private submissionDownloadService: SubmissionDownloadService) {
     this.selectedLanguages  = new Set<number>();
   }
 
@@ -117,16 +102,11 @@ export class SubmissionListComponent implements OnChanges, OnDestroy {
    * @private
    */
   public fireEnitreFilter() {
-
     this.submissions = this.submissionsBackup;
     //SEARCHBOX - THIS HAS TO BE FIRST
     this.filterByChallengeName();
-
     //CHECKBOX STATE
     this.filterByState();
-
-
-
     //LANGUAGES
     this.filterBySelectedLanguages();
   }
@@ -140,7 +120,8 @@ export class SubmissionListComponent implements OnChanges, OnDestroy {
       this.submissions = this.submissionsBackup; // REASON WHY HAS TO BE FIRST
       return;
     }
-    this.submissions = this.submissions.filter(submission => submission.challenge.challengeName.toLowerCase().includes(search.toLowerCase()));
+    this.submissions = this.submissions
+      .filter(submission => submission.challenge.challengeName.toLowerCase().includes(search.toLowerCase()));
   }
 
   /**
@@ -152,7 +133,8 @@ export class SubmissionListComponent implements OnChanges, OnDestroy {
    */
 
   private filterBySelectedLanguages() {
-    this.submissions = this.submissions.filter((submission: Submission) => this.selectedLanguages.has(submission.language.id!));
+    this.submissions = this.submissions
+      .filter((submission: Submission) => this.selectedLanguages.has(submission.language.id!));
   }
 
   public clickLanguage(pLanguage: Planguage): void {
@@ -195,13 +177,14 @@ export class SubmissionListComponent implements OnChanges, OnDestroy {
 
 
     if(this.onlyPassedSubmissions) {
-      this.onlyPassedSubmissions = false;
+      this.onlyPassedSubmissions    = false;
       this.fireEnitreFilter();
       return;
     }
-    this.onlyFailedSubmissions = false;
-    this.onlyLastPassedSubmissions = false;
-    this.onlyPassedSubmissions = true;
+
+    this.onlyFailedSubmissions      = false;
+    this.onlyLastPassedSubmissions  = false;
+    this.onlyPassedSubmissions      = true;
 
     this.fireEnitreFilter();
   }
@@ -209,36 +192,38 @@ export class SubmissionListComponent implements OnChanges, OnDestroy {
   public checkOnlyFailedSubmissions() {
 
     if(this.onlyFailedSubmissions) {
-      this.onlyFailedSubmissions = false;
+      this.onlyFailedSubmissions    = false;
       this.fireEnitreFilter();
       return;
     }
-    this.onlyFailedSubmissions = true;
-    this.onlyLastPassedSubmissions = false;
-    this.onlyPassedSubmissions = false;
+    this.onlyFailedSubmissions      = true;
+    this.onlyLastPassedSubmissions  = false;
+    this.onlyPassedSubmissions      = false;
 
     this.fireEnitreFilter();
   }
 
   public checkOnlyLastPassedSubmissions() {
     if(this.onlyLastPassedSubmissions) {
-      this.onlyLastPassedSubmissions = false;
+      this.onlyLastPassedSubmissions  = false;
       this.fireEnitreFilter();
       return;
     }
-    this.onlyFailedSubmissions = false;
-    this.onlyLastPassedSubmissions = true;
-    this.onlyPassedSubmissions = false;
+    this.onlyFailedSubmissions        = false;
+    this.onlyLastPassedSubmissions    = true;
+    this.onlyPassedSubmissions        = false;
 
     this.fireEnitreFilter();
   }
 
   private filterForPassedSubmissions(): void {
-    this.submissions = this.submissions.filter((submission: Submission) => submission.score == 1);
+    this.submissions = this.submissions
+      .filter((submission: Submission) => submission.score == 1);
   }
 
   private filterForFailedSubmissions(): void {
-    this.submissions = this.submissions.filter((submission: Submission) => submission.score < 1);
+    this.submissions = this.submissions
+      .filter((submission: Submission) => submission.score < 1);
   }
 
   private filterForMostRecentPassedSubmissions(): void {
@@ -260,7 +245,6 @@ export class SubmissionListComponent implements OnChanges, OnDestroy {
 
     this.submissions = filteredSubmissions;
 
-    //this.submissions = mostRecent.
   }
 
   /**
@@ -283,9 +267,9 @@ export class SubmissionListComponent implements OnChanges, OnDestroy {
   }
 
   private resetModeButtonClicks() {
-    this.onlyLastPassedSubmissions = false;
-    this.onlyFailedSubmissions = false;
-    this.onlyPassedSubmissions = false;
+    this.onlyLastPassedSubmissions  = false;
+    this.onlyFailedSubmissions      = false;
+    this.onlyPassedSubmissions      = false;
   }
 
   private resetLangaugeClicks() {
@@ -293,8 +277,8 @@ export class SubmissionListComponent implements OnChanges, OnDestroy {
     const languageCheckBoxes: HTMLCollection = document.getElementsByClassName("languageCheckBox");
 
     for(let i = 0; i < languageCheckBoxes.length; i++) {
-      var temp = <HTMLInputElement> languageCheckBoxes.item(i);
-      temp.checked = false;
+      var temp      = <HTMLInputElement> languageCheckBoxes.item(i);
+      temp.checked  = false;
     }
   }
 
@@ -311,14 +295,8 @@ export class SubmissionListComponent implements OnChanges, OnDestroy {
    */
 
   public fireDownload(): void {
-
-
     const numbers: number[] = this.getSubmissionIDs();
     this.submissionDownloadService.getDownloadFilesBySubmissionIds(numbers);
-  }
-
-  private filterAndDownload() {
-    //TODO - see old version for ideas
   }
 
   /**
@@ -382,21 +360,27 @@ export class SubmissionListComponent implements OnChanges, OnDestroy {
    * RELATED END
    */
 
-  public navigateToListingDetail(submission: Submission): void {
-    this.submissionDataService.setSubmission(submission);
-    this.router.navigate([`/submission/${submission.id}`]);
-  }
+  /*
+  PAGINATION START
+   */
 
   onChangePage(pageOfitems: Array<any>) {
     this.pageOfItems = pageOfitems;
   }
 
   private setPage(page: number) {
-    this.pager = paginate(this.submissions.length, page, this.pageSize, this.maxPages);
+    this.pager      = paginate(this.submissions.length, page, this.pageSize, this.maxPages);
     var pageOfItems = this.submissions.slice(this.pager.startIndex, this.pager.endIndex +1);
     this.changePage.emit(pageOfItems);
   }
 
+  /*
+  PAGINATION END
+   */
+
+  /*
+  OTHER
+   */
   private enableLanguages(size: number): void {
     console.log(this.languages);
     this.enabledLanguages = new Array<boolean>(size);
@@ -413,32 +397,16 @@ export class SubmissionListComponent implements OnChanges, OnDestroy {
     }
   }
 
-  private createFilterRequest(): FilterRequest {
-    return {mode: this.getFilterMode(), languageIDs: this.setToArray(this.selectedLanguages)};
-  }
-
-  private setToArray(nums: Set<number>): number[] {
-    const numArray: number[] = [];
-    for(let num of nums.values()) {
-      numArray.push(num);
-    }
-    return numArray;
-  }
-
-  private getFilterMode(): number {
-    switch (true) {
-      case (this.onlyPassedSubmissions): return 1;
-      case (this.onlyFailedSubmissions): return 2;
-      case (this.onlyLastPassedSubmissions): return 3;
-      default: return 4;
-    }
-  }
-
   private getSubmissionIDs(): number[] {
     const numbers: number[] = [];
     for(let submission of this.submissions) {
       numbers.push(submission.id!);
     }
     return numbers;
+  }
+
+  public navigateToListingDetail(submission: Submission): void {
+    this.submissionDataService.setSubmission(submission);
+    this.router.navigate([`/submission/${submission.id}`]);
   }
 }
