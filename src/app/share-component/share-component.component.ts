@@ -15,7 +15,7 @@ export class ShareComponentComponent implements OnChanges {
   qrLink       = "";
   elementType  = 'url';
 
-  endpoint = `${environment.api}/userdata`;
+  endpoint = `localhost:4200/permalink`;
 
   constructor() { }
 

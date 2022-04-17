@@ -29,12 +29,12 @@ import { FooterComponent } from './footer/footer.component';
 import {ToastrModule} from "ngx-toastr";
 import { SetNewPasswordComponent } from './set-new-password/set-new-password.component';
 import { VerifyUserComponent } from './verify-user/verify-user.component';
-import {ConfirmBoxConfigModule, NgxAwesomePopupModule} from "@costlydeveloper/ngx-awesome-popup";
 import {NgxBootstrapConfirmModule} from "ngx-bootstrap-confirm";
 import { ShareComponentComponent } from './share-component/share-component.component';
 import {NgxMasonryModule} from "ngx-masonry";
 import { InitialLandingComponent } from './initial-landing/initial-landing.component';
 import {NgxQRCodeModule} from "@techiediaries/ngx-qrcode";
+import { PermalinkComponentComponent } from './permalink-component/permalink-component.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +56,7 @@ import {NgxQRCodeModule} from "@techiediaries/ngx-qrcode";
     VerifyUserComponent,
     ShareComponentComponent,
     InitialLandingComponent,
+    PermalinkComponentComponent,
   ],
   imports: [
     RouterModule,

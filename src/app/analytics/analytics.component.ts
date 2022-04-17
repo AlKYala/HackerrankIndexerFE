@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {AnalyticsService} from "../../shared/services/AnalyticsService";
 import {SubscriptionService} from "../../shared/services/SubscriptionService";
 import {Subscription} from "rxjs";
@@ -12,6 +12,7 @@ import {GeneralPercentage} from "../../shared/datamodels/Analytics/models/Genera
 import {PassPercentage} from "../../shared/datamodels/Analytics/models/PassPercentage";
 import {Submission} from "../../shared/datamodels/Submission/model/Submission";
 import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
+import {User} from "../../shared/datamodels/User/model/User";
 
 @Component({
   selector: 'app-analytics',
@@ -20,6 +21,11 @@ import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
 })
 export class AnalyticsComponent implements OnInit, OnDestroy {
 
+  /**
+   * Used to input user Data
+   */
+  @Input()
+  userDataInput!: UserData;
 
   private subscriptions!: Subscription[];
 
@@ -47,6 +53,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     //////console.log("First")
+
+    //TODO if userData is passed - skip this step.
     await this.logInOutService.checkLoggedIn().then(
       (result: boolean) => {
         if(!result) {

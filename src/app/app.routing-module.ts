@@ -11,6 +11,7 @@ import {ResetPasswordComponent} from "./reset-password/reset-password.component"
 import {SetNewPasswordComponent} from "./set-new-password/set-new-password.component";
 import {VerifyUserComponent} from "./verify-user/verify-user.component";
 import {InitialLandingComponent} from "./initial-landing/initial-landing.component";
+import {PermalinkComponentComponent} from "./permalink-component/permalink-component.component";
 
 const routes: Routes = [
   {path: 'submission/:id', component: SubmissionDetailComponent},
@@ -24,6 +25,7 @@ const routes: Routes = [
   {path: 'setNewPassword', component: SetNewPasswordComponent},
   {path: 'verify/:token', component: VerifyUserComponent},
   {path: 'landing', component: LandingComponent},
+  {path: 'permalink/:userDataId', component: PermalinkComponentComponent},
   {path: '', component: InitialLandingComponent}
 ];
 
