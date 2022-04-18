@@ -17,5 +17,10 @@ export class UserDataService {
       .toPromise();
   }
 
+  public async loadUserDataWithToken(token: string): Promise<UserData> {
+    return this.requestService.anyGetRequest(`${environment.api}/userdata/${token}`)
+      .toPromise();
+  }
+
 
 }

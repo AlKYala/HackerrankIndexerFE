@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {AnalyticsService} from "../../shared/services/AnalyticsService";
 import {SubscriptionService} from "../../shared/services/SubscriptionService";
 import {Subscription} from "rxjs";
@@ -12,6 +12,7 @@ import {GeneralPercentage} from "../../shared/datamodels/Analytics/models/Genera
 import {PassPercentage} from "../../shared/datamodels/Analytics/models/PassPercentage";
 import {Submission} from "../../shared/datamodels/Submission/model/Submission";
 import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
+import {User} from "../../shared/datamodels/User/model/User";
 
 @Component({
   selector: 'app-analytics',
@@ -20,6 +21,11 @@ import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
 })
 export class AnalyticsComponent implements OnInit, OnDestroy {
 
+  /**
+   * Used to input user Data
+   */
+  @Input()
+  userDataInput!: UserData;
 
   private subscriptions!: Subscription[];
 
@@ -28,6 +34,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   passPercentages: PassPercentage[] = null!;
   submissions: Submission[] = [];
   languages: Planguage[] = [];
+  userDataToken: string = "";
 
   datafound: boolean = false; //
   wait: boolean = true; //wait for the data to load
@@ -45,7 +52,26 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    //////console.log("First")
+
+    console.log(this.userData == undefined);
+    const checkLogin: boolean = this.userData == undefined;
+
+    console.log(checkLogin);
+
+    if(checkLogin) {
+      await this.redirectIfNotLoggedIn();
+    }
+
+    await this.loadUserData().finally(() => {
+      this.onInit();
+    });
+  }
+
+  /**
+   * A method to redirect the user to the landing page if no login found
+   * @private
+   */
+  private async redirectIfNotLoggedIn() {
     await this.logInOutService.checkLoggedIn().then(
       (result: boolean) => {
         if(!result) {
@@ -55,9 +81,6 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
         }
       }
     );
-    await this.loadUserData().finally(() => {
-      this.onInit();
-    });
   }
 
   async loadUserData() {
@@ -77,6 +100,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     this.passPercentages    = userData.user.passPercentages;
     this.submissions        = userData.submissionList;
     this.languages          = this.extractUsedLanguages(userData.user.passPercentages);
+    this.userDataToken      = this.userData.user.userDataToken;
   }
 
   private extractUsedLanguages(passPercentages: PassPercentage[]): Planguage[] {

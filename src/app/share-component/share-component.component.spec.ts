@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AnalyticsDataComponent } from './analytics-data.component';
+import { ShareComponentComponent } from './share-component.component';
 
-describe('AnalyticsDataComponent', () => {
-  let component: AnalyticsDataComponent;
-  let fixture: ComponentFixture<AnalyticsDataComponent>;
+describe('ShareComponentComponent', () => {
+  let component: ShareComponentComponent;
+  let fixture: ComponentFixture<ShareComponentComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AnalyticsDataComponent ]
+      declarations: [ ShareComponentComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AnalyticsDataComponent);
+    fixture = TestBed.createComponent(ShareComponentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -133,6 +133,9 @@ export class SubmissionListComponent implements OnChanges, OnDestroy {
    */
 
   private filterBySelectedLanguages() {
+    if(this.selectedLanguages.size == 0) {
+      return;
+    }
     this.submissions = this.submissions
       .filter((submission: Submission) => this.selectedLanguages.has(submission.language.id!));
   }
