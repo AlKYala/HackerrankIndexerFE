@@ -52,9 +52,26 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    //////console.log("First")
 
-    //TODO if userData is passed - skip this step.
+    console.log(this.userData == undefined);
+    const checkLogin: boolean = this.userData == undefined;
+
+    console.log(checkLogin);
+
+    if(checkLogin) {
+      await this.redirectIfNotLoggedIn();
+    }
+
+    await this.loadUserData().finally(() => {
+      this.onInit();
+    });
+  }
+
+  /**
+   * A method to redirect the user to the landing page if no login found
+   * @private
+   */
+  private async redirectIfNotLoggedIn() {
     await this.logInOutService.checkLoggedIn().then(
       (result: boolean) => {
         if(!result) {
@@ -64,9 +81,6 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
         }
       }
     );
-    await this.loadUserData().finally(() => {
-      this.onInit();
-    });
   }
 
   async loadUserData() {

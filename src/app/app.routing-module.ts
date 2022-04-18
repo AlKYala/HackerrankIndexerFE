@@ -25,7 +25,7 @@ const routes: Routes = [
   {path: 'setNewPassword', component: SetNewPasswordComponent},
   {path: 'verify/:token', component: VerifyUserComponent},
   {path: 'landing', component: LandingComponent},
-  {path: 'permalink/:userDataId', component: PermalinkComponentComponent},
+  {path: 'permalink/:token', component: PermalinkComponentComponent},
   {path: '', component: InitialLandingComponent}
 ];
 
