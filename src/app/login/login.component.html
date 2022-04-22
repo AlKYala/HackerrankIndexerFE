@@ -14,48 +14,50 @@
 <app-navbar-without-login></app-navbar-without-login>
 <div class="container">
   <div class="row" id="loginRow">
-    <div class="col-md-10 col-lg-8 col-xl-6 offset-md-1 offset-lg-2 offset-xl-3">
-      <div class="card shadow">
-        <div class="card-body">
-          <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
-          <div class="sidebar-brand-icon rotate-n-15"><i class="fab fa-hackerrank" style="font-size: 40px;"></i></div>
-          <div class="sidebar-brand-text mx-3"><span>Hackerrank Indexer<br></span></div>
-        </a>
-          <h5 class="text-center text-dark mb-0">Log in</h5>
-          <div class="row text-center" style="margin-top: 15px;">
-            <div class="col">
-              <input [formControl]="loginEmailForm" type="text" placeholder="Email"></div>
-          </div>
-          <div class="row text-center" style="margin-top: 15px;">
-            <div class="col">
-              <input [formControl]="loginPasswordForm" type="password" placeholder="Password"></div>
-          </div>
-          <div class="row text-center" style="margin-top: 15px;">
-            <div class="col">
-              <button (click)="logIn()" class="btn btn-primary" type="button">Log In</button>
-            </div>
-          </div>
-
-          <ng-container *ngIf="this.incorrectPassword">
+    <form>
+      <div class="col-md-10 col-lg-8 col-xl-6 offset-md-1 offset-lg-2 offset-xl-3">
+        <div class="card shadow">
+          <div class="card-body">
+            <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+            <div class="sidebar-brand-icon rotate-n-15"><i class="fab fa-hackerrank" style="font-size: 40px;"></i></div>
+            <div class="sidebar-brand-text mx-3"><span>Hackerrank Indexer<br></span></div>
+          </a>
+            <h5 class="text-center text-dark mb-0">Log in</h5>
             <div class="row text-center" style="margin-top: 15px;">
               <div class="col">
-                <span class="text-danger">Incorrect Password</span>
+                <input id="email" [formControl]="loginEmailForm" type="text" placeholder="Email"></div>
+            </div>
+            <div class="row text-center" style="margin-top: 15px;">
+              <div class="col">
+                <input id="passwort" [formControl]="loginPasswordForm" type="password" placeholder="Password"></div>
+            </div>
+            <div class="row text-center" style="margin-top: 15px;">
+              <div class="col">
+                <input type="submit" (click)="logIn()" class="btn btn-primary" type="button" value="Log in">
               </div>
             </div>
-          </ng-container>
+
+            <ng-container *ngIf="this.incorrectPassword">
+              <div class="row text-center" style="margin-top: 15px;">
+                <div class="col">
+                  <span class="text-danger">Incorrect Password</span>
+                </div>
+              </div>
+            </ng-container>
 
 
-          <div class="row text-center" style="margin-top: 15px;">
-            <div class="col"><a class="link-secondary forgot" href="#" style="margin-bottom: 5px;">Dont have an account?
-              Sign up!</a></div>
-          </div>
-          <div class="row text-center" style="margin-top: 15px;">
-            <div class="col"><a class="link-secondary forgot" href="#" style="margin-bottom: 5px;">Forgot Email or
-              Password? Reset</a></div>
+            <div class="row text-center" style="margin-top: 15px;">
+              <div class="col"><a class="link-secondary forgot" href="/signup" style="margin-bottom: 5px;">Dont have an account?
+                Sign up!</a></div>
+            </div>
+            <div class="row text-center" style="margin-top: 15px;">
+              <div class="col"><a class="link-secondary forgot" href="/passwordreset" style="margin-bottom: 5px;">Forgot Email or
+                Password? Reset</a></div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </form>
   </div>
 </div>
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
