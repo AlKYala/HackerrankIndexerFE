@@ -15,36 +15,50 @@
 <div class="container">
   <div class="row" id="signupRow">
     <div class="col-md-10 col-lg-8 col-xl-6 offset-md-1 offset-lg-2 offset-xl-3">
-      <div class="card shadow">
-        <div class="card-body"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
-          <div class="sidebar-brand-icon rotate-n-15"><i class="fab fa-hackerrank" style="font-size: 40px;"></i></div>
-          <div class="sidebar-brand-text mx-3"><span>Hackerrank Indexer<br></span></div>
-        </a>
-          <h5 class="text-center text-dark mb-0">Sign Up</h5>
-          <div class="row text-center" style="margin-top: 15px;">
-            <div class="col">
-              <input [formControl]="signupEmailForm" type="text" placeholder="Email"></div>
-          </div>
-          <div class="row text-center" style="margin-top: 15px;">
-            <div class="col">
-              <input [formControl]="signupPasswordForm" type="password" placeholder="Password"></div>
-          </div>
-          <div class="row text-center" style="margin-top: 15px;">
-            <div class="col">
-              <input [formControl]="signupPasswordFormRepeat" type="password" placeholder="Confirm Password"></div>
-          </div>
-          <div class="row text-center" style="margin-top: 15px;">
-            <div class="col">
+      <form>
+        <div class="card shadow">
+          <div class="card-body"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+            <div class="sidebar-brand-icon rotate-n-15"><i class="fab fa-hackerrank" style="font-size: 40px;"></i></div>
+            <div class="sidebar-brand-text mx-3"><span>Hackerrank Indexer<br></span></div>
+          </a>
+            <h5 class="text-center text-dark mb-0">Sign Up</h5>
+            <div class="row text-center" style="margin-top: 15px;">
+              <div class="col">
+                <input id="email" [formControl]="signupEmailForm" type="text" placeholder="Email"></div>
+            </div>
+            <div class="row text-center" style="margin-top: 15px;">
+              <div class="col">
+                <input id="password" [formControl]="signupPasswordForm" type="password" placeholder="Password"></div>
+            </div>
+            <div class="row text-center" style="margin-top: 15px;">
+              <div class="col">
+                <input id="passwordConfirm" [formControl]="signupPasswordFormRepeat" type="password" placeholder="Confirm Password"></div>
+            </div>
+            <div class="row text-center" style="margin-top: 15px;">
+              <div class="col">
 
-              <button [disabled]="signupEmailForm.invalid || signupPasswordForm.invalid || signupPasswordFormRepeat.invalid"
-                (click)="signUp()"
-                class="btn btn-primary" type="button">Sign Up</button></div>
-          </div>
-          <div class="row text-center" style="margin-top: 15px;">
-            <div class="col"><a class="link-secondary forgot" href="#" style="margin-bottom: 5px;">Already have an account? Log In</a></div>
+                <input type="submit" [disabled]="signupEmailForm.invalid || signupPasswordForm.invalid || signupPasswordFormRepeat.invalid"
+                        (click)="signUp()"
+                        class="btn btn-primary" type="button" value="Sign Up">
+              </div>
+              <div class="row text-center">
+                <div *ngIf="signupEmailForm.valid && signupPasswordForm.value.length > 0 && signupPasswordForm.invalid">
+                  <span style="color: red;">Password has to be 8 characters minimum</span>
+                </div>
+                <div *ngIf="signupPasswordForm.value.length > 0 &&
+                      signupPasswordFormRepeat.value.length > 0 &&
+                      signupPasswordForm.value != signupPasswordFormRepeat.value">
+                  <span style="color: red;">Passwords don't match</span>
+                </div>
+              </div>
+            </div>
+            <div class="row text-center" style="margin-top: 15px;">
+              <div class="col">
+                <a class="link-secondary forgot" href="/login" style="margin-bottom: 5px;">Already have an account? Log In</a></div>
+            </div>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 </div>

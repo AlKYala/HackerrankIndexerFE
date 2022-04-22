@@ -1,10 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {readMetadata} from "@angular/compiler-cli/src/transformers/metadata_reader";
 import {ResponseString} from "../../shared/datamodels/User/model/ResponseString";
 import {Observable, Subscription} from "rxjs";
+import {timeout} from "rxjs/operators";
 
 @Component({
   selector: 'app-verify-user',
@@ -18,21 +19,23 @@ export class VerifyUserComponent implements OnInit, OnDestroy {
   private subscription;
 
   constructor(private route: ActivatedRoute,
+              private router: Router,
               private httpClient: HttpClient) {
     this.subscription = new Subscription();
   }
 
-  ngOnInit(): void {
-    this.fireVerificationProcess();
+  async ngOnInit() {
+    await this.fireVerificationProcess();
+    setTimeout(() => {this.router.navigate(['/'])}, 10000);
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 
-  private fireVerificationProcess() {
+  private async fireVerificationProcess() {
     const routeUserToken = this.readUserToken();
-    this.sendVerificationRequest(routeUserToken);
+    this.sendVerificationRequest(routeUserToken).then();
   }
 
   private readUserToken(): string {
@@ -40,7 +43,8 @@ export class VerifyUserComponent implements OnInit, OnDestroy {
     return userToken!;
   }
 
-  private sendVerificationRequest(token: string) {
+  //TODO just promise.....
+  private async sendVerificationRequest(token: string) {
     const request = this.httpClient.post(`${environment.api}/user/verify`, token) as Observable <ResponseString>;
 
     const subscription = request.subscribe((message: ResponseString) => {
