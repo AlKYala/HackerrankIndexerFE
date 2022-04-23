@@ -105,6 +105,8 @@
     </ng-container>
     <!--<pagination-controls (pageChange)="page = $event"></pagination-controls>-->
     <!-- TODO jw-pagination macht es breit!-->
-    <jw-pagination class="paginator" [items]="this.submissions" (changePage)="onChangePage($event)"></jw-pagination>
+    <jw-pagination  [items]="this.submissions"
+                    [maxPages]="this.maxPages"
+                    (changePage)="onChangePage($event)" class="paginator"></jw-pagination>
   </div>
 </div>

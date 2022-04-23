@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit, EventEmitter, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, EventEmitter, OnChanges, SimpleChanges, HostListener} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {async, Observable, Subscription} from "rxjs";
 import {Submission} from "../../shared/datamodels/Submission/model/Submission";
@@ -63,10 +63,10 @@ export class SubmissionListComponent implements OnChanges, OnDestroy {
 
   searchFormControl = new FormControl();
   pageOfItems!: Array<any>;
-  pageSize = 5;
+  pageSize = 10;
   pager: any = {};
   changePage = new EventEmitter<any>(true);
-  maxPages = 5;
+  maxPages = 10;
 
   constructor(private httpClient: HttpClient,
               private submissionService: SubmissionService,
@@ -411,5 +411,24 @@ export class SubmissionListComponent implements OnChanges, OnDestroy {
   public navigateToListingDetail(submission: Submission): void {
     this.submissionDataService.setSubmission(submission);
     this.router.navigate([`/submission/${submission.id}`]);
+  }
+
+  @HostListener("window:resize", ['$event'])
+  private onResize(event: { target: { innerWidth: any; }; }) {
+    const width = event.target.innerWidth;
+    this.setNumberOfPagesInPaginator(width);
+  }
+
+  private setNumberOfPagesInPaginator(width?: number) {
+    width = (width == undefined) ? window.innerWidth : width;
+    console.log(width);
+    switch (true) {
+      case (width < 450)  : this.maxPages = 3; break;
+      case (width < 500)  : this.maxPages = 4; break;
+      case (width < 650)  : this.maxPages = 8; break;
+      case (width < 1040) : this.maxPages = 9; break;
+      default: this.maxPages = 10;
+    }
+    console.log(`pages: ${this.maxPages}`);
   }
 }
