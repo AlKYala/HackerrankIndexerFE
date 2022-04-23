@@ -1,4 +1,14 @@
-import {Component, Input, OnDestroy, OnInit, EventEmitter, OnChanges, SimpleChanges, HostListener} from '@angular/core';
+import {
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  EventEmitter,
+  OnChanges,
+  SimpleChanges,
+  HostListener,
+  ChangeDetectorRef
+} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {async, Observable, Subscription} from "rxjs";
 import {Submission} from "../../shared/datamodels/Submission/model/Submission";
@@ -28,7 +38,7 @@ import {LogInOutService} from "../../shared/services/LogInOutService";
   templateUrl: './submission-list.component.html',
   styleUrls: ['./submission-list.component.scss']
 })
-export class SubmissionListComponent implements OnChanges, OnDestroy {
+export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
 
   @Input()
   submissions: Submission[] = [];
@@ -68,6 +78,8 @@ export class SubmissionListComponent implements OnChanges, OnDestroy {
   changePage = new EventEmitter<any>(true);
   maxPages = 10;
 
+  render: boolean = true;
+
   constructor(private httpClient: HttpClient,
               private submissionService: SubmissionService,
               private submissionDataService: SubmissionDataService,
@@ -77,8 +89,13 @@ export class SubmissionListComponent implements OnChanges, OnDestroy {
               private router: Router,
               private logInOutService: LogInOutService,
               private requestService: RequestService,
-              private submissionDownloadService: SubmissionDownloadService) {
+              private submissionDownloadService: SubmissionDownloadService,
+              private changeDetectorRef: ChangeDetectorRef) {
     this.selectedLanguages  = new Set<number>();
+  }
+
+  ngOnInit() {
+    this.setNumberOfPagesInPaginator();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -413,14 +430,16 @@ export class SubmissionListComponent implements OnChanges, OnDestroy {
     this.router.navigate([`/submission/${submission.id}`]);
   }
 
+  /* TODO auslagenr in parent
   @HostListener("window:resize", ['$event'])
   private onResize(event: { target: { innerWidth: any; }; }) {
     const width = event.target.innerWidth;
     this.setNumberOfPagesInPaginator(width);
-  }
+  }*/
 
-  private setNumberOfPagesInPaginator(width?: number) {
-    width = (width == undefined) ? window.innerWidth : width;
+  private setNumberOfPagesInPaginator() {
+    const width = window.innerWidth;
+    const oldMaxPages = this.maxPages.valueOf();
     console.log(width);
     switch (true) {
       case (width < 450)  : this.maxPages = 3; break;
@@ -429,6 +448,5 @@ export class SubmissionListComponent implements OnChanges, OnDestroy {
       case (width < 1040) : this.maxPages = 9; break;
       default: this.maxPages = 10;
     }
-    console.log(`pages: ${this.maxPages}`);
   }
 }
