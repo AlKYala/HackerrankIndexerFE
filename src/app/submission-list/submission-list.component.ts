@@ -152,6 +152,7 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
     //TODO init paginator
     this.pageSubscriber = this.currentPage.subscribe((currentValue: number) => {
       this.setSubmissionPage();
+      console.log(this.paginationSubmissions);
       this.currentPageFrontEnd = currentValue;
       console.log("fired");
 
@@ -205,6 +206,10 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
     this.filterByState();
     //LANGUAGES
     this.filterBySelectedLanguages();
+
+    //TODO: neu berechnen
+
+    this.setSubmissionPage();
   }
 
   public navigateToListingDetail(submission: Submission): void {
@@ -467,21 +472,22 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
   PAGINATION START
    */
 
-  //TODO listener for Page change
-
-  private setSubmissionPage(): Submission[] {
+  private setSubmissionPage(): void {
     const startIndex: number = (this.currentPage.value - 1) * this.numberSubmissionsPerPage;
     const newPageOfSubmissions: Submission[] = [];
 
-    let end = startIndex + this.numberSubmissionsPerPage + 1;
+    this.paginationSubmissions = [];
+
+    let end = startIndex + this.numberSubmissionsPerPage;
 
     end = (end > this.submissions.length) ? this.submissions.length : end;
 
-    for(let i = startIndex; i < end; i++) {
-      newPageOfSubmissions.push(this.submissions[i]);
-    }
+    console.log(startIndex);
+    console.log(end);
 
-    return newPageOfSubmissions;
+    for(let i = startIndex; i < end; i++) {
+      this.paginationSubmissions.push(this.submissions[i]);
+    }
   }
 
   public increase(): void {
