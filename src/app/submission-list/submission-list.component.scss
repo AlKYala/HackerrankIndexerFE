@@ -42,6 +42,11 @@
   cursor: pointer;
 }
 
-jw-pagination ul {
-  max-width: 500px;
+.pagination-link:hover {
+  cursor: pointer;
+}
+//inherits from pagination-link
+.pagination-link.active {
+  color: black;
+  background-color: lightgrey;
 }

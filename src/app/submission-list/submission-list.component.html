@@ -7,7 +7,8 @@
       <div class="col">
         <div class="input-group">
           <span class="input-group-text">Filter By Name</span>
-          <input (keydown)="this.fireEnitreFilter()" [formControl]="searchFormControl" class="form-control" type="text" />
+          <input (keydown)="this.fireEnitreFilter()" [formControl]="searchFormControl" class="form-control"
+                 type="text"/>
         </div>
       </div>
     </div>
@@ -15,21 +16,22 @@
       <div class="col">
         <div class="row align-items-center no-gutters">
           <div class="col-md-12 col-lg-12 col-xxl-12 offset-xxl-0 me-2">
-            <div class="text-uppercase text-warning fw-bold text-xs mb-1"><span style="color: var(--bs-gray-900);">Filter Options</span></div>
+            <div class="text-uppercase text-warning fw-bold text-xs mb-1"><span style="color: var(--bs-gray-900);">Filter Options</span>
+            </div>
             <div class="text-dark fw-bold h5 mb-0">
               <div class="form-check">
                 <input [checked]="onlyPassedSubmissions" (change)="this.checkOnlyPassedSubmissions()"
-                       id="formCheck-1" class="form-check-input" type="checkbox" />
+                       id="formCheck-1" class="form-check-input" type="checkbox"/>
                 <label class="form-check-label" for="formCheck-1">Only Passed Submissions</label>
               </div>
               <div class="form-check">
                 <input [checked]="onlyFailedSubmissions" (change)="this.checkOnlyFailedSubmissions()"
-                       id="formCheck-3" class="form-check-input" type="checkbox" />
+                       id="formCheck-3" class="form-check-input" type="checkbox"/>
                 <label class="form-check-label" for="formCheck-3">Only Failed Submissions</label>
               </div>
               <div class="form-check">
                 <input [checked]="onlyLastPassedSubmissions" (change)="this.checkOnlyLastPassedSubmissions()"
-                       id="formCheck-4" class="form-check-input" type="checkbox" />
+                       id="formCheck-4" class="form-check-input" type="checkbox"/>
                 <label class="form-check-label" for="formCheck-4">Only latest passed Submissions</label>
               </div>
             </div>
@@ -46,18 +48,23 @@
           <ng-container *ngFor="let language of languages">
             <div class="col-12 col-sm-4 col-md-3 col-lg-4 col-xl-3 col-xxl-3">
               <div class="form-check">
-                <input (click)="this.clickLanguage(language)" class="form-check-input languageCheckBox" type="checkbox" />
+                <input (click)="this.clickLanguage(language)" class="form-check-input languageCheckBox"
+                       type="checkbox"/>
                 <label class="form-check-label">{{language.language}}</label></div>
             </div>
           </ng-container>
         </div>
         <div class="row">
           <div class="col-6 offset-0 text-start">
-            <button (click)="restoreSubmissions()" class="btn btn-danger" type="button"><i class="fa fa-undo"></i> Reset Filter</button>
+            <button (click)="restoreSubmissions()" class="btn btn-danger" type="button"><i class="fa fa-undo"></i> Reset
+              Filter
+            </button>
           </div>
           <div class="col-6 offset-0 text-end">
             <div class="btn-group" role="group">
-              <button (click)="fireDownload()" class="btn btn-primary" type="button"><i class="fa fa-download"></i> Download Submissions</button>
+              <button (click)="fireDownload()" class="btn btn-primary" type="button"><i class="fa fa-download"></i>
+                Download Submissions
+              </button>
             </div>
           </div>
         </div>
@@ -70,30 +77,46 @@
 <div class="card shadow mb-4">
   <div class="card-header d-flex justify-content-between align-items-center">
     <h4 style="margin-bottom: 4px;margin-top: 4px;">Submissions</h4>
+    <select class="btn btn-outline-secondary">
+      <option (click)="this.setNumberOfSubmissionsPerPage(5)" class="dropdown-item">5</option>
+      <option (click)="this.setNumberOfSubmissionsPerPage(10)" class="dropdown-item">10</option>
+      <option (click)="this.setNumberOfSubmissionsPerPage(25)" class="dropdown-item">25</option>
+      <option (click)="this.setNumberOfSubmissionsPerPage(50)" class="dropdown-item">50</option>
+      <option (click)="this.setNumberOfSubmissionsPerPage(100)" class="dropdown-item">100</option>
+      <option (click)="this.setNumberOfSubmissionsPerPage(200)" class="dropdown-item">200</option>
+    </select>
   </div>
   <div class="card-body">
-    <ng-container *ngFor="let submission of pageOfItems">
-      <div class="card entry" (click)="this.navigateToListingDetail(submission)" style="background: rgb(255, 255, 255);margin-bottom: 4px;">
-        <div class="card-body" style="padding: 3px;margin-top: 4px;margin-bottom: 4px;border-color: var(--bs-gray-500);">
+    <ng-container *ngFor="let submission of paginationSubmissions">
+      <div class="card entry" (click)="this.navigateToListingDetail(submission)"
+           style="background: rgb(255, 255, 255);margin-bottom: 4px;">
+        <div class="card-body"
+             style="padding: 3px;margin-top: 4px;margin-bottom: 4px;border-color: var(--bs-gray-500);">
           <div class="row g-0 align-items-center">
             <div class="col">
-              <h4 class="d-inline-flex justify-content-between" style="margin-bottom: 0px;">#{{submission.id}} {{submission.challenge.challengeName}}</h4>
+              <h4 class="d-inline-flex justify-content-between" style="margin-bottom: 0px;">
+                #{{submission.id}} {{submission.challenge.challengeName}}</h4>
             </div>
             <div class="col-auto">
               <div class="fw-bold h5 mb-0 me-3"
                    style="background: rgba(255,255,255,0);border-radius: 10px;color: rgb(91,91,91);">
                 <span class="font-monospace text-black-50 d-md-flex align-items-md-center"
-                      style="color: var(--bs-gray-dark);font-size: 16px;border-radius: 0px;">{{submission.language.language}}</span></div>
+                      style="color: var(--bs-gray-dark);font-size: 16px;border-radius: 0px;">{{submission.language.language}}</span>
+              </div>
               <div class="text-dark fw-bold h5 mb-0 me-3"></div>
             </div>
             <div class="col-auto">
               <ng-container *ngIf="submission.score == 1.0; else failed">
-                <div class="text-dark fw-bold h5 mb-0 me-3" style="background: var(--bs-green);border-radius: 10px;"><span class="d-md-flex align-items-md-center" style="color: var(--bs-body-bg);font-size: 16px;border-radius: 10px;"> Passed </span></div>
+                <div class="text-dark fw-bold h5 mb-0 me-3" style="background: var(--bs-green);border-radius: 10px;">
+                  <span class="d-md-flex align-items-md-center"
+                        style="color: var(--bs-body-bg);font-size: 16px;border-radius: 10px;"> Passed </span></div>
                 <div class="text-dark fw-bold h5 mb-0 me-3"></div>
               </ng-container>
               <ng-template #failed>
                 <div class="col-auto">
-                  <div class="text-dark fw-bold h5 mb-0 me-3" style="background: var(--bs-red);border-radius: 10px;"><span class="d-md-flex align-items-md-center" style="color: var(--bs-body-bg);font-size: 16px;border-radius: 10px;"> Failed </span></div>
+                  <div class="text-dark fw-bold h5 mb-0 me-3" style="background: var(--bs-red);border-radius: 10px;">
+                    <span class="d-md-flex align-items-md-center"
+                          style="color: var(--bs-body-bg);font-size: 16px;border-radius: 10px;"> Failed </span></div>
                   <div class="text-dark fw-bold h5 mb-0 me-3"></div>
                 </div>
               </ng-template>
@@ -104,9 +127,45 @@
       </div>
     </ng-container>
     <!--<pagination-controls (pageChange)="page = $event"></pagination-controls>-->
-    <!-- TODO jw-pagination macht es breit!-->
-    <jw-pagination  [items]="this.submissions"
-                    [maxPages]="this.maxPages"
-                    (changePage)="onChangePage($event)" class="paginator"></jw-pagination>
+
+    <!-- pagination -->
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item">
+          <a (click)="this.jumpToFirstPage()" class="page-link pagination-link">First</a>
+        </li>
+        <li class="page-item">
+          <a [ngClass]="{'btn disabled' : this.currentPage.value == 1}" (click)="decrease()"
+             class="page-link pagination-link disabled">Previous</a>
+        </li>
+        <li *ngIf="currentPageFrontEnd > 2" class="page-item">
+          <a (click)="this.setPage(currentPageFrontEnd-2)"
+             class="page-link pagination-link">{{currentPageFrontEnd - 2}}</a>
+        </li>
+        <li *ngIf="currentPageFrontEnd > 1" class="page-item">
+          <a (click)="this.setPage(currentPageFrontEnd-1)"
+             class="page-link pagination-link">{{currentPageFrontEnd - 1}}</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link pagination-link active">{{this.currentPageFrontEnd}}</a>
+        </li>
+        <li *ngIf="showNextPage" class="page-item">
+          <a (click)="this.setPage(currentPageFrontEnd+1)"
+             class="page-link pagination-link">{{this.currentPageFrontEnd + 1}}</a>
+        </li>
+        <li *ngIf="showNextNextPage" class="page-item">
+          <a (click)="this.setPage(currentPageFrontEnd+2)"
+             class="page-link pagination-link">{{this.currentPageFrontEnd + 2}}</a>
+        </li>
+        <li class="page-item">
+          <a [ngClass]="{'btn disabled' : this.currentPage.value == this.lastPage}" class="page-link pagination-link"
+             (click)="this.increase()">Next</a>
+        </li>
+        <li class="page-item">
+          <a (click)="this.jumpToLastPage()" class="page-link pagination-link">Last</a>
+        </li>
+      </ul>
+    </nav>
+    <!-- pagination end -->
   </div>
 </div>
