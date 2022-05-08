@@ -138,11 +138,11 @@
           <a [ngClass]="{'btn disabled' : this.currentPage.value == 1}" (click)="decrease()"
              class="page-link pagination-link disabled">Previous</a>
         </li>
-        <li *ngIf="currentPageFrontEnd > 2" class="page-item">
+        <li *ngIf="showPreviousPreviousPage" class="page-item">
           <a (click)="this.setPage(currentPageFrontEnd-2)"
              class="page-link pagination-link">{{currentPageFrontEnd - 2}}</a>
         </li>
-        <li *ngIf="currentPageFrontEnd > 1" class="page-item">
+        <li *ngIf="showPreviousPage" class="page-item">
           <a (click)="this.setPage(currentPageFrontEnd-1)"
              class="page-link pagination-link">{{currentPageFrontEnd - 1}}</a>
         </li>

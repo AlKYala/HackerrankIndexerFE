@@ -127,6 +127,12 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
   showNextPage: boolean = true;
   showNextNextPage: boolean = true;
 
+  /**
+   * Defines if the next page / second next page is shown
+   */
+  showPreviousPage: boolean = false;
+  showPreviousPreviousPage: boolean = false;
+
 
   /**
    * PAGINATION VARIABLES END
@@ -500,7 +506,10 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
     this.lastPage = (lastPageHasRemainder) ? this.lastPage+1 : this.lastPage;
 
     this.showNextPage = (this.lastPage > currentPage);
-    this.showNextNextPage = (this.lastPage - currentPage) > 2;
+    this.showNextNextPage = (this.lastPage - currentPage) > 2 && window.innerWidth > 520;
+
+    this.showPreviousPage = currentPage > 1;
+    this.showPreviousPreviousPage = currentPage > 2 && window.innerWidth > 520;
   }
 
   public setPage(page: number) {
@@ -530,6 +539,24 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
 
   public setNumberOfSubmissionsPerPage(numberOfElementsPerPage: number) {
     this.numberOfElementsPerPage.next(numberOfElementsPerPage);
+  }
+
+  /**
+   * Resize detector used to make Pagination smaller
+   * @param event
+   * @private
+   */
+  @HostListener("window:resize", ['$event'])
+  private onResize(event: { target: { innerWidth: any; }; }) {
+    const width = event.target.innerWidth;
+    //510 ist kritischer wert
+    if(width <= 520) {
+      this.showNextNextPage = false;
+      this.showPreviousPreviousPage = false;
+      return;
+    }
+    this.showNextNextPage = this.lastPage > this.currentPage.value;
+    this.showPreviousPreviousPage = this.currentPage.value > 2;
   }
 
   /*
