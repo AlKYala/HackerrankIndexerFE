@@ -10,7 +10,7 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {async, Observable, Subscription} from "rxjs";
+import {async, BehaviorSubject, Observable, Subscription} from "rxjs";
 import {Submission} from "../../shared/datamodels/Submission/model/Submission";
 import {SubmissionService} from "../../shared/datamodels/Submission/service/SubmissionService";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -32,6 +32,7 @@ import {SubmissionDownloadService} from "../../shared/services/SubmissionDownloa
 import {DownloadFile} from "../../shared/datamodels/DownloadFile/Model/DownloadFile";
 import {NgxBootstrapConfirmService} from "ngx-bootstrap-confirm";
 import {LogInOutService} from "../../shared/services/LogInOutService";
+import {start} from "repl";
 
 @Component({
   selector: 'app-submission-list',
@@ -46,6 +47,7 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
   @Input()
   languages: Planguage[] = [];
 
+  private mainSubscription: Subscription = new Subscription();
 
   submissionsBackup: Submission[] = [];
 
@@ -72,11 +74,63 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
   onlyLastPassedSubmissions:  boolean   = false;
 
   searchFormControl = new FormControl();
-  pageOfItems!: Array<any>;
-  pageSize = 10;
-  pager: any = {};
-  changePage = new EventEmitter<any>(true);
-  maxPages = 10;
+
+
+  /**
+   * PAGINATION VARIABLES
+   */
+
+  /**
+   * Defines the "current" Page in the Paginator
+   */
+  currentPage: BehaviorSubject<number> = new BehaviorSubject<number>(1);
+
+  /**
+   * Defines how many Pages the paginator displays
+   */
+  rangePaginator: BehaviorSubject<number> = new BehaviorSubject<number>(5);
+
+  /**
+   * Event listener for when the current page changes
+   */
+  pageSubscriber!: Subscription;
+
+  /**
+   * Event listener for when the
+   */
+  rangeSubscriber!: Subscription;
+
+  /**
+   * Defines how many Items are shown in the Submission list
+   */
+  numberSubmissionsPerPage = 10;
+
+  /**
+   * Variable for the last page of the paginator.
+   * 20 is a placeholder value.
+   */
+  lastPage = 20;
+
+  /**
+   * The submissions listed
+   */
+  paginationSubmissions: Submission[] = [];
+
+  /**
+   * Display current Page in Fronten
+   */
+  currentPageFrontEnd = this.currentPage.value;
+
+  /**
+   * Defines if the next page / second next page is shown
+   */
+  showNextPage: boolean = true;
+  showNextNextPage: boolean = true;
+
+
+  /**
+   * PAGINATION VARIABLES END
+   */
 
   render: boolean = true;
 
@@ -95,15 +149,40 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
   }
 
   ngOnInit() {
-    this.setNumberOfPagesInPaginator();
+    //TODO init paginator
+    this.pageSubscriber = this.currentPage.subscribe((currentValue: number) => {
+      this.setSubmissionPage();
+      this.currentPageFrontEnd = currentValue;
+      console.log("fired");
+
+      this.showNextPage = (this.lastPage > currentValue);
+      this.showNextNextPage = (this.lastPage - currentValue) > 2;
+    });
+
+    this.lastPage = Math.floor((this.submissions.length / this.numberSubmissionsPerPage) + 1);
+
+
+
+    this.mainSubscription.add(this.pageSubscriber);
+    this.mainSubscription.add(this.rangeSubscriber);
+
+  }
+
+
+  //Setting event listeners
+  private setSubscribers() {
+
   }
 
   ngOnChanges(changes: SimpleChanges) {
     this.submissionsBackup = this.submissions;
     this.enableLanguages(this.languages.length); //langaugeSize
+
+    //
   }
 
   ngOnDestroy(): void {
+    this.mainSubscription.unsubscribe();
   }
 
 
@@ -126,6 +205,11 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
     this.filterByState();
     //LANGUAGES
     this.filterBySelectedLanguages();
+  }
+
+  public navigateToListingDetail(submission: Submission): void {
+    this.submissionDataService.setSubmission(submission);
+    this.router.navigate([`/submission/${submission.id}`]);
   }
 
   /**
@@ -328,7 +412,6 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
    * @private
    */
   private scanForInputParameters(): boolean {
-    //TODO need?
     if(this.inputChallengeId != null && this.inputChallengeId > -1) {
       this.getSubmissionsByChallengeId(this.inputChallengeId);
       this.filteredByInput = true;
@@ -384,18 +467,55 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
   PAGINATION START
    */
 
-  onChangePage(pageOfitems: Array<any>) {
-    this.pageOfItems = pageOfitems;
+  //TODO listener for Page change
+
+  private setSubmissionPage(): Submission[] {
+    const startIndex: number = (this.currentPage.value - 1) * this.numberSubmissionsPerPage;
+    const newPageOfSubmissions: Submission[] = [];
+
+    let end = startIndex + this.numberSubmissionsPerPage + 1;
+
+    end = (end > this.submissions.length) ? this.submissions.length : end;
+
+    for(let i = startIndex; i < end; i++) {
+      newPageOfSubmissions.push(this.submissions[i]);
+    }
+
+    return newPageOfSubmissions;
   }
 
-  private setPage(page: number) {
-    this.pager      = paginate(this.submissions.length, page, this.pageSize, this.maxPages);
-    var pageOfItems = this.submissions.slice(this.pager.startIndex, this.pager.endIndex +1);
-    this.changePage.emit(pageOfItems);
+  public increase(): void {
+    this.currentPage.next(this.currentPageFrontEnd+1);
+  }
+
+  public decrease(): void {
+    this.currentPage.next(this.currentPageFrontEnd-1);
+  }
+
+  public jumpToLastPage() {
+    this.currentPage.next(this.lastPage);
+  }
+
+  public jumpToFirstPage() {
+    this.currentPage.next(1);
+  }
+
+  public setPage(page: number) {
+    this.currentPage.next(page);
   }
 
   /*
   PAGINATION END
+   */
+
+  /**
+   * SORTING START
+   */
+
+  //TODO idea: sort submissions with it
+
+  /**
+   * SORTING END
    */
 
   /*
@@ -425,28 +545,10 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
     return numbers;
   }
 
-  public navigateToListingDetail(submission: Submission): void {
-    this.submissionDataService.setSubmission(submission);
-    this.router.navigate([`/submission/${submission.id}`]);
-  }
-
   /* TODO auslagenr in parent
   @HostListener("window:resize", ['$event'])
   private onResize(event: { target: { innerWidth: any; }; }) {
     const width = event.target.innerWidth;
     this.setNumberOfPagesInPaginator(width);
   }*/
-
-  private setNumberOfPagesInPaginator() {
-    const width = window.innerWidth;
-    const oldMaxPages = this.maxPages.valueOf();
-    console.log(width);
-    switch (true) {
-      case (width < 450)  : this.maxPages = 3; break;
-      case (width < 500)  : this.maxPages = 4; break;
-      case (width < 650)  : this.maxPages = 8; break;
-      case (width < 1040) : this.maxPages = 9; break;
-      default: this.maxPages = 10;
-    }
-  }
 }

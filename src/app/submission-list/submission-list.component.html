@@ -72,7 +72,7 @@
     <h4 style="margin-bottom: 4px;margin-top: 4px;">Submissions</h4>
   </div>
   <div class="card-body">
-    <ng-container *ngFor="let submission of pageOfItems">
+    <ng-container *ngFor="let submission of paginationSubmissions">
       <div class="card entry" (click)="this.navigateToListingDetail(submission)" style="background: rgb(255, 255, 255);margin-bottom: 4px;">
         <div class="card-body" style="padding: 3px;margin-top: 4px;margin-bottom: 4px;border-color: var(--bs-gray-500);">
           <div class="row g-0 align-items-center">
@@ -104,9 +104,39 @@
       </div>
     </ng-container>
     <!--<pagination-controls (pageChange)="page = $event"></pagination-controls>-->
-    <!-- TODO jw-pagination macht es breit!-->
-    <jw-pagination  [items]="this.submissions"
-                    [maxPages]="this.maxPages"
-                    (changePage)="onChangePage($event)" class="paginator"></jw-pagination>
+
+    <!-- pagination -->
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item">
+          <a (click)="this.jumpToFirstPage()" class="page-link pagination-link">First</a>
+        </li>
+        <li class="page-item">
+          <a (click)="decrease()" class="page-link pagination-link">Previous</a>
+        </li>
+        <li *ngIf="currentPageFrontEnd > 2" class="page-item">
+          <a (click)="this.setPage(currentPageFrontEnd-2)" class="page-link pagination-link">{{currentPageFrontEnd-2}}</a>
+        </li>
+        <li *ngIf="currentPageFrontEnd > 1" class="page-item">
+          <a (click)="this.setPage(currentPageFrontEnd-1)" class="page-link pagination-link">{{currentPageFrontEnd-1}}</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link pagination-link active">{{this.currentPageFrontEnd}}</a>
+        </li>
+        <li *ngIf="showNextPage" class="page-item">
+          <a (click)="this.setPage(currentPageFrontEnd+1)" class="page-link pagination-link">{{this.currentPageFrontEnd+1}}</a>
+        </li>
+        <li *ngIf="showNextNextPage" class="page-item">
+          <a (click)="this.setPage(currentPageFrontEnd+2)" class="page-link pagination-link">{{this.currentPageFrontEnd+2}}</a>
+        </li>
+        <li *ngIf="showNextNextPage" class="page-item">
+          <a class="page-link pagination-link" (click)="this.increase()">Next</a>
+        </li>
+        <li class="page-item">
+          <a (click)="this.jumpToLastPage()" class="page-link pagination-link">Last</a>
+        </li>
+      </ul>
+    </nav>
+    <!-- pagination end -->
   </div>
 </div>
