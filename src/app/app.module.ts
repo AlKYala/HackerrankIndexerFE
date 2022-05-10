@@ -14,10 +14,8 @@ import {NgxChartModule} from "ngx-chart";
 import {PieChartModule} from "@swimlane/ngx-charts";
 import {GeneralstatscomponentComponent} from './generalstatscomponent/generalstatscomponent.component';
 import {ChartcomponentComponent} from './chartcomponent/chartcomponent.component';
-import {NgxPaginationModule} from "ngx-pagination";
 import {LandingComponent} from './landing/landing.component';
 import {HowtocomponentComponent} from './howtocomponent/howtocomponent.component';
-import {JwPaginationModule} from "jw-angular-pagination";
 import {ChartsModule} from "ng2-charts";
 import {NgxWebstorageModule} from "ngx-webstorage";
 import { LoginComponent } from './login/login.component';
@@ -67,8 +65,6 @@ import { PermalinkComponentComponent } from './permalink-component/permalink-com
     FontAwesomeModule,
     NgxChartModule,
     PieChartModule,
-    NgxPaginationModule,
-    JwPaginationModule,
     ChartsModule,
     NgxWebstorageModule.forRoot(),
     ReactiveFormsModule,

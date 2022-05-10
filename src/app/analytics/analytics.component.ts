@@ -35,6 +35,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   submissions: Submission[] = [];
   languages: Planguage[] = [];
   userDataToken: string = "";
+  challengeNames: string[] = [];
 
   datafound: boolean = false; //
   wait: boolean = true; //wait for the data to load
@@ -105,6 +106,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     this.submissions        = userData.submissionList;
     this.languages          = this.extractUsedLanguages(userData.user.passPercentages);
     this.userDataToken      = this.userData.user.userDataToken;
+    this.challengeNames     = this.extractChallengeNames(this.submissions);
   }
 
   private extractUsedLanguages(passPercentages: PassPercentage[]): Planguage[] {
@@ -123,6 +125,23 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     this.initImportDataFromUserData(this.userData);
     this.initStyleAndStats();
     this.wait = false;
+  }
+
+  private getChallengeNames(submissions: Submission[]) {
+    let challengeNames: string[] = this.localStorageService.retrieve('challengeNames');
+    if(challengeNames == undefined) {
+      challengeNames = this.extractChallengeNames(submissions);
+      this.localStorageService.store('challengeNames', challengeNames);
+    }
+    return challengeNames;
+  }
+
+  private extractChallengeNames(submissions: Submission[]): string[] {
+    const challengeNames: Set<string> = new Set<string>();
+    for(const submission of submissions) {
+      challengeNames.add(submission.challenge.challengeName);
+    }
+    return [...challengeNames.values()]
   }
 
   ngOnDestroy(): void {
