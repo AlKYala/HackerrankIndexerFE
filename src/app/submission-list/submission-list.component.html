@@ -7,7 +7,7 @@
       <div class="col">
         <div class="input-group">
           <span class="input-group-text">Filter By Name</span>
-          <input (keydown)="this.fireEnitreFilter(); this.toggleSuggestions()" [formControl]="searchFormControl" class="form-control"
+          <input (keyup)="this.fireEnitreFilter(); this.toggleSuggestions()" [formControl]="searchFormControl" class="form-control"
                  type="text"/>
         </div>
       </div>
@@ -16,7 +16,9 @@
       <div class="d-sm-flex justify-content-sm-center" style="width: 100%;display: grid;/*width: inherit;*/margin: inherit;/*padding-right: inherit;*//*left: 0;*//*right: 0;*/">
           <div class="row text-white align-items-center no-gutters" style="/*margin: 0px 0px;*/width: 100%;">
             <div class="col">
-              <div class="input-group"><input class="form-control form-control-sm" type="text" readonly autofocus [value]="challengeName" disabled /></div>
+              <div class="input-group">
+                <button (click)="clickSearchResult(challengeName)" class="form-control form-control-sm btn-outline-danger" autofocus>{{challengeName}}</button>
+              </div>
             </div>
           </div>
       </div>
@@ -101,7 +103,7 @@
     </div>
 
   </div>
-  <div class="card-body">
+  <div id="results" class="card-body">
     <ng-container *ngFor="let submission of paginationSubmissions">
       <div class="card entry" (click)="this.navigateToListingDetail(submission)"
            style="background: rgb(255, 255, 255);margin-bottom: 4px;">

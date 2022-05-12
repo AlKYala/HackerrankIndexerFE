@@ -231,10 +231,12 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
    */
   public filterByChallengeName() {
     const search = this.searchFormControl.value;
+    console.log(search);
     if (search == null || search.length == 1) {
       this.submissions = this.submissionsBackup; // REASON WHY HAS TO BE FIRST
       return;
     }
+    console.log("searching");
     this.submissions = this.submissions
       .filter(submission => submission.challenge.challengeName.toLowerCase().includes(search.toLowerCase()));
   }
@@ -247,6 +249,13 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
     }
     searchValue = searchValue.toLowerCase();
     this.challengeNamesDisplay = this.challengeNames.filter((challengename) => challengename.toLowerCase().includes(searchValue));
+  }
+
+  public clickSearchResult(value: string) {
+    console.log("click");
+    this.searchFormControl.setValue(value);
+    this.challengeNamesDisplay = [];
+    this.filterByChallengeName(); //TODO filter noch nicht einwandfrei
   }
 
   /**
