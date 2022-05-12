@@ -241,15 +241,12 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
 
   public toggleSuggestions() {
     let searchValue = this.searchFormControl.value;
-
-    if(searchValue == null || searchValue.length < 4) {
+    if(searchValue == null || searchValue.length < 3) {
       this.challengeNamesDisplay = [];
       return;
     }
     searchValue = searchValue.toLowerCase();
-    console.log(searchValue);
-    this.challengeNamesDisplay = this.challengeNamesDisplay.filter((challengename) => challengename.toLowerCase().includes(searchValue));
-    console.log(this.challengeNamesDisplay);
+    this.challengeNamesDisplay = this.challengeNames.filter((challengename) => challengename.toLowerCase().includes(searchValue));
   }
 
   /**
