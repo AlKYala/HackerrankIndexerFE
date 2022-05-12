@@ -12,13 +12,15 @@
         </div>
       </div>
     </div>
-    <div class="d-sm-flex justify-content-sm-center" style="width: 100%;display: grid;/*width: inherit;*/margin: inherit;/*padding-right: inherit;*//*left: 0;*//*right: 0;*/">
-      <div class="row text-white align-items-center no-gutters" style="/*margin: 0px 0px;*/width: 100%;">
-        <div class="col">
-          <div class="input-group"><input class="form-control form-control-sm" type="text" readonly autofocus value="%PLACEHOLDER%" disabled /></div>
-        </div>
+    <ng-container *ngFor="let challengeName of challengeNamesDisplay">
+      <div class="d-sm-flex justify-content-sm-center" style="width: 100%;display: grid;/*width: inherit;*/margin: inherit;/*padding-right: inherit;*//*left: 0;*//*right: 0;*/">
+          <div class="row text-white align-items-center no-gutters" style="/*margin: 0px 0px;*/width: 100%;">
+            <div class="col">
+              <div class="input-group"><input class="form-control form-control-sm" type="text" readonly autofocus [value]="challengeName" disabled /></div>
+            </div>
+          </div>
       </div>
-    </div>
+    </ng-container>
     <div class="row align-items-center no-gutters" style="margin: 10px 0px;">
       <div class="col">
         <div class="row align-items-center no-gutters">
