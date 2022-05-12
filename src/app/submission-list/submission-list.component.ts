@@ -47,6 +47,10 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
   @Input()
   languages: Planguage[] = [];
 
+  @Input()
+  challengeNames: string[] = [];
+  challengeNamesDisplay: string[] = [];
+
   private mainSubscription: Subscription = new Subscription();
 
   submissionsBackup: Submission[] = [];
@@ -127,11 +131,15 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
   showNextPage: boolean = true;
   showNextNextPage: boolean = true;
 
+  showLastPage: boolean = false;
+  showDots: boolean = false;
+
   /**
    * Defines if the next page / second next page is shown
    */
   showPreviousPage: boolean = false;
   showPreviousPreviousPage: boolean = false;
+  showFirstPage: boolean = false;
 
 
   /**
@@ -216,17 +224,39 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
     this.router.navigate([`/submission/${submission.id}`]);
   }
 
+  /** FILTERING SEARCH SUGGESTIONS */
+
   /**
    * FILTERING BY NAME
    */
   public filterByChallengeName() {
     const search = this.searchFormControl.value;
+    console.log(search);
     if (search == null || search.length == 1) {
       this.submissions = this.submissionsBackup; // REASON WHY HAS TO BE FIRST
       return;
     }
+    console.log("searching");
     this.submissions = this.submissions
       .filter(submission => submission.challenge.challengeName.toLowerCase().includes(search.toLowerCase()));
+    this.setPage(1);
+  }
+
+  public toggleSuggestions() {
+    let searchValue = this.searchFormControl.value;
+    if(searchValue == null || searchValue.length < 3) {
+      this.challengeNamesDisplay = [];
+      return;
+    }
+    searchValue = searchValue.toLowerCase();
+    this.challengeNamesDisplay = this.challengeNames.filter((challengename) => challengename.toLowerCase().includes(searchValue));
+  }
+
+  public clickSearchResult(value: string) {
+    console.log("click");
+    this.searchFormControl.setValue(value);
+    this.challengeNamesDisplay = [];
+    this.filterByChallengeName();
   }
 
   /**
@@ -510,6 +540,11 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
 
     this.showPreviousPage = currentPage > 1;
     this.showPreviousPreviousPage = currentPage > 2 && window.innerWidth > 520;
+
+    this.showDots = (this.lastPage - currentPage) > 3;
+    this.showLastPage = this.showNextNextPage;
+
+    this.showFirstPage = currentPage > 3;
   }
 
   public setPage(page: number) {
@@ -539,6 +574,10 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
 
   public setNumberOfSubmissionsPerPage(numberOfElementsPerPage: number) {
     this.numberOfElementsPerPage.next(numberOfElementsPerPage);
+  }
+
+  public showPagePopup() {
+
   }
 
   /**

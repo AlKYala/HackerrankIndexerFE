@@ -3,15 +3,28 @@
     <h4 style="margin-bottom: 4px;margin-top: 4px;">Options</h4>
   </div>
   <div class="card-body">
-    <div class="row align-items-center no-gutters" style="margin: 10px 0px;">
+    <div class="row align-items-center no-gutters mb-0" style="margin: 10px 0px;">
       <div class="col">
         <div class="input-group">
           <span class="input-group-text">Filter By Name</span>
-          <input (keydown)="this.fireEnitreFilter()" [formControl]="searchFormControl" class="form-control"
+          <input (keyup)="this.fireEnitreFilter(); this.toggleSuggestions()" [formControl]="searchFormControl"
+                 id="searchbar"
+                 class="form-control"
                  type="text"/>
         </div>
       </div>
     </div>
+    <ng-container *ngFor="let challengeName of challengeNamesDisplay">
+      <div class="d-sm-flex justify-content-sm-center" style="width: 100%;display: grid;/*width: inherit;*/margin: inherit;/*padding-right: inherit;*//*left: 0;*//*right: 0;*/">
+          <div class="row text-white align-items-center no-gutters" style="/*margin: 0px 0px;*/width: 100%;">
+            <div class="col">
+              <div class="input-group">
+                <button (click)="clickSearchResult(challengeName)" class="form-control form-control-sm btn-outline-danger" autofocus>{{challengeName}}</button>
+              </div>
+            </div>
+          </div>
+      </div>
+    </ng-container>
     <div class="row align-items-center no-gutters" style="margin: 10px 0px;">
       <div class="col">
         <div class="row align-items-center no-gutters">
@@ -76,17 +89,23 @@
 
 <div class="card shadow mb-4">
   <div class="card-header d-flex justify-content-between align-items-center">
-    <h4 style="margin-bottom: 4px;margin-top: 4px;">Submissions</h4>
-    <select class="btn btn-outline-secondary">
-      <option (click)="this.setNumberOfSubmissionsPerPage(5)" class="dropdown-item">5</option>
-      <option (click)="this.setNumberOfSubmissionsPerPage(10)" class="dropdown-item">10</option>
-      <option (click)="this.setNumberOfSubmissionsPerPage(25)" class="dropdown-item">25</option>
-      <option (click)="this.setNumberOfSubmissionsPerPage(50)" class="dropdown-item">50</option>
-      <option (click)="this.setNumberOfSubmissionsPerPage(100)" class="dropdown-item">100</option>
-      <option (click)="this.setNumberOfSubmissionsPerPage(200)" class="dropdown-item">200</option>
-    </select>
+    <div>
+      <h4 style="margin-bottom: 4px;margin-top: 4px;">Submissions</h4>
+    </div>
+    <div>
+      <span>Elements per Page: </span>
+      <select class="btn btn-outline-secondary p-0">
+        <option (click)="this.setNumberOfSubmissionsPerPage(5)" class="dropdown-item">5</option>
+        <option (click)="this.setNumberOfSubmissionsPerPage(10)" class="dropdown-item">10</option>
+        <option (click)="this.setNumberOfSubmissionsPerPage(25)" class="dropdown-item">25</option>
+        <option (click)="this.setNumberOfSubmissionsPerPage(50)" class="dropdown-item">50</option>
+        <option (click)="this.setNumberOfSubmissionsPerPage(100)" class="dropdown-item">100</option>
+        <option (click)="this.setNumberOfSubmissionsPerPage(200)" class="dropdown-item">200</option>
+      </select>
+    </div>
+
   </div>
-  <div class="card-body">
+  <div id="results" class="card-body">
     <ng-container *ngFor="let submission of paginationSubmissions">
       <div class="card entry" (click)="this.navigateToListingDetail(submission)"
            style="background: rgb(255, 255, 255);margin-bottom: 4px;">
@@ -131,12 +150,13 @@
     <!-- pagination -->
     <nav aria-label="Page navigation example">
       <ul class="pagination">
+
         <li class="page-item">
-          <a (click)="this.jumpToFirstPage()" class="page-link pagination-link">First</a>
-        </li>
-        <li class="page-item">
-          <a [ngClass]="{'btn disabled' : this.currentPage.value == 1}" (click)="decrease()"
+          <a [ngClass]="{'btn disabled' : !showPreviousPage}" (click)="decrease()"
              class="page-link pagination-link disabled">Previous</a>
+        </li>
+        <li *ngIf="showFirstPage" class="page-item">
+          <a (click)="this.jumpToFirstPage()" class="page-link pagination-link">1</a>
         </li>
         <li *ngIf="showPreviousPreviousPage" class="page-item">
           <a (click)="this.setPage(currentPageFrontEnd-2)"
@@ -157,15 +177,19 @@
           <a (click)="this.setPage(currentPageFrontEnd+2)"
              class="page-link pagination-link">{{this.currentPageFrontEnd + 2}}</a>
         </li>
-        <li class="page-item">
-          <a [ngClass]="{'btn disabled' : this.currentPage.value == this.lastPage}" class="page-link pagination-link"
-             (click)="this.increase()">Next</a>
+        <li *ngIf="showDots" class="page-item">
+          <a (click)="this.showPagePopup()" class="page-link pagination-link">...</a>
         </li>
-        <li class="page-item">
-          <a (click)="this.jumpToLastPage()" class="page-link pagination-link">Last</a>
+        <li *ngIf="showLastPage" class="page-item">
+          <a (click)="this.jumpToLastPage()" class="page-link pagination-link">{{this.lastPage}}</a>
+        </li>
+        <li  class="page-item">
+        <a [ngClass]="{'btn disabled' : !showNextPage}" class="page-link pagination-link"
+           (click)="this.increase()">Next</a>
         </li>
       </ul>
     </nav>
     <!-- pagination end -->
   </div>
 </div>
+
