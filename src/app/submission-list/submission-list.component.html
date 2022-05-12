@@ -7,7 +7,9 @@
       <div class="col">
         <div class="input-group">
           <span class="input-group-text">Filter By Name</span>
-          <input (keyup)="this.fireEnitreFilter(); this.toggleSuggestions()" [formControl]="searchFormControl" class="form-control"
+          <input (keyup)="this.fireEnitreFilter(); this.toggleSuggestions()" [formControl]="searchFormControl"
+                 id="searchbar"
+                 class="form-control"
                  type="text"/>
         </div>
       </div>

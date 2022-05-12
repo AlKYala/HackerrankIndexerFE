@@ -239,6 +239,7 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
     console.log("searching");
     this.submissions = this.submissions
       .filter(submission => submission.challenge.challengeName.toLowerCase().includes(search.toLowerCase()));
+    this.setPage(1);
   }
 
   public toggleSuggestions() {
@@ -255,7 +256,7 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
     console.log("click");
     this.searchFormControl.setValue(value);
     this.challengeNamesDisplay = [];
-    this.filterByChallengeName(); //TODO filter noch nicht einwandfrei
+    this.filterByChallengeName();
   }
 
   /**
