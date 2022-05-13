@@ -208,7 +208,6 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       this.renderSubmissionList = false;
       this.renderSubmissionList = true;
     }
-
   }
 
   private calculateWidthEnum(): PaginationWidths {
