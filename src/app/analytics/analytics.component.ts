@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
 import {AnalyticsService} from "../../shared/services/AnalyticsService";
 import {SubscriptionService} from "../../shared/services/SubscriptionService";
 import {Subscription} from "rxjs";
@@ -12,7 +12,7 @@ import {GeneralPercentage} from "../../shared/datamodels/Analytics/models/Genera
 import {PassPercentage} from "../../shared/datamodels/Analytics/models/PassPercentage";
 import {Submission} from "../../shared/datamodels/Submission/model/Submission";
 import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
-import {User} from "../../shared/datamodels/User/model/User";
+import {PaginationWidths} from "../../shared/scss/resizePagination/PaginationWidths";
 
 @Component({
   selector: 'app-analytics',
@@ -35,11 +35,14 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   submissions: Submission[] = [];
   languages: Planguage[] = [];
   userDataToken: string = "";
+  challengeNames: string[] = [];
 
   datafound: boolean = false; //
   wait: boolean = true; //wait for the data to load
   submitted: boolean = false;
   file!: File;
+  oldWidth!: PaginationWidths;
+  renderSubmissionList: boolean = true;
 
   constructor(private subscriptionService: SubscriptionService,
               private analyticsService: AnalyticsService,
@@ -52,6 +55,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+
+    this.oldWidth = this.calculateWidthEnum();
 
     console.log(this.userData == undefined);
     const checkLogin: boolean = this.userData == undefined;
@@ -101,6 +106,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     this.submissions        = userData.submissionList;
     this.languages          = this.extractUsedLanguages(userData.user.passPercentages);
     this.userDataToken      = this.userData.user.userDataToken;
+    this.challengeNames     = this.extractChallengeNames(this.submissions);
   }
 
   private extractUsedLanguages(passPercentages: PassPercentage[]): Planguage[] {
@@ -119,6 +125,23 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     this.initImportDataFromUserData(this.userData);
     this.initStyleAndStats();
     this.wait = false;
+  }
+
+  private getChallengeNames(submissions: Submission[]) {
+    let challengeNames: string[] = this.localStorageService.retrieve('challengeNames');
+    if(challengeNames == undefined) {
+      challengeNames = this.extractChallengeNames(submissions);
+      this.localStorageService.store('challengeNames', challengeNames);
+    }
+    return challengeNames;
+  }
+
+  private extractChallengeNames(submissions: Submission[]): string[] {
+    const challengeNames: Set<string> = new Set<string>();
+    for(const submission of submissions) {
+      challengeNames.add(submission.challenge.challengeName);
+    }
+    return [...challengeNames.values()]
   }
 
   ngOnDestroy(): void {
@@ -172,5 +195,29 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     node.href = url;
     node.rel='stylesheet';
     document.getElementsByTagName('head')[0].appendChild(node);
+  }
+
+  @HostListener("window:resize", ['$event'])
+  private onResize(event: { target: { innerWidth: any; }; }) {
+    const width = event.target.innerWidth;
+
+    const newWidth = this.calculateWidthEnum();
+
+    if(newWidth.valueOf() != this.oldWidth.valueOf()) {
+      this.oldWidth = newWidth;
+      this.renderSubmissionList = false;
+      this.renderSubmissionList = true;
+    }
+  }
+
+  private calculateWidthEnum(): PaginationWidths {
+    const width = window.innerWidth;
+    switch (true) {
+      case (width < 450)  : return PaginationWidths.sub450;
+      case (width < 500)  : return PaginationWidths.sub450;
+      case (width < 650)  : return PaginationWidths.sub450;
+      case (width < 1040) : return PaginationWidths.sub450;
+      default: return PaginationWidths.fullscreen;
+    }
   }
 }
