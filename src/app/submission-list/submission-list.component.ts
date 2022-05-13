@@ -174,7 +174,6 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
       this.numberSubmissionsPerPage = numberElementsOnPage;
       this.setPage(1);
     });
-
     this.setSubscribers();
   }
 

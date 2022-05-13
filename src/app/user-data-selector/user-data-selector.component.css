@@ -1,0 +1,4 @@
+.user-data-col:hover {
+  background-color: var(--bs-gray-200);
+  cursor: pointer;
+}

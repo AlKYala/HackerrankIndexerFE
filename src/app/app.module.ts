@@ -33,6 +33,7 @@ import {NgxMasonryModule} from "ngx-masonry";
 import { InitialLandingComponent } from './initial-landing/initial-landing.component';
 import {NgxQRCodeModule} from "@techiediaries/ngx-qrcode";
 import { PermalinkComponentComponent } from './permalink-component/permalink-component.component';
+import { UserDataSelectorComponent } from './user-data-selector/user-data-selector.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { PermalinkComponentComponent } from './permalink-component/permalink-com
     ShareComponentComponent,
     InitialLandingComponent,
     PermalinkComponentComponent,
+    UserDataSelectorComponent,
   ],
   imports: [
     RouterModule,
