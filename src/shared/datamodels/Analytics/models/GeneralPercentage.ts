@@ -1,8 +1,8 @@
-import {User} from "../../User/model/User";
 import {Planguage} from "../../PLanguage/model/PLanguage";
+import {UserData} from "../../User/model/UserData";
 
 export interface GeneralPercentage {
-  user: User;
+  userData: UserData;
   percentageChallengesSolved: number;
   percentageSubmissionsPassed: number;
   favouriteLanguage: Planguage;
