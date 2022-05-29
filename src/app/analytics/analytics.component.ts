@@ -101,10 +101,10 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   }
 
   private initImportDataFromUserData(userData: UserData) {
-    this.generalPercentage  = userData.user.generalPercentage;
-    this.passPercentages    = userData.user.passPercentages;
+    this.generalPercentage  = userData.generalPercentage;
+    this.passPercentages    = userData.passPercentages;
     this.submissions        = userData.submissionList;
-    this.languages          = this.extractUsedLanguages(userData.user.passPercentages);
+    this.languages          = this.extractUsedLanguages(userData.passPercentages);
     this.userDataToken      = this.userData.user.userDataToken;
     this.challengeNames     = this.extractChallengeNames(this.submissions);
   }

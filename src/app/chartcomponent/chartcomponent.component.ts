@@ -5,7 +5,6 @@ import {PLanguageService} from "../../shared/datamodels/PLanguage/service/PLangu
 import {Subscription} from "rxjs";
 import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
 import {switchMap} from "rxjs/operators";
-import {PassPercentages} from "../../shared/datamodels/Analytics/models/PassPercentages";
 import {Label, MultiDataSet} from "ng2-charts";
 import Chart, {ChartPoint, ChartType} from "chart.js";
 import {ChartJSData} from "../../shared/datamodels/Chart/ChartJSData";

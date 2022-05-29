@@ -25,26 +25,27 @@ export class RequestService {
   }
 
   public anyDeleteRequest(text: string): Observable<any> {
-    const header = this.getJWTHeader();
-    return this.httpClient.delete(text, {headers: {"Authorization": header}}) as Observable<any>;
+    const headers = {"Authorization": this.getJWTHeaderValue(), "userDataId": this.getUserDataIdHeaderValue()};
+    return this.httpClient.delete(text, {headers: headers}) as Observable<any>;
   }
 
   public anyGetRequest(text: string): Observable<any> {
-    const header = this.getJWTHeader();
-    return this.httpClient.get(text, {headers: {"Authorization": header}}) as Observable<any>;
+    const headers = {"Authorization": this.getJWTHeaderValue(), "userDataId": this.getUserDataIdHeaderValue()};
+    return this.httpClient.get(text, {headers: headers}) as Observable<any>;
   }
 
   public anyPutRequest(text: string, payload: any): Observable<any> {
-    const header = this.getJWTHeader();
-    return this.httpClient.put(text, payload, {headers: {"Authorization": header}}) as Observable<any>;
+    const headers = {"Authorization": this.getJWTHeaderValue(), "userDataId": this.getUserDataIdHeaderValue()};
+    return this.httpClient.put(text, payload, {headers: headers}) as Observable<any>;
   }
 
   public anyPostRequest(text: string, payload: any): Observable<any> {
-    const header = this.getJWTHeader();
-    return this.httpClient.post(text, payload, {headers: {"Authorization": header}}) as Observable<any>;
+    const headers = {"Authorization": this.getJWTHeaderValue(), "userDataId": this.getUserDataIdHeaderValue()};
+    return this.httpClient.post(text, payload, {headers: headers}) as Observable<any>;
   }
 
-  private getJWTHeader() {
+  //TODO ngRX
+  private getJWTHeaderValue(): string {
     // intercept here
     let jwt = "";
     try {
@@ -58,5 +59,9 @@ export class RequestService {
       return jwt
     }
     return "";
+  }
+  //TODO ngRx
+  private getUserDataIdHeaderValue(): string {
+    return this.localStorageService.retrieve("userDataId");
   }
 }

@@ -65,15 +65,15 @@ export class PermalinkComponentComponent implements OnInit {
   private initUserData(userData: UserData) {
     this.username = userData.user.email;
     this.submissions = userData.submissionList;
-    this.generalPercentage = userData.user.generalPercentage;
-    this.passPercentages = userData.user.passPercentages;
+    this.generalPercentage = userData.generalPercentage;
+    this.passPercentages = userData.passPercentages;
     this.initLanguages(userData);
     this.datafound = true;
     this.wait = false;
   }
 
   private initLanguages(userData: UserData) {
-    for(const passPercentage of userData.user.passPercentages) {
+    for(const passPercentage of userData.passPercentages) {
       this.languages.push(passPercentage.planguage);
     }
   }
