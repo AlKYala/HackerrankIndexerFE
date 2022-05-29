@@ -13,6 +13,7 @@ import {PassPercentage} from "../../shared/datamodels/Analytics/models/PassPerce
 import {Submission} from "../../shared/datamodels/Submission/model/Submission";
 import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
 import {PaginationWidths} from "../../shared/scss/resizePagination/PaginationWidths";
+import {User} from "../../shared/datamodels/User/model/User";
 
 @Component({
   selector: 'app-analytics',
@@ -56,12 +57,20 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
 
+    this.localStorageService.store("userDataIndex", 0); //TESTING - TODO DELETE
+
+    this.userDataService.loadUserDataIndex().then((userData: UserData) => {
+      this.userData = userData;
+    });
+
     this.oldWidth = this.calculateWidthEnum();
 
     console.log(this.userData == undefined);
     const checkLogin: boolean = this.userData == undefined;
 
     console.log(checkLogin);
+
+
 
     if(checkLogin) {
       await this.redirectIfNotLoggedIn();
@@ -70,6 +79,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     await this.loadUserData().finally(() => {
       this.onInit();
     });
+
   }
 
   /**
@@ -90,9 +100,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   async loadUserData() {
     //TODO error interception when data is not found
-    await this.userDataService.loadUserData().then((userData: UserData) => {
-      this.userData = userData;
-      this.datafound = this.checkDataFound(userData);
+    await this.userDataService.loadUserData().then((userData: UserData[]) => {
+      console.log(userData);
     })
   }
 

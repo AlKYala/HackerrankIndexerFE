@@ -12,8 +12,13 @@ export class UserDataService {
 
   }
 
-  public async loadUserData(): Promise<UserData> {
+  public async loadUserData(): Promise<UserData[]> {
     return this.requestService.anyGetRequest(`${environment.api}/userdata`)
+      .toPromise();
+  }
+
+  public async loadUserDataIndex(): Promise<UserData> {
+    return this.requestService.anyGetRequest(`${environment.api}/userdata/single`)
       .toPromise();
   }
 

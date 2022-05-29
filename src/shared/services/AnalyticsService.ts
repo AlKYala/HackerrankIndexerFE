@@ -7,6 +7,7 @@ import {ServiceHandler} from "./ServiceHandler/ServiceHandler";
 import {RequestServiceEnum} from "./ServiceHandler/RequestServiceEnum";
 import {RequestService} from "./ServiceHandler/RequestService";
 import {GeneralPercentage} from "../datamodels/Analytics/models/GeneralPercentage";
+import {UserData} from "../datamodels/User/model/UserData";
 
 //TODO bei bedarf die endpunkte anpassen!!!
 
@@ -20,8 +21,6 @@ export class AnalyticsService {
   constructor(private httpClient: HttpClient,
               private requestService: RequestService) {
   }
-
-
 
   public getNumberOfUsers(): Observable<number> {
     return this.requestService

@@ -25,22 +25,22 @@ export class RequestService {
   }
 
   public anyDeleteRequest(text: string): Observable<any> {
-    const headers = {"Authorization": this.getJWTHeaderValue(), "userDataId": this.getUserDataIdHeaderValue()};
+    const headers = {"Authorization": this.getJWTHeaderValue(), "userDataIndex": this.getUserDataIdHeaderValue()};
     return this.httpClient.delete(text, {headers: headers}) as Observable<any>;
   }
 
   public anyGetRequest(text: string): Observable<any> {
-    const headers = {"Authorization": this.getJWTHeaderValue(), "userDataId": this.getUserDataIdHeaderValue()};
+    const headers = {"Authorization": this.getJWTHeaderValue(), "userDataIndex": this.getUserDataIdHeaderValue()};
     return this.httpClient.get(text, {headers: headers}) as Observable<any>;
   }
 
   public anyPutRequest(text: string, payload: any): Observable<any> {
-    const headers = {"Authorization": this.getJWTHeaderValue(), "userDataId": this.getUserDataIdHeaderValue()};
+    const headers = {"Authorization": this.getJWTHeaderValue(), "userDataIndex": this.getUserDataIdHeaderValue()};
     return this.httpClient.put(text, payload, {headers: headers}) as Observable<any>;
   }
 
   public anyPostRequest(text: string, payload: any): Observable<any> {
-    const headers = {"Authorization": this.getJWTHeaderValue(), "userDataId": this.getUserDataIdHeaderValue()};
+    const headers = {"Authorization": this.getJWTHeaderValue(), "userDataIndex": this.getUserDataIdHeaderValue()};
     return this.httpClient.post(text, payload, {headers: headers}) as Observable<any>;
   }
 
@@ -62,6 +62,6 @@ export class RequestService {
   }
   //TODO ngRx
   private getUserDataIdHeaderValue(): string {
-    return this.localStorageService.retrieve("userDataId");
+    return this.localStorageService.retrieve("userDataIndex");
   }
 }
