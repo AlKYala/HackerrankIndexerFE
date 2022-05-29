@@ -38,7 +38,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   userDataToken: string = "";
   challengeNames: string[] = [];
 
-  datafound: boolean = false; //
+  datafound: boolean = false;
   wait: boolean = true; //wait for the data to load
   submitted: boolean = false;
   file!: File;
@@ -59,10 +59,6 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
     this.localStorageService.store("userDataIndex", 0); //TESTING - TODO DELETE
 
-    this.userDataService.loadUserDataIndex().then((userData: UserData) => {
-      this.userData = userData;
-    });
-
     this.oldWidth = this.calculateWidthEnum();
 
     console.log(this.userData == undefined);
@@ -70,16 +66,14 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
     console.log(checkLogin);
 
-
-
     if(checkLogin) {
       await this.redirectIfNotLoggedIn();
     }
 
-    await this.loadUserData().finally(() => {
+    await this.userDataService.loadUserDataIndex().then((userData: UserData) => {
+      this.userData = userData;
       this.onInit();
     });
-
   }
 
   /**
@@ -98,13 +92,6 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     );
   }
 
-  async loadUserData() {
-    //TODO error interception when data is not found
-    await this.userDataService.loadUserData().then((userData: UserData[]) => {
-      console.log(userData);
-    })
-  }
-
   private checkDataFound(userdata: UserData) {
     return userdata.submissionList.length > 0;
   }
@@ -114,7 +101,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     this.passPercentages    = userData.passPercentages;
     this.submissions        = userData.submissionList;
     this.languages          = this.extractUsedLanguages(userData.passPercentages);
-    this.userDataToken      = this.userData.user.userDataToken;
+    //this.userDataToken      = this.userData.token;
     this.challengeNames     = this.extractChallengeNames(this.submissions);
   }
 
@@ -134,6 +121,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     this.initImportDataFromUserData(this.userData);
     this.initStyleAndStats();
     this.wait = false;
+    if(this.userData != undefined)
+      this.datafound = true
   }
 
   private getChallengeNames(submissions: Submission[]) {

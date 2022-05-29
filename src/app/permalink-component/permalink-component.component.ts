@@ -63,7 +63,7 @@ export class PermalinkComponentComponent implements OnInit {
   }
 
   private initUserData(userData: UserData) {
-    this.username = userData.user.email;
+    //this.username = userData.user.email;
     this.submissions = userData.submissionList;
     this.generalPercentage = userData.generalPercentage;
     this.passPercentages = userData.passPercentages;

@@ -4,11 +4,13 @@ import {RequestService} from "./ServiceHandler/RequestService";
 import {Subscription} from "rxjs";
 import {environment} from "../../environments/environment";
 import {User} from "../datamodels/User/model/User";
+import {LocalStorageService} from "ngx-webstorage";
 
 @Injectable({providedIn: 'root'})
 export class UserDataService {
 
-  constructor(private requestService: RequestService) {
+  constructor(private requestService: RequestService,
+              private localStorageService: LocalStorageService) {
 
   }
 
@@ -18,7 +20,9 @@ export class UserDataService {
   }
 
   public async loadUserDataIndex(): Promise<UserData> {
-    return this.requestService.anyGetRequest(`${environment.api}/userdata/single`)
+    //TODO NGRX
+    const activeIndex = this.localStorageService.retrieve("userDataIndex");
+    return this.requestService.anyGetRequest(`${environment.api}/userdata/single/${activeIndex}`)
       .toPromise();
   }
 
@@ -26,6 +30,4 @@ export class UserDataService {
     return this.requestService.anyGetRequest(`${environment.api}/userdata/${token}`)
       .toPromise();
   }
-
-
 }

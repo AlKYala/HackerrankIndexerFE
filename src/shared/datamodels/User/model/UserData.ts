@@ -13,4 +13,5 @@ export interface UserData {
   passPercentages: PassPercentage[];
   usagePercentages: UsagePercentage[];
   token: string;
+  timeCreated: Date;
 }
