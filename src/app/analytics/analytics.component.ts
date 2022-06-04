@@ -121,8 +121,10 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     this.initImportDataFromUserData(this.userData);
     this.initStyleAndStats();
     this.wait = false;
-    if(this.userData != undefined)
-      this.datafound = true
+    if(this.userData != undefined) {
+      this.datafound = true;
+      this.userDataToken = (this.userData.token != null) ? this.userDataToken : "";
+    }
   }
 
   private getChallengeNames(submissions: Submission[]) {

@@ -3,32 +3,38 @@
     <h4 style="margin-bottom: 4px;margin-top: 4px;">Share your Data</h4>
   </div>
   <div class="card-body text-center">
-    <h4 class="card-title" style="margin-bottom: 4px;margin-top: 4px;">QR Code</h4>
-    <div class="row">
-      <div *ngIf="userDataToken.length > 0" class="col">
+    <div *ngIf="userDataToken.length > 0" class="col">
+      <h4 class="card-title" style="margin-bottom: 4px;margin-top: 4px;">QR Code</h4>
+      <div class="row">
+
         <ngx-qrcode
           [value]="qrLink"
-          >
+        >
         </ngx-qrcode>
       </div>
-    </div>
-    <div class="row">
-      <div class="col" style="padding: 0 12px;padding-top: 12px;">
-        <h4 style="margin-bottom: 4px;margin-top: 4px;">Permalink</h4>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col" style="padding: 0 12px;padding-top: 12px;">
-        <div class="input-group">
-          <input class="form-control" type="text" readonly [value]="this.qrLink" disabled />
-          <button (click)="copyPermalinkToClipboard()" class="btn btn-primary" type="button">Copy</button>
+
+      <div class="row">
+        <div class="col" style="padding: 0 12px;padding-top: 12px;">
+          <h4 style="margin-bottom: 4px;margin-top: 4px;">Permalink</h4>
         </div>
       </div>
+      <div class="row">
+        <div class="col" style="padding: 0 12px;padding-top: 12px;">
+          <div class="input-group">
+            <input class="form-control" type="text" readonly [value]="this.qrLink" disabled/>
+            <button (click)="copyPermalinkToClipboard()" class="btn btn-primary" type="button">Copy</button>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <!-- MAYBE IN ANOTHER BRNACH
+        <div class="col" style="padding: 0 12px;padding-top: 12px;"><button class="btn btn-primary" type="button">Create New QR-Code</button></div>
+         -->
+      </div>
     </div>
-    <div class="row">
-      <!-- MAYBE IN ANOTHER BRNACH
-      <div class="col" style="padding: 0 12px;padding-top: 12px;"><button class="btn btn-primary" type="button">Create New QR-Code</button></div>
-       -->
+    <div *ngIf="userDataToken.length == 0">
+      <h4 class="card-title" style="margin-bottom: 4px;margin-top: 4px;">You have no QR-Code</h4>
+      <button (click)="copyPermalinkToClipboard()" class="btn btn-primary" type="button">Click here to genrate a QR code</button>
     </div>
   </div>
 </div>

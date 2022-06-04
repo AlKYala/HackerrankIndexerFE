@@ -30,4 +30,8 @@ export class UserDataService {
     return this.requestService.anyGetRequest(`${environment.api}/userdata/${token}`)
       .toPromise();
   }
+
+  public async sendQRGenerateRequest(userDataId: number): Promise<UserData> {
+    return this.requestService.anyGetRequest(`${environment.api}/userdata/qr/generate/${userDataId}`).toPromise();
+  }
 }

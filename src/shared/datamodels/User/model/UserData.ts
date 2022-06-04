@@ -6,6 +6,7 @@ import {PassPercentage} from "../../Analytics/models/PassPercentage";
 import {UsagePercentage} from "../../Analytics/models/UsagePercentage";
 
 export interface UserData {
+  id: number
   submissionList: Submission[];
   user: User;
   usedPLanguages: Planguage[];

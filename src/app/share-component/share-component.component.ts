@@ -1,6 +1,8 @@
 import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
+import {UserDataService} from "../../shared/services/UserDataService";
+import {UserData} from "../../shared/datamodels/User/model/UserData";
 
 @Component({
   selector: 'app-share-component',
@@ -10,17 +12,19 @@ import {HttpClient} from "@angular/common/http";
 export class ShareComponentComponent implements OnChanges {
 
   @Input()
-  userDataToken: string = "";
+  userData!: UserData;
 
   //QR RELATED
   qrLink       = "";
   elementType  = 'url';
 
+  userDataToken = ""
   endpoint = `localhost:4200/permalink`;
 
-  constructor() { }
+  constructor(private userDataService: UserDataService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.userDataToken = (this.userData != null && this.userData.token != null) ? this.userData.token : "";
     this.qrLink = `${this.endpoint}/${this.userDataToken}`;
   }
 
@@ -29,5 +33,11 @@ export class ShareComponentComponent implements OnChanges {
       .then(
         //TODO Toastr
       );
+  }
+
+  generateQRCode() {
+    this.userDataService.sendQRGenerateRequest(this.userData.id).then(
+      //TODO replace userData
+    );
   }
 }
