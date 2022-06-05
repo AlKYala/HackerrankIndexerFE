@@ -3,7 +3,7 @@
     <h4 style="margin-bottom: 4px;margin-top: 4px;">Share your Data</h4>
   </div>
   <div class="card-body text-center">
-    <div *ngIf="userDataToken.length > 0" class="col">
+    <div *ngIf="showUserDataToken" class="col">
       <h4 class="card-title" style="margin-bottom: 4px;margin-top: 4px;">QR Code</h4>
       <div class="row">
 
@@ -32,9 +32,9 @@
          -->
       </div>
     </div>
-    <div *ngIf="userDataToken.length == 0">
+    <div *ngIf="!showUserDataToken">
       <h4 class="card-title" style="margin-bottom: 4px;margin-top: 4px;">You have no QR-Code</h4>
-      <button (click)="copyPermalinkToClipboard()" class="btn btn-primary" type="button">Click here to genrate a QR code</button>
+      <button (click)="generateQRCode()" class="btn btn-primary" type="button">Click here to genrate a QR code</button>
     </div>
   </div>
 </div>

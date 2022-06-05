@@ -14,6 +14,7 @@ import {Submission} from "../../shared/datamodels/Submission/model/Submission";
 import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
 import {PaginationWidths} from "../../shared/scss/resizePagination/PaginationWidths";
 import {User} from "../../shared/datamodels/User/model/User";
+import {SubmissionFlat} from "../../shared/datamodels/Submission/model/SubmissionFlat";
 
 @Component({
   selector: 'app-analytics',
@@ -33,7 +34,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   userData!: UserData;
   generalPercentage!: GeneralPercentage;
   passPercentages: PassPercentage[] = null!;
-  submissions: Submission[] = [];
+  submissions: SubmissionFlat[] = [];
   languages: Planguage[] = [];
   userDataToken: string = "";
   challengeNames: string[] = [];
@@ -136,7 +137,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     return challengeNames;
   }
 
-  private extractChallengeNames(submissions: Submission[]): string[] {
+  private extractChallengeNames(submissions: SubmissionFlat[]): string[] {
     const challengeNames: Set<string> = new Set<string>();
     for(const submission of submissions) {
       challengeNames.add(submission.challenge.challengeName);

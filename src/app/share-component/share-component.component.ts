@@ -3,6 +3,7 @@ import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {UserDataService} from "../../shared/services/UserDataService";
 import {UserData} from "../../shared/datamodels/User/model/UserData";
+import {LocalStorageService} from "ngx-webstorage";
 
 @Component({
   selector: 'app-share-component',
@@ -18,13 +19,17 @@ export class ShareComponentComponent implements OnChanges {
   qrLink       = "";
   elementType  = 'url';
 
-  userDataToken = ""
+  showUserDataToken = this.userData != null && this.userData.token != null && this.userData.token.length > 0;
+  userDataToken = (this.showUserDataToken) ? this.userData.token : "";
   endpoint = `localhost:4200/permalink`;
 
-  constructor(private userDataService: UserDataService) { }
+  constructor(private userDataService: UserDataService,
+              private localStorageService: LocalStorageService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.userDataToken = (this.userData != null && this.userData.token != null) ? this.userData.token : "";
+    if(this.userDataToken.length > 0)
+      this.showUserDataToken = true;
     this.qrLink = `${this.endpoint}/${this.userDataToken}`;
   }
 
@@ -36,8 +41,13 @@ export class ShareComponentComponent implements OnChanges {
   }
 
   generateQRCode() {
-    this.userDataService.sendQRGenerateRequest(this.userData.id).then(
-      //TODO replace userData
-    );
+    this.userDataService.sendQRGenerateRequest(this.userData.id)
+      .then((userData: UserData) => {
+        this.localStorageService.clear("userData");
+        this.showUserDataToken = true;
+        this.userDataToken = userData.token;
+        this.localStorageService.store("userData", userData);
+        console.log(this.localStorageService.retrieve("userData"));
+      });
   }
 }

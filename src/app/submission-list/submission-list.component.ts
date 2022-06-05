@@ -33,6 +33,7 @@ import {DownloadFile} from "../../shared/datamodels/DownloadFile/Model/DownloadF
 import {NgxBootstrapConfirmService} from "ngx-bootstrap-confirm";
 import {LogInOutService} from "../../shared/services/LogInOutService";
 import {start} from "repl";
+import {SubmissionFlat} from "../../shared/datamodels/Submission/model/SubmissionFlat";
 
 @Component({
   selector: 'app-submission-list',
@@ -42,7 +43,7 @@ import {start} from "repl";
 export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
 
   @Input()
-  submissions: Submission[] = [];
+  submissions: SubmissionFlat[] = [];
 
   @Input()
   languages: Planguage[] = [];
@@ -53,7 +54,7 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
 
   private mainSubscription: Subscription = new Subscription();
 
-  submissionsBackup: Submission[] = [];
+  submissionsBackup: SubmissionFlat[] = [];
 
   @Input()
   inputChallengeId: number | undefined;
@@ -118,7 +119,7 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
   /**
    * The submissions listed
    */
-  paginationSubmissions: Submission[] = [];
+  paginationSubmissions: SubmissionFlat[] = [];
 
   /**
    * Display current Page in Fronten
@@ -218,8 +219,8 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
     this.setPage(1);
   }
 
-  public navigateToListingDetail(submission: Submission): void {
-    this.submissionDataService.setSubmission(submission);
+  public navigateToListingDetail(submission: SubmissionFlat): void {
+    //this.submissionDataService.setSubmission(submission); //TODO
     this.router.navigate([`/submission/${submission.id}`]);
   }
 
@@ -271,7 +272,7 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
       return;
     }
     this.submissions = this.submissions
-      .filter((submission: Submission) => this.selectedLanguages.has(submission.language.id!));
+      .filter((submission: SubmissionFlat) => this.selectedLanguages.has(submission.language.id!));
   }
 
   public clickLanguage(pLanguage: Planguage): void {
@@ -354,12 +355,12 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
 
   private filterForPassedSubmissions(): void {
     this.submissions = this.submissions
-      .filter((submission: Submission) => submission.score == 1);
+      .filter((submission: SubmissionFlat) => submission.score == 1);
   }
 
   private filterForFailedSubmissions(): void {
     this.submissions = this.submissions
-      .filter((submission: Submission) => submission.score < 1);
+      .filter((submission: SubmissionFlat) => submission.score < 1);
   }
 
   private filterForMostRecentPassedSubmissions(): void {
@@ -483,13 +484,13 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
   }
 
   private getSubmissionsByChallengeId(challengeId: number) {
-    this.submissions.filter((submission: Submission) => {
+    this.submissions.filter((submission: SubmissionFlat) => {
       submission.challenge.id == challengeId
     });
   }
 
   private getSubmissionsByPLanguageId(pLanguageId: number) {
-    this.submissions.filter((submission: Submission) => {
+    this.submissions.filter((submission: SubmissionFlat) => {
       submission.language.id == pLanguageId
     });
   }

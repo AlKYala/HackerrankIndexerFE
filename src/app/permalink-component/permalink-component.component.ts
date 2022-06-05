@@ -11,6 +11,7 @@ import {Submission} from "../../shared/datamodels/Submission/model/Submission";
 import {GeneralPercentage} from "../../shared/datamodels/Analytics/models/GeneralPercentage";
 import {PassPercentage} from "../../shared/datamodels/Analytics/models/PassPercentage";
 import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
+import {SubmissionFlat} from "../../shared/datamodels/Submission/model/SubmissionFlat";
 
 /**
  * Original idea: Feed data into analytics component
@@ -32,7 +33,7 @@ export class PermalinkComponentComponent implements OnInit {
   datafound: boolean = false;
   generalPercentage!: GeneralPercentage;
   passPercentages: PassPercentage[] = null!;
-  submissions: Submission[] = [];
+  submissions: SubmissionFlat[] = [];
   languages: Planguage[] = [];
   username: string = "";
 
