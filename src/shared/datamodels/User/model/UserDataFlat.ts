@@ -1,4 +1,4 @@
-export interface UserData {
-  timeCreated: Date;
+export interface UserDataFlat {
+  date: Date;
   token: string;
 }

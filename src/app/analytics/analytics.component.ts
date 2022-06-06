@@ -128,7 +128,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getChallengeNames(submissions: Submission[]) {
+  private getChallengeNames(submissions: SubmissionFlat[]) {
     let challengeNames: string[] = this.localStorageService.retrieve('challengeNames');
     if(challengeNames == undefined) {
       challengeNames = this.extractChallengeNames(submissions);

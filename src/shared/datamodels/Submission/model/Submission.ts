@@ -8,10 +8,5 @@ import {UserData} from "../../User/model/UserData";
  * Used after data is processed in backend and loaded
  */
 export interface Submission extends BaseEntity {
-  userData: UserData;
-  contest: Contest;
-  challenge: Challenge;
   code: string;
-  score: number;
-  language: Planguage;
 }

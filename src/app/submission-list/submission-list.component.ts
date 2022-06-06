@@ -373,7 +373,7 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
       mostRecent[submission.challenge.id] = submission;
     }
 
-    const filteredSubmissions: Submission[] = [];
+    const filteredSubmissions: SubmissionFlat[] = [];
 
     for (const key of Object.keys(mostRecent)) {
       // @ts-ignore

@@ -9,6 +9,7 @@ import {RequestService} from "./ServiceHandler/RequestService";
 import {CollectionWrapper} from "../datamodels/shared/collectionWrapper";
 import JSZip from "jszip";
 import {Zip} from "../datamodels/Zip/model/Zip";
+import {SubmissionFlat} from "../datamodels/Submission/model/SubmissionFlat";
 
 @Injectable({providedIn: 'root'})
 export class SubmissionDownloadService {
@@ -16,28 +17,28 @@ export class SubmissionDownloadService {
   constructor(private requestService: RequestService) {
   }
 
-  public generateAndDownloadSubmission(submission: Submission) {
+  public generateAndDownloadSubmission(submission: Submission, submissionFlat: SubmissionFlat) {
     let a = document.createElement("a");
     document.body.appendChild(a);
-    const blob = new Blob([this.generateFileContents(submission)], {type: "octet/stream"});
+    const blob = new Blob([this.generateFileContents(submission, submissionFlat)], {type: "octet/stream"});
     const url = window.URL.createObjectURL(blob);
     a.href = url;
-    const extension: string = this.findExtensionForFile(submission);
-    const fileName: string = `${submission.challenge.challengeName.replace(/\s/g, "")}.${extension}`;
+    const extension: string = this.findExtensionForFile(submission, submissionFlat);
+    const fileName: string = `${submissionFlat.challenge.challengeName.replace(/\s/g, "")}.${extension}`;
     a.download = fileName;
     a.click();
     window.URL.revokeObjectURL(url);
   }
 
-  private generateFileContents(submission: Submission): string {
-    return `${this.generateDocumentInfo(submission)}\n${submission.code}`;
+  private generateFileContents(submission: Submission, submissionFlat: SubmissionFlat): string {
+    return `${this.generateDocumentInfo(submission, submissionFlat)}\n${submission.code}`;
   }
 
-  private generateDocumentInfo(submission: Submission): string {
+  private generateDocumentInfo(submission: Submission, submissionFlat: SubmissionFlat): string {
     return `/**\nPowered by HackerrankIndexer by Ali Yalama 2021\n
     https://github.com/AlKYala/HackerRankIndexer\n
     File created: ${this.getCurrentDateAsString()}\n
-    Challenge name: ${submission.challenge.challengeName}\n*/\n`;
+    Challenge name: ${submissionFlat.challenge.challengeName}\n*/\n`;
   }
 
   private getCurrentDateAsString(): string {
@@ -45,8 +46,8 @@ export class SubmissionDownloadService {
   }
 
   //TODO delegate to backend
-  private findExtensionForFile(submission: Submission): string {
-    const language: string = submission.language.language;
+  private findExtensionForFile(submission: Submission, submissionFlat: SubmissionFlat): string {
+    const language: string = submissionFlat.language.language;
     let extension: string = "txt";
     ////console.log(language);
     if(language.includes('java')) {

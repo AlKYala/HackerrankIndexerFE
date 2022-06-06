@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col">
             <h1></h1>
-            <a (click)="routeToChallenge($event)" class="h4 text-start pointer">{{submission.challenge.challengeName}}</a>
+            <a (click)="routeToChallenge($event)" class="h4 text-start pointer">{{challenge.challengeName}}</a>
           </div>
         </div>
         <div class="row">
@@ -20,8 +20,8 @@
       </div>
       <div class="col-md-4">
         <p>ID: {{submission.id}}</p>
-        <p>SCORE: {{submission.score}}</p>
-        <p>LANGUAGE:&nbsp;<a (click)="routeToLanguage($event)" class="pointer" href="#">{{submission.language.language}}</a></p><i
+        <p>SCORE: {{submissionFlat.score}}</p>
+        <p>LANGUAGE:&nbsp;<a (click)="routeToLanguage($event)" class="pointer" href="#">{{pLanguage.language}}</a></p><i
         (click)="generateAndDownloadSubmission()"
         class="fa fa-download pointer"
         style="text-align: left;font-size: 32px;"></i>
@@ -40,18 +40,18 @@
     </div>
     <div class="row justify-content-between">
       <div class="col-md-6" style="border-width: 1px;border-style: solid;">
-        <h4 class="text-center">Submissions for <a (click)="routeToChallenge($event)" class="text-start pointer">{{submission.challenge.challengeName}}</a></h4>
+        <h4 class="text-center">Submissions for <a (click)="routeToChallenge($event)" class="text-start pointer">{{challenge.challengeName}}</a></h4>
         <div class="row">
           <div class="col">
-            <app-submission-list [inputChallengeId]="submission.challenge.id"></app-submission-list>
+            <app-submission-list [inputChallengeId]="challenge.id"></app-submission-list>
           </div>
         </div>
       </div>
       <div class="col-md-6" style="border-width: 1px;border-style: solid;">
-        <h4 class="text-center">Submissions in <a (click)="routeToLanguage($event)" class="pointer" href="#">{{submission.language.language}}</a></h4>
+        <h4 class="text-center">Submissions in <a (click)="routeToLanguage($event)" class="pointer" href="#">{{pLanguage.language}}</a></h4>
         <div class="row">
           <div class="col">
-            <app-submission-list [inputLanguageid]="submission.language.id"></app-submission-list>
+            <app-submission-list [inputLanguageid]="pLanguage.id"></app-submission-list>
           </div>
         </div>
       </div>

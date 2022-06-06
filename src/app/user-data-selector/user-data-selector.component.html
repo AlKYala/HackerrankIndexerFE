@@ -2,22 +2,68 @@
   <div class="card-header d-flex justify-content-between align-items-center">
     <h4 style="margin-bottom: 4px;margin-top: 4px;">Select user Data</h4>
   </div>
-  <div class="card-body text-center">
-    <div class="row">
-      <div class="col user-data-col" style="padding-top: 12px;margin: 12px 12px;border-radius: 3px;border: 1px solid var(--bs-gray-500);">
-        <h5 class="text-start d-xxl-flex justify-content-between"><span>Data #1<br /></span><span><button class="btn btn-outline-danger btn-sm" type="button"><i class="fa fa-trash-o"></i></button></span></h5>
-        <h6 class="text-start">%DATE%</h6>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col user-data-col" style="padding-top: 12px;margin: 12px 12px;border-radius: 3px;border: 1px solid var(--bs-gray-500);">
-        <h6 class="text-start"><span><button class="btn btn-outline-secondary" type="button"><i class="fa fa-plus"></i></button></span> No Data</h6>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col user-data-col" style="padding-top: 12px;margin: 12px 12px;border-radius: 3px;border: 1px solid var(--bs-gray-500);">
-        <h6 class="text-start"><span><button class="btn btn-outline-secondary" type="button"><i class="fa fa-plus"></i></button></span> No Data</h6>
+
+  <div *ngIf="userData0Exists">
+    <div class="card-body text-center">
+      <div class="row">
+        <div class="col user-data-col">
+          <h5 class="text-start d-xxl-flex justify-content-between"><span>Data 0<br/></span><span>
+            <button (click)="this.removeData(0)"
+            class="btn btn-outline-danger btn-sm" type="button"><i class="fa fa-trash-o"></i></button></span></h5>
+          <h6 class="text-start">{{this.userDataList[0].date}}</h6>
+        </div>
       </div>
     </div>
   </div>
+
+  <div *ngIf="!userData0Exists">
+    <div class="row">
+      <div class="col user-data-col">
+        <h6 class="text-start"><span><button class="btn btn-outline-secondary" type="button"><i class="fa fa-plus"></i></button></span> No Data</h6>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="userData1Exists">
+    <div class="card-body text-center">
+      <div class="row">
+        <div class="col user-data-col">
+          <h5 class="text-start d-xxl-flex justify-content-between"><span>Data 1<br/></span><span>
+            <button (click)="this.removeData(1)"
+            class="btn btn-outline-danger btn-sm" type="button"><i class="fa fa-trash-o"></i></button></span></h5>
+          <h6 class="text-start">{{userDataList[1].date}}</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!userData1Exists">
+    <div class="row">
+      <div class="col user-data-col">
+        <h6 class="text-start"><span><button class="btn btn-outline-secondary" type="button"><i class="fa fa-plus"></i></button></span> No Data</h6>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="userData2Exists">
+    <div class="card-body text-center">
+      <div class="row">
+        <div class="col user-data-col">
+          <h5 class="text-start d-xxl-flex justify-content-between"><span>Data 2<br/></span><span>
+            <button (click)="this.removeData(2)"
+            class="btn btn-outline-danger btn-sm" type="button"><i class="fa fa-trash-o"></i></button></span></h5>
+          <h6 class="text-start">{{userDataList[2].date}}</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!userData2Exists">
+    <div class="row">
+      <div class="col user-data-col">
+        <h6 class="text-start"><span><button class="btn btn-outline-secondary" type="button"><i class="fa fa-plus"></i></button></span> No Data</h6>
+      </div>
+    </div>
+  </div>
+
 </div>
