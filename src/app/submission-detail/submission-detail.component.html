@@ -13,8 +13,10 @@
           <div class="col" style="padding-top: 12px;padding-bottom: 12px;">
             <div class="card">
               <div class="card-body" style="padding: 12px;background: #e0e0e0;">
-                <code class="font-monospace text-black-50" style="color: var(--bs-dark);">{{this.submission.code}}
-                </code></div>
+                <pre><code [highlight]="this.submissionCode"
+                           [lineNumbers]="true"
+                           ></code></pre>
+              </div>
             </div>
           </div>
         </div>

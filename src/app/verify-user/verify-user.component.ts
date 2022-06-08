@@ -2,10 +2,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
-import {readMetadata} from "@angular/compiler-cli/src/transformers/metadata_reader";
 import {ResponseString} from "../../shared/datamodels/User/model/ResponseString";
 import {Observable, Subscription} from "rxjs";
-import {timeout} from "rxjs/operators";
 
 @Component({
   selector: 'app-verify-user',

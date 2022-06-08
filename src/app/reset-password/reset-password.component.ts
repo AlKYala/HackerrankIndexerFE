@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {FormcontrolsSettings} from "../../shared/other/formcontrols.settings";
 import {ActivatedRoute} from "@angular/router";
 import {Subscription} from "rxjs";
@@ -14,9 +14,9 @@ import {ToastrService} from "ngx-toastr";
 })
 export class ResetPasswordComponent implements OnInit {
 
-  public resetForm!: FormGroup;
+  public resetForm!: UntypedFormGroup;
 
-  public emailForm!: FormControl;
+  public emailForm!: UntypedFormControl;
 
   private baseSubscription = new Subscription();
 
@@ -33,7 +33,7 @@ export class ResetPasswordComponent implements OnInit {
 
     //this.grabQueryParam();
 
-    this.resetForm = new FormGroup({});
+    this.resetForm = new UntypedFormGroup({});
 
     this.emailForm = FormcontrolsSettings.emailFormControl();
 

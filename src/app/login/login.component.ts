@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {UserSignUp} from "../../shared/datamodels/User/model/UserSignUp";
 import {AuthenticationService} from "../../shared/services/AuthenticationService";
 import {UserLogin} from "../../shared/datamodels/User/model/UserLogin";
-import {Form, FormControl, FormGroup} from "@angular/forms";
+import {Form, UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {FormcontrolsSettings} from "../../shared/other/formcontrols.settings";
 import {LocalStorageService} from "ngx-webstorage";
 
@@ -14,10 +14,10 @@ import {LocalStorageService} from "ngx-webstorage";
 })
 export class LoginComponent implements OnInit {
 
-  public loginForm!: FormGroup;
+  public loginForm!: UntypedFormGroup;
 
-  public loginEmailForm!: FormControl;
-  public loginPasswordForm!: FormControl;
+  public loginEmailForm!: UntypedFormControl;
+  public loginPasswordForm!: UntypedFormControl;
 
   public incorrectPassword = false;
 
@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
 
   //TODO link view to form
   public initLoginForm(): void {
-    this.loginForm = new FormGroup({});
+    this.loginForm = new UntypedFormGroup({});
 
     this.loginEmailForm = FormcontrolsSettings.emailFormControl();
     this.loginPasswordForm = FormcontrolsSettings.passwordFormControl();

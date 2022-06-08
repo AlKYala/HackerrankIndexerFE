@@ -25,7 +25,7 @@ import {RequestService} from "../../shared/services/ServiceHandler/RequestServic
 import {JwPaginationComponent} from "jw-angular-pagination";
 import paginate from "jw-paginate";
 import {Planguage} from "../../shared/datamodels/PLanguage/model/PLanguage";
-import {FormControl} from "@angular/forms";
+import {UntypedFormControl} from "@angular/forms";
 import {HashMap} from "../../shared/other/HashMap";
 import {FilterRequest} from "../../shared/datamodels/Submission/model/FilterRequest";
 import {SubmissionDownloadService} from "../../shared/services/SubmissionDownloadService";
@@ -78,7 +78,7 @@ export class SubmissionListComponent implements OnChanges, OnDestroy, OnInit {
   onlyFailedSubmissions: boolean = false;
   onlyLastPassedSubmissions: boolean = false;
 
-  searchFormControl = new FormControl();
+  searchFormControl = new UntypedFormControl();
 
 
   /**

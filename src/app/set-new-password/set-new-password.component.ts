@@ -3,7 +3,7 @@ import {Subscription} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {ToastrService} from "ngx-toastr";
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {FormcontrolsSettings} from "../../shared/other/formcontrols.settings";
 import {PasswordResetModel} from "../../shared/datamodels/security/PasswordResetModel";
 import {environment} from "../../environments/environment";
@@ -21,11 +21,11 @@ export class SetNewPasswordComponent implements OnInit {
 
   public email!: string;
 
-  public resetForm!: FormGroup;
+  public resetForm!: UntypedFormGroup;
 
-  public passwordForm!: FormControl;
+  public passwordForm!: UntypedFormControl;
 
-  public passwordConfirmForm!: FormControl;
+  public passwordConfirmForm!: UntypedFormControl;
 
   constructor(private route: ActivatedRoute,
               private httpClient: HttpClient,
@@ -39,7 +39,7 @@ export class SetNewPasswordComponent implements OnInit {
 
     this.grabQueryParam();
 
-    this.resetForm = new FormGroup({});
+    this.resetForm = new UntypedFormGroup({});
 
     this.passwordForm = FormcontrolsSettings.passwordFormControl();
     this.passwordConfirmForm = FormcontrolsSettings.passwordVerificationFormControl()

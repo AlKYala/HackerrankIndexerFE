@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {FormcontrolsSettings} from "../../shared/other/formcontrols.settings";
 import {UserSignUp} from "../../shared/datamodels/User/model/UserSignUp";
 import {AuthenticationService} from "../../shared/services/AuthenticationService";
@@ -14,11 +14,11 @@ import {LocalStorageService} from "ngx-webstorage";
 })
 export class SignupComponent implements OnInit {
 
-  public registerForm!: FormGroup;
+  public registerForm!: UntypedFormGroup;
 
-  public signupEmailForm!: FormControl;
-  public signupPasswordForm!: FormControl;
-  public signupPasswordFormRepeat!: FormControl;
+  public signupEmailForm!: UntypedFormControl;
+  public signupPasswordForm!: UntypedFormControl;
+  public signupPasswordFormRepeat!: UntypedFormControl;
 
   constructor(private authenticationService: AuthenticationService,
               private localStorageService: LocalStorageService,
@@ -30,7 +30,7 @@ export class SignupComponent implements OnInit {
 
   //TODO link form to view
   public initRegisterForm(): void {
-    this.registerForm = new FormGroup({});
+    this.registerForm = new UntypedFormGroup({});
 
     this.signupEmailForm = FormcontrolsSettings.emailFormControl();
     this.signupPasswordForm = FormcontrolsSettings.passwordFormControl();
@@ -42,7 +42,7 @@ export class SignupComponent implements OnInit {
   }
 
   public signUp() {
-    this.registerForm = new FormGroup({});
+    this.registerForm = new UntypedFormGroup({});
 
     const signUpEmail           = this.signupEmailForm.value;
     const signUpPassword        = this.signupPasswordForm.value;

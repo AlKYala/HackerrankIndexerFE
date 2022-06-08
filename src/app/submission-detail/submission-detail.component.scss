@@ -1,7 +1,7 @@
 .pointer {
   cursor: pointer;
 }
-
-code {
-  white-space: pre-wrap;
+pre {
+  overflow: auto;
+  line: wrap;
 }
