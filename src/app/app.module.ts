@@ -34,6 +34,7 @@ import { InitialLandingComponent } from './initial-landing/initial-landing.compo
 import {NgxQRCodeModule} from "@techiediaries/ngx-qrcode";
 import { PermalinkComponentComponent } from './permalink-component/permalink-component.component';
 import { UserDataSelectorComponent } from './user-data-selector/user-data-selector.component';
+import {HIGHLIGHT_OPTIONS, HighlightModule} from "ngx-highlightjs";
 
 @NgModule({
   declarations: [
@@ -74,9 +75,17 @@ import { UserDataSelectorComponent } from './user-data-selector/user-data-select
     NgxBootstrapConfirmModule,
     NgxMasonryModule,
     BrowserModule,
-    NgxQRCodeModule
+    NgxQRCodeModule,
+    HighlightModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HIGHLIGHT_OPTIONS,
+      useValue: {
+        fullLibraryLoader: () => import('highlight.js'),
+      }
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

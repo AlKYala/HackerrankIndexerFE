@@ -82,7 +82,8 @@ export class SubmissionDetailComponent implements OnInit, OnDestroy {
         this.pLanguage = submissionFlat.language;
         this.contest = submissionFlat.contest;
         this.challenge = submissionFlat.challenge;
-    })
+    });
+    this.loaded = true;
   }
 
   public generateAndDownloadSubmission() {

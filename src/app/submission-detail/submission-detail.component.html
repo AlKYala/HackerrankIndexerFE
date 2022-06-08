@@ -1,3 +1,4 @@
+<app-navbar></app-navbar>
 <ng-container *ngIf="loaded">
   <div class="container">
     <div class="row">
@@ -25,35 +26,6 @@
         (click)="generateAndDownloadSubmission()"
         class="fa fa-download pointer"
         style="text-align: left;font-size: 32px;"></i>
-      </div>
-    </div>
-  </div>
-  <div class="container" style="margin-top: 30px;margin-bottom: 30px;">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="row">
-          <div class="col">
-            <h1 class="text-center">Related Entries</h1>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row justify-content-between">
-      <div class="col-md-6" style="border-width: 1px;border-style: solid;">
-        <h4 class="text-center">Submissions for <a (click)="routeToChallenge($event)" class="text-start pointer">{{challenge.challengeName}}</a></h4>
-        <div class="row">
-          <div class="col">
-            <app-submission-list [inputChallengeId]="challenge.id"></app-submission-list>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6" style="border-width: 1px;border-style: solid;">
-        <h4 class="text-center">Submissions in <a (click)="routeToLanguage($event)" class="pointer" href="#">{{pLanguage.language}}</a></h4>
-        <div class="row">
-          <div class="col">
-            <app-submission-list [inputLanguageid]="pLanguage.id"></app-submission-list>
-          </div>
-        </div>
       </div>
     </div>
   </div>
