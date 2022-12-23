@@ -1,0 +1,82 @@
+<div class="row">
+  <div class="col-md-12">
+    <h1 class="display-6">General Stats</h1>
+    <div class="row">
+      <div class="col-lg-5 " style="margin: 5px 0px;">
+        <div class="card shadow-sm">
+          <div class="card-body" data-bs-toggle="tooltip" title="Takes every submission you make into account.  Useless statistic but leetcode has it too.">
+            <h4 class="card-title">Submission Acceptance Rate</h4>
+            <h6 class="text-muted card-subtitle mb-2">Passed Submissions in %</h6>
+            <p class="card-text"></p>
+            <div class="row align-items-center no-gutters">
+              <div class="col me-2">
+                <div class="text-uppercase text-info fw-bold text-xs mb-1"></div>
+              </div>
+            </div>
+            <div class="row g-0 align-items-center">
+              <div class="col-auto">
+                <div class="text-dark fw-bold h5 mb-0 me-3">
+                  <span>{{submissionsSolvedPercentage}}%</span>
+                </div>
+              </div>
+              <div class="col">
+                <div class="progress progress-sm">
+                  <div  id="submissionPercentage"
+                        [attr.class]="submissionsPassedClass"
+                        [style.width.%]="submissionsSolvedPercentage"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4" style="margin: 5px 0px;">
+        <div class="card shadow-sm">
+          <div class="card-body" data-bs-toggle="tooltip" title="The percentage of all challenges with at least one passed submission. Useful statistic." style="box-shadow: 0px 0px;">
+            <h4 class="card-title">Challenge Acceptance Rate</h4>
+            <h6 class="text-muted card-subtitle mb-2">Passed Challenges in %</h6>
+            <p class="card-text"></p>
+            <div class="row align-items-center no-gutters">
+              <div class="col me-2">
+                <div class="text-uppercase text-info fw-bold text-xs mb-1"></div>
+              </div>
+            </div>
+            <div class="row g-0 align-items-center">
+              <div class="col-auto">
+                <div class="text-dark fw-bold h5 mb-0 me-3"><span>{{challengesPassedPercentage}}%</span></div>
+              </div>
+              <div class="col">
+                <div class="progress progress-sm">
+                  <div
+                        id="challengePercentage"
+                        [attr.class]="challengesPassedClass"
+                        [style.width.%]="challengesPassedPercentage">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3" style="margin: 5px 0px;">
+        <div class="card shadow-sm">
+          <div class="card-body" data-bs-toggle="tooltip" title="Your most used language." style="box-shadow: 0px 0px;">
+            <h4 class="card-title">Favorite Language</h4>
+            <h6 class="text-muted card-subtitle mb-2">Most Submissions in</h6>
+            <p class="card-text"></p>
+            <div class="row align-items-center no-gutters">
+              <div class="col me-2">
+                <div class="text-uppercase text-info fw-bold text-xs mb-1"></div>
+              </div>
+            </div>
+            <div class="row g-0 align-items-center">
+              <div class="col-auto">
+                <div class="text-dark fw-bold h5 mb-0 me-3"><span>{{favoriteLanguageString}}</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

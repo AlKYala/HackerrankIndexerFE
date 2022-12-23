@@ -1,0 +1,60 @@
+<ng-container *ngIf="loaded">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col">
+            <h1></h1>
+            <a (click)="routeToChallenge($event)" class="h4 text-start pointer">{{submission.challenge.challengeName}}</a>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col" style="padding-top: 12px;padding-bottom: 12px;">
+            <div class="card">
+              <div class="card-body" style="padding: 12px;background: #e0e0e0;">
+                <code class="font-monospace text-black-50" style="color: var(--bs-dark);">{{this.submission.code}}
+                </code></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <p>ID: {{submission.id}}</p>
+        <p>SCORE: {{submission.score}}</p>
+        <p>LANGUAGE:&nbsp;<a (click)="routeToLanguage($event)" class="pointer" href="#">{{submission.language.language}}</a></p><i
+        (click)="generateAndDownloadSubmission()"
+        class="fa fa-download pointer"
+        style="text-align: left;font-size: 32px;"></i>
+      </div>
+    </div>
+  </div>
+  <div class="container" style="margin-top: 30px;margin-bottom: 30px;">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col">
+            <h1 class="text-center">Related Entries</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-between">
+      <div class="col-md-6" style="border-width: 1px;border-style: solid;">
+        <h4 class="text-center">Submissions for <a (click)="routeToChallenge($event)" class="text-start pointer">{{submission.challenge.challengeName}}</a></h4>
+        <div class="row">
+          <div class="col">
+            <app-submission-list [inputChallengeId]="submission.challenge.id"></app-submission-list>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6" style="border-width: 1px;border-style: solid;">
+        <h4 class="text-center">Submissions in <a (click)="routeToLanguage($event)" class="pointer" href="#">{{submission.language.language}}</a></h4>
+        <div class="row">
+          <div class="col">
+            <app-submission-list [inputLanguageid]="submission.language.id"></app-submission-list>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

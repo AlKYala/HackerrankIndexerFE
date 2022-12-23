@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <title>analyticsredsign</title>
+  <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+
+</head>
+
+<body>
+<!-- TODO: Another Navbar <app-navbar></app-navbar> -->
+
+
+
+<ng-container *ngIf="this.wait == false; else loadingScreen">
+  <div class="container" id="analyticsContainer">
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="intro">
+          <h1 class="display-3 text-center" style="margin-top: 5vh">Analytics</h1>
+          <h3 class="display-6 text-center">{{username}}'s stats</h3>
+        </div>
+      </div>
+    </div>
+
+    <ng-container *ngIf="datafound == true; else noData">
+      <app-generalstatscomponent [generalStatsInput]="generalPercentage"></app-generalstatscomponent>
+      <h1 class="display-6">Language Specific Stats</h1>
+      <ngx-masonry>
+        <div class="row" data-masonry='{"percentPosition": true }'>
+          <div class="col-12 col-lg-4">
+            <app-chartcomponent [passPercentages]="passPercentages"></app-chartcomponent>
+          </div>
+          <div class="col-12 col-lg-8">
+            <app-submission-list [languages]="languages" [submissions]="submissions"></app-submission-list>
+          </div>
+          <!--<div class="col-12 col-lg-4 col-xxl-3">
+            <app-share-component [userDataToken]="this.userDataToken"></app-share-component>
+          </div>-->
+        </div>
+      </ngx-masonry>
+    </ng-container>
+
+    <ng-template #noData>
+      <!--TODO Upload-->
+    </ng-template>
+  </div>
+</ng-container>
+
+<ng-template #loadingScreen>
+  <!-- TODO Loading... -->
+</ng-template>
+
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/js/chart.min.js"></script>
+<script src="assets/js/bs-init.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"
+        integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous"
+        async></script>
+</body>
+
+</html>
